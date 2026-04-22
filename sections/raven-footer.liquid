@@ -113,9 +113,9 @@
 
         {% if section.settings.show_payment_icons %}
           <div class="raven-footer__payments" aria-label="Payment methods">
-            <img src="{{ 'raven/payments/payment-1.png' | asset_url }}" loading="lazy" alt="">
-            <img src="{{ 'raven/payments/payment-2.png' | asset_url }}" loading="lazy" alt="">
-            <img src="{{ 'raven/payments/payment-3.png' | asset_url }}" loading="lazy" alt="">
+            {%- for type in shop.enabled_payment_types -%}
+              {{ type | payment_type_svg_tag: class: 'raven-footer__payment-icon' }}
+            {%- endfor -%}
           </div>
         {% endif %}
       </div>
@@ -255,7 +255,8 @@
     opacity: 0.5;
   }
 
-  .raven-footer__payments img {
+  .raven-footer__payments img,
+  .raven-footer__payments svg {
     width: 20px;
     height: 20px;
     display: block;

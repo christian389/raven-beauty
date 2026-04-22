@@ -62,7 +62,9 @@
         <form class="raven-header__search" action="{{ routes.search_url }}" method="get" role="search">
           <input type="hidden" name="type" value="product">
           <button class="raven-header__search-icon" type="submit" aria-label="Search">
-            <img src="{{ 'raven/icons/search-header.png' | asset_url }}" loading="lazy" alt="">
+            <span class="svg-wrapper" aria-hidden="true">
+              {{- 'icon-search.svg' | inline_asset_content -}}
+            </span>
           </button>
           <input
             class="raven-header__search-input"
@@ -79,10 +81,27 @@
 
         <div class="raven-header__actions">
           <a class="raven-header__icon-btn" href="{{ section.settings.wishlist_link | default: routes.search_url }}" aria-label="Wishlist">
-            <img src="{{ 'raven/icons/heart-header.png' | asset_url }}" loading="lazy" alt="">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 21s-7-4.8-10-9.6C-0.2 7.9 2.2 4 6.2 4c2 0 3.5 1.1 4.4 2.4C11.5 5.1 13 4 15 4c4 0 6.4 3.9 4.2 7.4C19 16.2 12 21 12 21Z"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+            </svg>
           </a>
           <a class="raven-header__icon-btn" href="{{ routes.cart_url }}" aria-label="Cart">
-            <img src="{{ 'raven/icons/cart-header.png' | asset_url }}" loading="lazy" alt="">
+            <span class="svg-wrapper" aria-hidden="true">
+              {{- 'icon-cart.svg' | inline_asset_content -}}
+            </span>
           </a>
         </div>
       </div>
@@ -191,7 +210,15 @@
     cursor: pointer;
   }
 
-  .raven-header__search-icon img {
+  .raven-header__search-icon .svg-wrapper {
+    width: 15px;
+    height: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .raven-header__search-icon .svg-wrapper svg {
     width: 15px;
     height: 15px;
     display: block;
@@ -229,19 +256,25 @@
     text-decoration: none;
   }
 
-  .raven-header__icon-btn img {
+  .raven-header__icon-btn .svg-wrapper,
+  .raven-header__icon-btn svg {
     display: block;
-    object-fit: contain;
   }
 
-  .raven-header__icon-btn:first-child img {
-    width: 20px;
-    height: 18px;
-  }
-
-  .raven-header__icon-btn:last-child img {
+  .raven-header__icon-btn .svg-wrapper {
     width: 20px;
     height: 20px;
+  }
+
+  .raven-header__icon-btn .svg-wrapper svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  .raven-header__icon-btn:first-child svg {
+    width: 20px;
+    height: 18.35px;
   }
 
   @media screen and (max-width: 989px) {
