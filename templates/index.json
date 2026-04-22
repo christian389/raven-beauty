@@ -182,12 +182,86 @@
         "padding-inline-start": 80,
         "padding-inline-end": 80
       }
+    },
+    "raven_social_proof_yQe99M": {
+      "type": "raven-social-proof",
+      "blocks": {
+        "image_m9WgCD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-1.png",
+            "link": ""
+          }
+        },
+        "image_WYVUq8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-2.png",
+            "link": ""
+          }
+        },
+        "image_VVMqqJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-3.png",
+            "link": ""
+          }
+        },
+        "image_qieq4Q": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-4.png",
+            "link": ""
+          }
+        },
+        "image_czzYym": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-5.png",
+            "link": ""
+          }
+        },
+        "image_g6L3Rz": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/sp-6.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_m9WgCD",
+        "image_WYVUq8",
+        "image_VVMqqJ",
+        "image_qieq4Q",
+        "image_czzYym",
+        "image_g6L3Rz"
+      ],
+      "name": "Raven Social Proof",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Følg vores univers",
+        "text": "<p>Del dine skønhedsmomenter med #RavenBeauty</p>",
+        "max_width": 1280,
+        "grid_gap": 16,
+        "card_radius": 8,
+        "columns_desktop": "6",
+        "columns_tablet": "3",
+        "columns_mobile": "2",
+        "heading_color": "#0F172A",
+        "text_color": "#64748B",
+        "padding-block-start": 64,
+        "padding-block-end": 64,
+        "padding-inline-start": 80,
+        "padding-inline-end": 80
+      }
     }
   },
   "order": [
     "raven_hero_h7RMg8",
     "raven_brand_values_PteAb4",
     "raven_categories_wpncCk",
-    "raven_best_sellers_grid_Jp8Q84"
+    "raven_best_sellers_grid_Jp8Q84",
+    "raven_social_proof_yQe99M"
   ]
 }
