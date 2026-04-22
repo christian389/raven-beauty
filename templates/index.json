@@ -255,6 +255,38 @@
         "padding-inline-start": 80,
         "padding-inline-end": 80
       }
+    },
+    "raven_newsletter_xFq9TU": {
+      "type": "raven-newsletter",
+      "name": "Raven Newsletter",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Få 15% rabat på dit første køb",
+        "text": "<p>Tilmeld dig vores nyhedsbrev og vær den første til at høre om nye lanceringer, eksklusive tilbud og skønhedstips.</p>",
+        "show_form": true,
+        "email_label": "Email",
+        "email_placeholder": "Din e-mail adresse",
+        "button_label": "Tilmeld mig",
+        "success_message": "Tak for din tilmelding!",
+        "container_max_width": 1280,
+        "form_max_width": 510,
+        "content_gap": 24,
+        "form_gap": 16,
+        "pill_radius": 200,
+        "enable_shadow": true,
+        "background_color": "rgba(71,19,174,0.05)",
+        "heading_color": "#0F172A",
+        "text_color": "#475569",
+        "input_background": "#FFFFFF",
+        "input_text": "#0F172A",
+        "input_placeholder_color": "#6B7280",
+        "button_background": "#4713AE",
+        "button_text": "#FFFFFF",
+        "padding-block-start": 80,
+        "padding-block-end": 80,
+        "padding-inline-start": 192,
+        "padding-inline-end": 192
+      }
     }
   },
   "order": [
@@ -262,6 +294,7 @@
     "raven_brand_values_PteAb4",
     "raven_categories_wpncCk",
     "raven_best_sellers_grid_Jp8Q84",
-    "raven_social_proof_yQe99M"
+    "raven_social_proof_yQe99M",
+    "raven_newsletter_xFq9TU"
   ]
 }
