@@ -1,0 +1,434 @@
+{% liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+
+  assign bg_image = section.settings.background_image
+  assign has_bg = false
+  if bg_image != blank
+    assign has_bg = true
+  endif
+
+  assign fallback_bg_asset = 'raven/hero/hero-bg.png'
+
+  assign widths = '375, 550, 750, 990, 1200, 1500, 1800, 2100, 2400, 3000, 3840'
+  assign sizes = '100vw'
+%}
+
+<section
+  id="RavenHero-{{ section.id }}"
+  class="raven-hero"
+  style="
+    --raven-hero-min-height: {{ section.settings.min_height }}px;
+    --raven-hero-radius: {{ section.settings.border_radius }}px;
+    --raven-hero-padding-block: {{ section.settings.inner_padding_block }}px;
+    --raven-hero-padding-inline: {{ section.settings.inner_padding_inline }}px;
+    --raven-hero-outer-padding-block: {{ section.settings.outer_padding_block }}px;
+    --raven-hero-outer-padding-inline: {{ section.settings.outer_padding_inline }}px;
+    --raven-hero-content-max-width: {{ section.settings.content_max_width | default: 1280 }}px;
+    --raven-hero-eyebrow-gap: {{ section.settings.content_gap }}px;
+    --raven-hero-overlay-top: {{ section.settings.overlay_top }};
+    --raven-hero-overlay-bottom: {{ section.settings.overlay_bottom }};
+    --raven-hero-button-bg: {{ section.settings.button_background }};
+    --raven-hero-button-text: {{ section.settings.button_text }};
+  "
+>
+  <div class="raven-hero__outer">
+    <div class="raven-hero__background" aria-hidden="true">
+      <div class="raven-hero__bg-surface"></div>
+
+      {% if has_bg %}
+        {{
+          bg_image
+          | image_url: width: 3840
+          | image_tag:
+            widths: widths,
+            sizes: sizes,
+            class: 'raven-hero__bg-image',
+            loading: 'lazy',
+            fetchpriority: fetch_priority,
+            alt: ''
+        }}
+      {% else %}
+        <img
+          class="raven-hero__bg-image"
+          src="{{ fallback_bg_asset | asset_url }}"
+          loading="lazy"
+          fetchpriority="{{ fetch_priority }}"
+          alt=""
+        >
+      {% endif %}
+
+      {% if section.settings.enable_overlay %}
+        <div class="raven-hero__overlay"></div>
+      {% endif %}
+    </div>
+
+    <div class="raven-hero__content">
+      {% if section.settings.heading != blank %}
+        <h1 class="raven-hero__heading">
+          {{ section.settings.heading | escape | newline_to_br }}
+        </h1>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="raven-hero__text rte">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_button and section.settings.button_label != blank %}
+        <a
+          class="raven-hero__button"
+          {% if section.settings.button_link == blank %}
+            role="link"
+            aria-disabled="true"
+          {% else %}
+            href="{{ section.settings.button_link }}"
+          {% endif %}
+          {% if section.settings.open_in_new_tab %}
+            target="_blank" rel="noopener"
+          {% endif %}
+        >
+          <span class="raven-hero__button-label">{{ section.settings.button_label | escape }}</span>
+          {% if section.settings.show_button_icon %}
+            <span class="raven-hero__button-icon svg-wrapper" aria-hidden="true">
+              {{ 'icon-arrow.svg' | inline_asset_content }}
+            </span>
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-hero {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+    padding: var(--raven-hero-outer-padding-block) var(--raven-hero-outer-padding-inline);
+  }
+
+  .raven-hero__outer {
+    position: relative;
+    min-height: var(--raven-hero-min-height);
+    border-radius: var(--raven-hero-radius);
+    overflow: clip;
+    display: grid;
+    place-items: center;
+    padding: var(--raven-hero-padding-block) var(--raven-hero-padding-inline);
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    margin-top: 100px;
+  }
+
+  .raven-hero__background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .raven-hero__bg-surface {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgb(226 232 240);
+  }
+
+  .raven-hero__bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 200%;
+    top: -50%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  .raven-hero__overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(to bottom, var(--raven-hero-overlay-top), var(--raven-hero-overlay-bottom));
+  }
+
+  .raven-hero__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--raven-hero-eyebrow-gap);
+    text-align: center;
+    max-width: var(--raven-hero-content-max-width);
+    width: 100%;
+  }
+
+  .raven-hero__heading {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: normal;
+    text-wrap: balance;
+  }
+
+  .raven-hero__text {
+    color: #ffffff;
+    font-family: var(--raven-font-body);
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.4;
+    max-width: min(512px, 100%);
+  }
+
+  .raven-hero__text > :first-child {
+    margin-top: 0;
+  }
+
+  .raven-hero__text > :last-child {
+    margin-bottom: 0;
+  }
+
+  .raven-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 40px;
+    border-radius: 9999px;
+    background: var(--raven-hero-button-bg);
+    color: var(--raven-hero-button-text);
+    text-decoration: none;
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+    position: relative;
+    z-index: 2;
+  }
+
+  .raven-hero__button[aria-disabled='true'] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .raven-hero__button-icon,
+  .raven-hero__button-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .raven-hero {
+      padding: var(--raven-hero-outer-padding-block) max(16px, var(--raven-hero-outer-padding-inline));
+    }
+
+    .raven-hero__outer {
+      padding: max(24px, calc(var(--raven-hero-padding-block) * 0.6)) max(16px, calc(var(--raven-hero-padding-inline) * 0.5));
+      min-height: max(420px, calc(var(--raven-hero-min-height) * 0.75));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven hero",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find din indre\nglød"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Oplev vores eksklusive udvalg af luksuriøs skønhedspleje, der fremhæver din naturlige skønhed.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop nu"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_icon",
+      "label": "Show button icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Enable overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_top",
+      "label": "Overlay top color",
+      "alpha": true,
+      "default": "rgba(0,0,0,0.2)",
+      "visible_if": "{{ section.settings.enable_overlay }}"
+    },
+    {
+      "type": "color",
+      "id": "overlay_bottom",
+      "label": "Overlay bottom color",
+      "alpha": true,
+      "default": "rgba(0,0,0,0.4)",
+      "visible_if": "{{ section.settings.enable_overlay }}"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 320,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 320,
+      "max": 1280,
+      "step": 10,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Content gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Button colors"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "alpha": true,
+      "default": "#008444"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "alpha": true,
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "outer_padding_block",
+      "label": "Outer padding (top/bottom)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "outer_padding_inline",
+      "label": "Outer padding (left/right)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_block",
+      "label": "Inner padding (top/bottom)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 128
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_inline",
+      "label": "Inner padding (left/right)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raven hero",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

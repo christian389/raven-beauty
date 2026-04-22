@@ -1,0 +1,476 @@
+{%- liquid
+  assign form_id = 'RavenNewsletter-' | append: section.id
+-%}
+
+<section
+  id="RavenNewsletter-{{ section.id }}"
+  class="raven-newsletter color-{{ section.settings.color_scheme }}"
+  style="
+    --rn-bg: {{ section.settings.background_color }};
+    --rn-heading: {{ section.settings.heading_color }};
+    --rn-text: {{ section.settings.text_color }};
+    --rn-input-bg: {{ section.settings.input_background }};
+    --rn-input-text: {{ section.settings.input_text }};
+    --rn-input-placeholder: {{ section.settings.input_placeholder_color }};
+    --rn-button-bg: {{ section.settings.button_background }};
+    --rn-button-text: {{ section.settings.button_text }};
+    --rn-container-max: {{ section.settings.container_max_width }}px;
+    --rn-form-max: {{ section.settings.form_max_width }}px;
+    --rn-gap: {{ section.settings.content_gap }}px;
+    --rn-form-gap: {{ section.settings.form_gap }}px;
+    --rn-radius: {{ section.settings.pill_radius }}px;
+    --rn-shadow: {% if section.settings.enable_shadow %}0px 1px 2px 0px rgb(0 0 0 / 5%){% else %}none{% endif %};
+  "
+>
+  <div
+    class="raven-newsletter__container spacing-style section section--page-width"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="raven-newsletter__inner">
+      {% if section.settings.heading != blank %}
+        <h2 class="raven-newsletter__heading">
+          {{ section.settings.heading | escape }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="raven-newsletter__text rte">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_form %}
+        {%- form 'customer', id: form_id, class: 'raven-newsletter__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          <div class="raven-newsletter__fields">
+            <label class="visually-hidden" for="RavenNewsletterEmail-{{ section.id }}">
+              {{ section.settings.email_label | escape }}
+            </label>
+
+            <input
+              id="RavenNewsletterEmail-{{ section.id }}"
+              class="raven-newsletter__input"
+              type="email"
+              name="contact[email]"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              placeholder="{{ section.settings.email_placeholder | escape }}"
+              required
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="RavenNewsletterError-{{ section.id }}"
+              {% elsif form.posted_successfully? %}
+                aria-describedby="RavenNewsletterSuccess-{{ section.id }}"
+              {% endif %}
+            >
+
+            <button
+              class="raven-newsletter__button"
+              type="submit"
+              name="commit"
+            >
+              {{ section.settings.button_label | escape }}
+            </button>
+          </div>
+
+          {%- if form.errors -%}
+            <div
+              id="RavenNewsletterError-{{ section.id }}"
+              class="raven-newsletter__message raven-newsletter__message--error"
+              tabindex="-1"
+            >
+              <span class="svg-wrapper icon-error" aria-hidden="true">
+                {{ 'icon-error.svg' | inline_asset_content }}
+              </span>
+              <p class="raven-newsletter__message-text">
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            <div
+              id="RavenNewsletterSuccess-{{ section.id }}"
+              class="raven-newsletter__message raven-newsletter__message--success"
+              tabindex="-1"
+            >
+              <span class="svg-wrapper icon-success" aria-hidden="true">
+                {{ 'icon-checkmark.svg' | inline_asset_content }}
+              </span>
+              <p class="raven-newsletter__message-text">
+                {{ section.settings.success_message | escape }}
+              </p>
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-newsletter {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+    background: var(--rn-bg);
+  }
+
+  .raven-newsletter__container {
+    max-width: var(--rn-container-max);
+    width: 100%;
+    margin-inline: auto;
+    justify-self: center;
+  }
+
+  .raven-newsletter__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--rn-gap);
+  }
+
+  .raven-newsletter__heading {
+    margin: 0;
+    color: var(--rn-heading);
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    text-wrap: balance;
+  }
+
+  .raven-newsletter__text {
+    color: var(--rn-text);
+    font-family: var(--raven-font-body);
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 70ch;
+  }
+
+  .raven-newsletter__text > :first-child {
+    margin-top: 0;
+  }
+
+  .raven-newsletter__text > :last-child {
+    margin-bottom: 0;
+  }
+
+  .raven-newsletter__form {
+    width: 100%;
+    max-width: var(--rn-form-max);
+  }
+
+  .raven-newsletter__fields {
+    display: flex;
+    gap: var(--rn-form-gap);
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .raven-newsletter__input {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 24px;
+    border-radius: var(--rn-radius);
+    border: 1px solid transparent;
+    background: var(--rn-input-bg);
+    color: var(--rn-input-text);
+    font-family: var(--raven-font-body);
+    box-shadow: var(--rn-shadow);
+    outline: none;
+  }
+
+  .raven-newsletter__input::placeholder {
+    color: var(--rn-input-placeholder);
+  }
+
+  .raven-newsletter__input:focus-visible {
+    border-color: rgb(var(--color-border-rgb) / 0.35);
+  }
+
+  .raven-newsletter__button {
+    border: 0;
+    padding: 12px 32px;
+    border-radius: var(--rn-radius);
+    background: var(--rn-button-bg);
+    color: var(--rn-button-text);
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .raven-newsletter__message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-family: var(--raven-font-body);
+  }
+
+  .raven-newsletter__message-text {
+    margin: 0;
+  }
+
+  .raven-newsletter__message .svg-wrapper,
+  .raven-newsletter__message svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .raven-newsletter__heading {
+      font-size: 28px;
+      line-height: 34px;
+    }
+
+    .raven-newsletter__fields {
+      flex-direction: column;
+    }
+
+    .raven-newsletter__button {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven Newsletter",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Få 15% rabat på dit første køb"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Tilmeld dig vores nyhedsbrev og vær den første til at høre om nye lanceringer, eksklusive tilbud og skønhedstips.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form",
+      "label": "Show form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label (accessibility)",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Din e-mail adresse"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Tilmeld mig"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Tak for din tilmelding!"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container max width",
+      "min": 320,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "form_max_width",
+      "label": "Form max width",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 510
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Gap between content",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "form_gap",
+      "label": "Gap between input and button",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pill_radius",
+      "label": "Pill radius",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Enable input shadow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.05)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "alpha": true,
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "alpha": true,
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_text",
+      "label": "Input text color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "input_placeholder_color",
+      "label": "Input placeholder color",
+      "alpha": true,
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "alpha": true,
+      "default": "#4713AE"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "alpha": true,
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 192
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 192
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raven Newsletter",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

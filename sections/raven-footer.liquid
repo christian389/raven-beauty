@@ -1,0 +1,473 @@
+{% liquid
+  assign brand_image = section.settings.brand_image
+  assign has_brand_image = false
+  if brand_image != blank
+    assign has_brand_image = true
+  endif
+
+  assign fallback_brand_asset = 'raven/brand/raven-logo.svg'
+%}
+
+<section
+  id="RavenFooter-{{ section.id }}"
+  class="raven-footer color-{{ section.settings.color_scheme }}"
+  style="
+    --rf-padding-block: {{ section.settings.padding_block }}px;
+    --rf-padding-inline: {{ section.settings.padding_inline }}px;
+    --rf-gap: {{ section.settings.columns_gap }}px;
+    --rf-border-top: {{ section.settings.border_top_color }};
+    --rf-divider: {{ section.settings.divider_color }};
+    --rf-brand: {{ section.settings.brand_color }};
+    --rf-heading: {{ section.settings.heading_color }};
+    --rf-text: {{ section.settings.text_color }};
+    --rf-link: {{ section.settings.link_color }};
+    --rf-link-hover: {{ section.settings.link_hover_color }};
+    --rf-icon-border: {{ section.settings.icon_border_color }};
+  "
+>
+  <div class="raven-footer__container section section--page-width">
+    <div class="raven-footer__inner">
+      <div class="raven-footer__top">
+        <div class="raven-footer__grid">
+          <div class="raven-footer__brand">
+            <div class="raven-footer__brand-row">
+              {% if has_brand_image %}
+                {{
+                  brand_image
+                  | image_url: width: 80
+                  | image_tag:
+                    widths: '22, 44, 66, 88',
+                    sizes: '22px',
+                    class: 'raven-footer__brand-mark',
+                    loading: 'lazy',
+                    alt: ''
+                }}
+              {% else %}
+                <span class="raven-footer__brand-mark" aria-hidden="true">
+                  {{ fallback_brand_asset | inline_asset_content }}
+                </span>
+              {% endif %}
+            </div>
+
+            {% if section.settings.brand_text != blank %}
+              <div class="raven-footer__brand-text rte">
+                {{ section.settings.brand_text }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="raven-footer__col">
+            <div class="raven-footer__col-title">{{ section.settings.shopping_heading | escape }}</div>
+            {% if section.settings.shopping_menu != blank %}
+              <ul class="raven-footer__links" role="list">
+                {% for link in linklists[section.settings.shopping_menu].links %}
+                  <li class="raven-footer__item">
+                    <a class="raven-footer__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <div class="raven-footer__col">
+            <div class="raven-footer__col-title">{{ section.settings.service_heading | escape }}</div>
+            {% if section.settings.service_menu != blank %}
+              <ul class="raven-footer__links" role="list">
+                {% for link in linklists[section.settings.service_menu].links %}
+                  <li class="raven-footer__item">
+                    <a class="raven-footer__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <div class="raven-footer__col">
+            <div class="raven-footer__col-title">{{ section.settings.follow_heading | escape }}</div>
+
+            <div class="raven-footer__social">
+              {% if section.settings.instagram_url != blank %}
+                <a class="raven-footer__social-link" href="{{ section.settings.instagram_url }}" aria-label="Instagram">
+                  <img src="{{ 'raven/icons/social/instagram.png' | asset_url }}" loading="lazy" alt="">
+                </a>
+              {% endif %}
+              {% if section.settings.share_url != blank %}
+                <a class="raven-footer__social-link" href="{{ section.settings.share_url }}" aria-label="Share">
+                  <img src="{{ 'raven/icons/social/share.png' | asset_url }}" loading="lazy" alt="">
+                </a>
+              {% endif %}
+              {% if section.settings.mail_url != blank %}
+                <a class="raven-footer__social-link" href="{{ section.settings.mail_url }}" aria-label="Email">
+                  <img src="{{ 'raven/icons/social/mail.png' | asset_url }}" loading="lazy" alt="">
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="raven-footer__bottom">
+        <div class="raven-footer__copyright">
+          {{ section.settings.copyright_text | escape }}
+        </div>
+
+        {% if section.settings.show_payment_icons %}
+          <div class="raven-footer__payments" aria-label="Payment methods">
+            <img src="{{ 'raven/payments/payment-1.png' | asset_url }}" loading="lazy" alt="">
+            <img src="{{ 'raven/payments/payment-2.png' | asset_url }}" loading="lazy" alt="">
+            <img src="{{ 'raven/payments/payment-3.png' | asset_url }}" loading="lazy" alt="">
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-footer {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: rgb(var(--color-background-rgb, 255 255 255));
+    border-top: 1px solid var(--rf-border-top);
+  }
+
+  .raven-footer__container {
+    padding: var(--rf-padding-block) var(--rf-padding-inline);
+  }
+
+  .raven-footer__grid {
+    display: grid;
+    gap: var(--rf-gap);
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 750px) {
+    .raven-footer__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .raven-footer__brand-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .raven-footer__brand-mark {
+    width: 199px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .raven-footer__brand-mark svg {
+    width: 199px;
+    height: 30px;
+    display: block;
+  }
+
+  .raven-footer__brand-text {
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 22.75px;
+    color: var(--rf-text);
+    max-width: 34ch;
+  }
+
+  .raven-footer__col-title {
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--rf-heading);
+    margin-bottom: 24px;
+  }
+
+  .raven-footer__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .raven-footer__link {
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--rf-link);
+    text-decoration: none;
+  }
+
+  .raven-footer__link:hover {
+    color: var(--rf-link-hover);
+  }
+
+  .raven-footer__social {
+    display: flex;
+    gap: 16px;
+  }
+
+  .raven-footer__social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: 1px solid var(--rf-icon-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .raven-footer__social-link img {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .raven-footer__bottom {
+    margin-top: 64px;
+    padding-top: 33px;
+    border-top: 1px solid var(--rf-divider);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .raven-footer__copyright {
+    font-family: var(--raven-font-body);
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(148 163 184);
+  }
+
+  .raven-footer__payments {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    opacity: 0.5;
+  }
+
+  .raven-footer__payments img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    object-fit: contain;
+  }
+
+  @media screen and (max-width: 749px) {
+    .raven-footer__container {
+      padding: max(40px, var(--rf-padding-block) * 0.75) 16px;
+    }
+
+    .raven-footer__bottom {
+      margin-top: 40px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven footer",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_block",
+      "label": "Padding (top/bottom)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_inline",
+      "label": "Padding (left/right)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "columns_gap",
+      "label": "Columns gap",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand mark"
+    },
+    {
+      "type": "richtext",
+      "id": "brand_text",
+      "label": "Brand description",
+      "default": "<p>Din destination for eksklusiv skønhedspleje og velvære. Vi kuraterer de bedste brands for din naturlige glød.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "text",
+      "id": "shopping_heading",
+      "label": "Shopping heading",
+      "default": "Shopping"
+    },
+    {
+      "type": "link_list",
+      "id": "shopping_menu",
+      "label": "Shopping menu"
+    },
+    {
+      "type": "text",
+      "id": "service_heading",
+      "label": "Customer service heading",
+      "default": "Kundeservice"
+    },
+    {
+      "type": "link_list",
+      "id": "service_menu",
+      "label": "Customer service menu"
+    },
+    {
+      "type": "header",
+      "content": "Social"
+    },
+    {
+      "type": "text",
+      "id": "follow_heading",
+      "label": "Follow heading",
+      "default": "Følg os"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram link"
+    },
+    {
+      "type": "url",
+      "id": "share_url",
+      "label": "Share link"
+    },
+    {
+      "type": "url",
+      "id": "mail_url",
+      "label": "Email link (mailto:)"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "© 2024 Raven Beauty. Alle rettigheder forbeholdes."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "border_top_color",
+      "label": "Top border color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.10)"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.05)"
+    },
+    {
+      "type": "color",
+      "id": "brand_color",
+      "label": "Brand color",
+      "alpha": true,
+      "default": "#4713AE"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "alpha": true,
+      "default": "#64748B"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "alpha": true,
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "alpha": true,
+      "default": "#4713AE"
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Social icon border color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.20)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raven footer",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

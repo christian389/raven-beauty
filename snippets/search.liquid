@@ -1,0 +1,123 @@
+{%- doc -%}
+  Renders the search action button.
+
+  @param {string} [style] - The style of the search action.
+  @param {string} [class] - Additional classes for the search action.
+  @param {string} [display_style] - The display style ('icon' or 'text').
+
+  @example
+  {% render 'search', style: 'default', class: 'custom-class', display_style: 'icon' %}
+{%- enddoc -%}
+
+{% unless style == 'none' %}
+  <search-button
+    class="search-action search-action--raven{% if display_style == 'text' %} search-action--text{% endif %}{% if class != blank %} {{ class | strip }}{% endif %}"
+  >
+    <button
+      on:click="#search-modal/showDialog"
+      class="button-unstyled header-actions__action search-action__pill{% if display_style == 'text' %} header-actions__text-style{% endif %}"
+      aria-label="{{ 'content.search_input_label' | t }}"
+      aria-haspopup="dialog"
+    >
+      <span class="search-action__pill-icon svg-wrapper" aria-hidden="true">
+        {{ 'icon-search.svg' | inline_asset_content }}
+      </span>
+      <span class="search-action__pill-text" aria-hidden="true">
+        Søg efter produkter...
+      </span>
+    </button>
+  </search-button>
+{% endunless %}
+
+{% stylesheet %}
+  .search-action {
+    --search-border-radius: var(--style-border-radius-inputs);
+    --search-border-width: var(--style-border-width-inputs);
+
+    display: flex;
+  }
+
+  /* Raven Beauty (Figma 1:222): make the modal trigger look like an input pill */
+  #header-component.header--raven .search-action__pill {
+    height: 40px;
+    width: 220px;
+    min-width: 160px;
+    max-width: 256px;
+    border-radius: 9999px;
+    border: 1px solid rgb(71 19 174 / 0.1);
+    background: rgb(71 19 174 / 0.05);
+    padding: 0 14px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #header-component.header--raven .search-action__pill-icon {
+    width: 15px;
+    height: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  #header-component.header--raven .search-action__pill-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  #header-component.header--raven .search-action__pill-text {
+    font-family: var(--raven-font-body, var(--font-body--family));
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(71 19 174 / 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media screen and (max-width: 749px) {
+    #header-component.header--raven .search-action__pill {
+      width: min(220px, 52vw);
+      min-width: 140px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .search-action--hidden-on-drawer {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    [data-menu-style='drawer'] .search-action--hidden-on-drawer {
+      display: none;
+    }
+
+    [data-menu-style='menu'] .search-action--hidden-on-menu {
+      display: none;
+    }
+  }
+
+  [data-menu-style='menu'] .header__column--left .search-action {
+    @media screen and (min-width: 750px) {
+      margin-inline: calc(var(--padding-lg) * -1);
+    }
+  }
+
+  .header__column--right .search-action {
+    @media screen and (min-width: 750px) {
+      margin-inline: calc(var(--gap-md) * -1) calc(var(--gap-xs) * -1);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .header__column--right .search-action--text {
+      margin-inline: 0;
+    }
+
+    [data-menu-style='menu'] .header__column--left .search-action--text {
+      margin-inline: 0;
+    }
+  }
+{% endstylesheet %}

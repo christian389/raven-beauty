@@ -1,0 +1,400 @@
+{% liquid
+  assign brand_image = section.settings.brand_image
+  assign has_brand_image = false
+  if brand_image != blank
+    assign has_brand_image = true
+  endif
+
+  assign fallback_brand_asset = 'raven/brand/raven-logo.svg'
+%}
+
+<section
+  id="RavenHeader-{{ section.id }}"
+  class="raven-header color-{{ section.settings.color_scheme }}"
+  style="
+    --rh-padding-inline: {{ section.settings.padding_inline }}px;
+    --rh-padding-block: {{ section.settings.padding_block }}px;
+    --rh-border-color: {{ section.settings.border_color }};
+    --rh-brand: {{ section.settings.brand_color }};
+    --rh-nav: {{ section.settings.nav_color }};
+    --rh-search-bg: {{ section.settings.search_bg }};
+    --rh-search-border: {{ section.settings.search_border }};
+    --rh-search-placeholder: {{ section.settings.search_placeholder }};
+    --rh-icon-bg: {{ section.settings.icon_bg }};
+  "
+>
+  <div class="raven-header__container section section--page-width">
+    <div class="raven-header__inner">
+      <div class="raven-header__left">
+        <a class="raven-header__brand" href="{{ routes.root_url }}">
+          {% if has_brand_image %}
+            {{
+              brand_image
+              | image_url: width: 96
+              | image_tag:
+                widths: '28, 56, 84, 112',
+                sizes: '28px',
+                class: 'raven-header__brand-mark',
+                loading: 'lazy',
+                alt: ''
+            }}
+          {% else %}
+            <span class="raven-header__brand-mark" aria-hidden="true">
+              {{ fallback_brand_asset | inline_asset_content }}
+            </span>
+          {% endif %}
+        </a>
+
+        {% if section.settings.menu != blank %}
+          <nav class="raven-header__nav" aria-label="Primary">
+            <ul class="raven-header__nav-list" role="list">
+              {% for link in linklists[section.settings.menu].links %}
+                <li class="raven-header__nav-item">
+                  <a class="raven-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+      </div>
+
+      <div class="raven-header__right">
+        <form class="raven-header__search" action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="product">
+          <button class="raven-header__search-icon" type="submit" aria-label="Search">
+            <img src="{{ 'raven/icons/search-header.png' | asset_url }}" loading="lazy" alt="">
+          </button>
+          <input
+            class="raven-header__search-input"
+            type="search"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ section.settings.search_placeholder_text | escape }}"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+        </form>
+
+        <div class="raven-header__actions">
+          <a class="raven-header__icon-btn" href="{{ section.settings.wishlist_link | default: routes.search_url }}" aria-label="Wishlist">
+            <img src="{{ 'raven/icons/heart-header.png' | asset_url }}" loading="lazy" alt="">
+          </a>
+          <a class="raven-header__icon-btn" href="{{ routes.cart_url }}" aria-label="Cart">
+            <img src="{{ 'raven/icons/cart-header.png' | asset_url }}" loading="lazy" alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-header {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: rgb(var(--color-background-rgb, 255 255 255));
+    border-bottom: 1px solid var(--rh-border-color);
+  }
+
+  .raven-header__container {
+    padding: var(--rh-padding-block) var(--rh-padding-inline);
+  }
+
+  .raven-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .raven-header__left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    min-width: 0;
+  }
+
+  .raven-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .raven-header__brand-mark {
+    width: 199px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .raven-header__brand-mark svg {
+    width: 199px;
+    height: 30px;
+    display: block;
+  }
+
+  .raven-header__nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .raven-header__nav-link {
+    font-family: var(--raven-font-body);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--rh-nav);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .raven-header__right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    min-width: 0;
+    flex: 1 0 0;
+  }
+
+  .raven-header__search {
+    height: 40px;
+    width: min(220px, 100%);
+    min-width: 160px;
+    max-width: 256px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px 0 12px;
+    border-radius: 9999px;
+    background: var(--rh-search-bg);
+    border: 1px solid var(--rh-search-border);
+  }
+
+  .raven-header__search-icon {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .raven-header__search-icon img {
+    width: 15px;
+    height: 15px;
+    display: block;
+  }
+
+  .raven-header__search-input {
+    border: 0;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--rh-nav);
+  }
+
+  .raven-header__search-input::placeholder {
+    color: var(--rh-search-placeholder);
+  }
+
+  .raven-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .raven-header__icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: var(--rh-icon-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .raven-header__icon-btn img {
+    display: block;
+    object-fit: contain;
+  }
+
+  .raven-header__icon-btn:first-child img {
+    width: 20px;
+    height: 18px;
+  }
+
+  .raven-header__icon-btn:last-child img {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .raven-header__nav {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .raven-header__container {
+      padding: var(--rh-padding-block) 16px;
+    }
+
+    .raven-header__search {
+      width: min(220px, 52vw);
+      min-width: 140px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven header",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_block",
+      "label": "Padding (top/bottom)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_inline",
+      "label": "Padding (left/right)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand mark"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder_text",
+      "label": "Search placeholder",
+      "default": "Søg efter produkter..."
+    },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "url",
+      "id": "wishlist_link",
+      "label": "Wishlist link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bottom border color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.10)"
+    },
+    {
+      "type": "color",
+      "id": "brand_color",
+      "label": "Brand color",
+      "alpha": true,
+      "default": "#4713AE"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Nav text color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "search_bg",
+      "label": "Search background",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.05)"
+    },
+    {
+      "type": "color",
+      "id": "search_border",
+      "label": "Search border",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.10)"
+    },
+    {
+      "type": "color",
+      "id": "search_placeholder",
+      "label": "Search placeholder color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.40)"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg",
+      "label": "Icon button background",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.05)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raven header",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

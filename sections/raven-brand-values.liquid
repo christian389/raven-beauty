@@ -1,0 +1,341 @@
+{% liquid
+  assign widths = '24, 30, 36, 48, 64, 96, 128'
+  assign sizes = '48px'
+%}
+
+<section
+  id="RavenBrandValues-{{ section.id }}"
+  class="raven-brand-values color-{{ section.settings.color_scheme }}"
+  style="
+    --rbv-gap: {{ section.settings.gap }}px;
+    --rbv-card-radius: {{ section.settings.card_radius }}px;
+    --rbv-card-padding: {{ section.settings.card_padding }}px;
+    --rbv-card-border: {{ section.settings.card_border_color }};
+    --rbv-card-bg: {{ section.settings.card_background }};
+    --rbv-heading-color: {{ section.settings.heading_color }};
+    --rbv-text-color: {{ section.settings.text_color }};
+  "
+>
+  <div
+    class="raven-brand-values__container spacing-style section"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="raven-brand-values__grid" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign fallback_key = block.settings.title | default: '' | handleize
+          assign fallback_asset = 'raven/icons/brand-values/' | append: fallback_key | append: '.svg'
+        %}
+        <div
+          class="raven-brand-values__card"
+          role="listitem"
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.icon != blank %}
+            <div class="raven-brand-values__icon" aria-hidden="true">
+              {{
+                block.settings.icon
+                | image_url: width: 128
+                | image_tag:
+                  widths: widths,
+                  sizes: sizes,
+                  loading: 'lazy',
+                  alt: ''
+              }}
+            </div>
+          {% elsif fallback_key != blank %}
+            <div class="raven-brand-values__icon" aria-hidden="true">
+              <img
+                src="{{ fallback_asset | asset_url }}"
+                loading="lazy"
+                alt=""
+              >
+            </div>
+          {% endif %}
+
+          {% if block.settings.title != blank %}
+            <h3 class="raven-brand-values__title">
+              {{ block.settings.title | escape }}
+            </h3>
+          {% endif %}
+
+          {% if block.settings.text != blank %}
+            <div class="raven-brand-values__text rte">
+              {{ block.settings.text }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% if section.blocks.size == 0 %}
+        <div class="raven-brand-values__card" role="listitem">
+          <div class="raven-brand-values__icon" aria-hidden="true">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+          <h3 class="raven-brand-values__title">Cruelty Free</h3>
+          <div class="raven-brand-values__text rte">
+            <p>Vi tester aldrig på dyr og vælger kun etiske partnere.</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-brand-values {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  .raven-brand-values__container {
+    width: 100%;
+  }
+
+  .raven-brand-values__grid {
+    display: grid;
+    gap: var(--rbv-gap);
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 750px) {
+    .raven-brand-values__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .raven-brand-values__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--rbv-card-bg);
+    border: 1px solid var(--rbv-card-border);
+    border-radius: var(--rbv-card-radius);
+    padding: var(--rbv-card-padding);
+  }
+
+  .raven-brand-values__icon {
+    padding-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .raven-brand-values__icon img,
+  .raven-brand-values__icon svg {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .raven-brand-values__title {
+    margin: 0;
+    padding-bottom: 8px;
+    color: var(--rbv-heading-color);
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 28px;
+    text-wrap: balance;
+  }
+
+  .raven-brand-values__text {
+    color: var(--rbv-text-color);
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 36ch;
+  }
+
+  .raven-brand-values__text > :first-child {
+    margin-top: 0;
+  }
+
+  .raven-brand-values__text > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven brand values",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between cards",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "alpha": true,
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.05)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "alpha": true,
+      "default": "#64748B"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Cruelty Free"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Vi tester aldrig på dyr og vælger kun etiske partnere.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Raven brand values",
+      "category": "Raven Beauty",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "Cruelty Free",
+            "text": "<p>Vi tester aldrig på dyr og vælger kun etiske partnere.</p>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Eksklusivt udvalg",
+            "text": "<p>Håndplukkede mærker fra verdens førende skønhedshuse.</p>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Hurtig levering",
+            "text": "<p>Dag-til-dag levering på alle ordrer placeret før kl. 16:00.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

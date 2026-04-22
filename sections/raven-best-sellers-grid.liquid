@@ -1,0 +1,613 @@
+{% liquid
+  assign max_products = section.settings.max_products
+  assign collection = section.settings.collection
+
+  assign has_collection = false
+  if collection != blank and shop.products_count != 0
+    assign has_collection = true
+  endif
+
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+
+  assign widths = '360, 540, 720, 900, 1080, 1296, 1512, 1800'
+  assign sizes = '(min-width: 990px) calc((min(1280px, 100vw) - (var(--rbs-gap) * 3)) / 4), (min-width: 750px) calc((100vw - (var(--page-margin) * 2) - var(--rbs-gap)) / 2), calc(100vw - (var(--page-margin) * 2))'
+%}
+
+<section
+  id="RavenBestSellers-{{ section.id }}"
+  class="raven-best-sellers color-{{ section.settings.color_scheme }}"
+  style="
+    --rbs-gap: {{ section.settings.grid_gap }}px;
+    --rbs-card-gap: {{ section.settings.card_gap }}px;
+    --rbs-media-radius: {{ section.settings.media_radius }}px;
+    --rbs-media-bg: {{ section.settings.media_background }};
+    --rbs-media-height: {{ section.settings.media_height }}px;
+    --rbs-heading-color: {{ section.settings.heading_color }};
+    --rbs-vendor-color: {{ section.settings.vendor_color }};
+    --rbs-title-color: {{ section.settings.title_color }};
+    --rbs-price-color: {{ section.settings.price_color }};
+    --rbs-badge-bg: {{ section.settings.badge_background }};
+    --rbs-badge-text: {{ section.settings.badge_text }};
+    --rbs-quickadd-bg: {{ section.settings.quickadd_background }};
+    --rbs-quickadd-text: {{ section.settings.quickadd_text }};
+    --rbs-quickadd-border: {{ section.settings.quickadd_border }};
+  "
+>
+  <div
+    class="raven-best-sellers__container spacing-style section section--page-width"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    {% if section.settings.heading != blank %}
+      <div class="raven-best-sellers__heading-wrap">
+        <h2 class="raven-best-sellers__heading">{{ section.settings.heading | escape }}</h2>
+      </div>
+    {% endif %}
+
+    <div
+      class="raven-best-sellers__grid"
+      style="--rbs-columns: {{ section.settings.columns }}; --rbs-columns-mobile: {{ section.settings.columns_mobile }};"
+      role="list"
+    >
+      {% if has_collection %}
+        {% for product in collection.products limit: max_products %}
+          <product-card
+            class="raven-best-sellers__card"
+            data-product-id="{{ product.id }}"
+            role="listitem"
+          >
+            {% liquid
+              assign variant = product.selected_or_first_available_variant
+              assign product_url = variant.url | default: product.url
+              assign image = variant.featured_image | default: product.featured_media.preview_image
+              assign fallback_index = forloop.index | modulo: 4
+              if fallback_index == 0
+                assign fallback_index = 4
+              endif
+              assign fallback_asset = 'raven/best-sellers/product-' | append: fallback_index | append: '.png'
+              assign is_popular = false
+              if section.settings.show_popular_badge and forloop.index == 1
+                assign is_popular = true
+              endif
+            %}
+
+            <a href="{{ product_url }}" class="raven-best-sellers__link">
+              <span class="visually-hidden">{{ product.title }}</span>
+            </a>
+
+            <div class="raven-best-sellers__media">
+              {% if image != blank %}
+                {{
+                  image
+                  | image_url: width: 1800
+                  | image_tag:
+                    widths: widths,
+                    sizes: sizes,
+                    class: 'raven-best-sellers__image',
+                    loading: 'lazy',
+                    fetchpriority: fetch_priority,
+                    alt: ''
+                }}
+              {% else %}
+                <img
+                  class="raven-best-sellers__image"
+                  src="{{ fallback_asset | asset_url }}"
+                  loading="lazy"
+                  fetchpriority="{{ fetch_priority }}"
+                  alt=""
+                >
+              {% endif %}
+
+              {% if is_popular %}
+                <div class="raven-best-sellers__badge">
+                  {{ section.settings.badge_label | escape }}
+                </div>
+              {% endif %}
+
+              {% if section.settings.show_quick_add %}
+                {% render 'quick-add', product: product, section_id: section.id %}
+              {% endif %}
+            </div>
+
+            <div class="raven-best-sellers__meta">
+              {% if section.settings.show_vendor and product.vendor != blank %}
+                <div class="raven-best-sellers__vendor">{{ product.vendor | escape }}</div>
+              {% endif %}
+
+              <div class="raven-best-sellers__title">
+                {{ product.title | escape }}
+              </div>
+
+              <div class="raven-best-sellers__price">
+                {% render 'price', product_resource: product, show_unit_price: false %}
+              </div>
+            </div>
+          </product-card>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..max_products) %}
+          {% liquid
+            assign fallback_index = i | modulo: 4
+            if fallback_index == 0
+              assign fallback_index = 4
+            endif
+            assign fallback_asset = 'raven/best-sellers/product-' | append: fallback_index | append: '.png'
+          %}
+          <div class="raven-best-sellers__card" role="listitem">
+            <div class="raven-best-sellers__media">
+              <img
+                class="raven-best-sellers__image"
+                src="{{ fallback_asset | asset_url }}"
+                loading="lazy"
+                fetchpriority="{{ fetch_priority }}"
+                alt=""
+              >
+              {% if section.settings.show_popular_badge and i == 1 %}
+                <div class="raven-best-sellers__badge">
+                  {{ section.settings.badge_label | escape }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="raven-best-sellers__meta">
+              {% if section.settings.show_vendor %}
+                <div class="raven-best-sellers__vendor">Brand</div>
+              {% endif %}
+              <div class="raven-best-sellers__title">Product title</div>
+              <div class="raven-best-sellers__price">
+                <span class="price price--on-sale">
+                  <span class="price__regular">245,00 kr.</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .raven-best-sellers {
+    --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  .raven-best-sellers__container {
+    max-width: 1280px;
+    width: 100%;
+    margin-inline: auto;
+    justify-self: center;
+  }
+
+  .raven-best-sellers__heading-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .raven-best-sellers__heading {
+    margin: 0;
+    text-align: center;
+    color: var(--rbs-heading-color);
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .raven-best-sellers__grid {
+    display: grid;
+    gap: var(--rbs-gap);
+    grid-template-columns: repeat(var(--rbs-columns-mobile), minmax(0, 1fr));
+  }
+
+  @media screen and (min-width: 750px) {
+    .raven-best-sellers__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .raven-best-sellers__grid {
+      grid-template-columns: repeat(var(--rbs-columns), minmax(0, 1fr));
+    }
+  }
+
+  .raven-best-sellers__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--rbs-card-gap);
+  }
+
+  .raven-best-sellers__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .raven-best-sellers__media {
+    position: relative;
+    overflow: clip;
+    border-radius: var(--rbs-media-radius);
+    background: var(--rbs-media-bg);
+    height: var(--rbs-media-height);
+  }
+
+  .raven-best-sellers__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .raven-best-sellers__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--rbs-badge-bg);
+    color: var(--rbs-badge-text);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 2;
+    font-family: var(--raven-font-body);
+  }
+
+  .raven-best-sellers__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .raven-best-sellers__vendor {
+    color: var(--rbs-vendor-color);
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .raven-best-sellers__title {
+    color: var(--rbs-title-color);
+    font-family: var(--raven-font-body);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .raven-best-sellers__price {
+    padding-top: 8px;
+    color: var(--rbs-price-color);
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  /* Make the quick add match Figma pill */
+  #RavenBestSellers-{{ section.id }} .quick-add__button {
+    background: var(--rbs-quickadd-bg);
+    color: var(--rbs-quickadd-text);
+    border: 1px solid var(--rbs-quickadd-border);
+    opacity: 0;
+    left: 7.5%;
+    right: 7.5%;
+    bottom: 16px;
+    height: auto;
+    padding-block: 8px;
+    justify-content: center;
+  }
+
+  #RavenBestSellers-{{ section.id }} .quick-add__button .add-to-cart-text {
+    background: transparent;
+  }
+
+  #RavenBestSellers-{{ section.id }} .quick-add__button .add-to-cart-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ensure the overlay button appears on hover like design */
+  #RavenBestSellers-{{ section.id }} product-card:is(:hover, :focus-within) .quick-add__button {
+    opacity: 1;
+  }
+
+  /* Keep quick-add above the full-card link */
+  #RavenBestSellers-{{ section.id }} .quick-add {
+    z-index: 3;
+  }
+
+  #RavenBestSellers-{{ section.id }} .quick-add__button {
+    pointer-events: all;
+  }
+
+  /* Price snippet may apply its own colors; force the Figma price color */
+  #RavenBestSellers-{{ section.id }} .price,
+  #RavenBestSellers-{{ section.id }} .price * {
+    color: inherit;
+  }
+
+  @media screen and (max-width: 749px) {
+    .raven-best-sellers__heading-wrap {
+      margin-bottom: 24px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Raven Best Sellers Grid",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Product count",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap between image and text",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "media_height",
+      "label": "Image area height",
+      "min": 200,
+      "max": 520,
+      "step": 4,
+      "unit": "px",
+      "default": 340
+    },
+    {
+      "type": "range",
+      "id": "media_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Toggles"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popular_badge",
+      "label": "Show “Popular” badge on first item",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Badge label",
+      "default": "POPULÆR",
+      "visible_if": "{{ section.settings.show_popular_badge }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "vendor_color",
+      "label": "Vendor color",
+      "alpha": true,
+      "default": "#0F172A"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "alpha": true,
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "alpha": true,
+      "default": "#4713AE"
+    },
+    {
+      "type": "color",
+      "id": "media_background",
+      "label": "Image area background",
+      "alpha": true,
+      "default": "#F1F5F9"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge background",
+      "alpha": true,
+      "default": "#4713AE",
+      "visible_if": "{{ section.settings.show_popular_badge }}"
+    },
+    {
+      "type": "color",
+      "id": "badge_text",
+      "label": "Badge text",
+      "alpha": true,
+      "default": "#FFFFFF",
+      "visible_if": "{{ section.settings.show_popular_badge }}"
+    },
+    {
+      "type": "header",
+      "content": "Quick add pill"
+    },
+    {
+      "type": "color",
+      "id": "quickadd_background",
+      "label": "Background",
+      "alpha": true,
+      "default": "rgba(255,255,255,0.90)",
+      "visible_if": "{{ section.settings.show_quick_add }}"
+    },
+    {
+      "type": "color",
+      "id": "quickadd_text",
+      "label": "Text color",
+      "alpha": true,
+      "default": "#0F172A",
+      "visible_if": "{{ section.settings.show_quick_add }}"
+    },
+    {
+      "type": "color",
+      "id": "quickadd_border",
+      "label": "Border color",
+      "alpha": true,
+      "default": "rgba(0,0,0,0.15)",
+      "visible_if": "{{ section.settings.show_quick_add }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raven Best Sellers Grid",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+
