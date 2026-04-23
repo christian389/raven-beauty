@@ -4,6 +4,8 @@
 
   @param {object} results - The search results object
   @param {number} results_size - The number of products in the search results
+  @param {number} [results_total] - Total products before filtering (collection pages)
+  @param {number} [shown_count] - Number of products currently shown on the page
   @param {object} [filters] - The filters object
 {%- enddoc -%}
 
@@ -22,6 +24,8 @@
 {%- liquid
   assign block_settings = block.settings
   assign products_count = results_size
+  assign products_total = results_total | default: products_count
+  assign products_shown = shown_count | default: products_count
   assign sort_by = results.sort_by | default: results.default_sort_by
   assign filters = filters | default: results.filters
   assign total_active_values = 0
@@ -209,65 +213,64 @@
                       assign more_attributes = more_attributes | append: ' style="--text-transform: uppercase;"'
                     endif
                   %}
-                  {% render 'overflow-list',
-                    class: 'facets__overflow-list',
-                    children: rendered_filters,
-                    more-attributes: more_attributes,
-                    minimum-items: 2,
-                    data-testid: 'horizontal-filters-overflow-list'
-                  %}
+                  <div class="rb-filterbar">
+                    <div class="rb-filterbar__filters">
+                      {% render 'overflow-list',
+                        class: 'facets__overflow-list',
+                        children: rendered_filters,
+                        more-attributes: more_attributes,
+                        minimum-items: 2,
+                        data-testid: 'horizontal-filters-overflow-list'
+                      %}
+
+                      {% if block_settings.filter_style == 'horizontal' %}
+                        <facet-remove-component
+                          class="facets-horizontal-remove {% if is_active %}facets-horizontal-remove--active{% endif %}"
+                          active-class="facets__clear-all-link--active"
+                          data-url="{{ results_url }}"
+                        >
+                          <button
+                            type="button"
+                            class="button-unstyled facets__clear-all-link facets__clear-all-link--horizontal {% if is_active %}facets__clear-all-link--active{% endif %}"
+                            ref="clearButton"
+                            on:click="/removeFilter?form="
+                            on:keydown="/removeFilter?form="
+                          >
+                            {{- 'actions.clear_all' | t -}}
+                          </button>
+                        </facet-remove-component>
+                      {% endif %}
+                    </div>
+
+                    <div class="rb-filterbar__meta">
+                      <div class="products-count-wrapper" data-testid="products-count">
+                        <span class="rb-filterbar__count">
+                          Viser {{ products_shown }} af {{ products_count }} produkter
+                        </span>
+                      </div>
+
+                      {% if block_settings.enable_sorting %}
+                        {% render 'sorting',
+                          results: results,
+                          sort_by: sort_by,
+                          filter_style: block_settings.filter_style,
+                          suffix: 'desktop',
+                          sort_position: 'desktop',
+                          should_use_select_on_mobile: false,
+                          section_id: section.id
+                        %}
+                      {% endif %}
+
+                      {% if block_settings.enable_grid_density %}
+                        {% render 'grid-density-controls', viewport: 'desktop' %}
+                      {% endif %}
+                    </div>
+                  </div>
                 {% else %}
                   {{ rendered_filters }}
                 {% endif %}
               </div>
 
-              {% if block_settings.filter_style == 'horizontal' %}
-                <facet-remove-component
-                  class="facets-horizontal-remove {% if is_active %}facets-horizontal-remove--active{% endif %}"
-                  active-class="facets__clear-all-link--active"
-                  data-url="{{ results_url }}"
-                >
-                  <button
-                    type="button"
-                    class="button-unstyled facets__clear-all-link facets__clear-all-link--horizontal {% if is_active %}facets__clear-all-link--active{% endif %}"
-                    ref="clearButton"
-                    on:click="/removeFilter?form="
-                    on:keydown="/removeFilter?form="
-                  >
-                    {{- 'actions.clear_all' | t -}}
-                  </button>
-                </facet-remove-component>
-              {% endif %}
-            {% endif %}
-            {% if block_settings.filter_style == 'horizontal' %}
-              <div
-                class="products-count-wrapper"
-                data-testid="products-count"
-              >
-                <span title="{{ 'content.product_count' | t }}">
-                  {% if products_count > 25000 %}
-                    {{- 'content.item_count_cutoff' | t: count: 25000 -}}
-                  {% else %}
-                    {{- 'content.item_count' | t: count: products_count -}}
-                  {% endif %}
-                </span>
-              </div>
-
-              {% if block_settings.enable_sorting %}
-                {% render 'sorting',
-                  results: results,
-                  sort_by: sort_by,
-                  filter_style: block_settings.filter_style,
-                  suffix: 'desktop',
-                  sort_position: 'desktop',
-                  should_use_select_on_mobile: false,
-                  section_id: section.id
-                %}
-              {% endif %}
-
-              {% if block_settings.enable_grid_density %}
-                {% render 'grid-density-controls', viewport: 'desktop' %}
-              {% endif %}
             {% endif %}
           {% endif %}
         </form>
@@ -795,7 +798,9 @@
 
   .facets--horizontal .facets__filters-wrapper {
     @media screen and (min-width: 750px) {
-      max-width: 60%;
+      max-width: 100%;
+      width: 100%;
+      flex: 1 1 auto;
       display: flex;
       flex-wrap: wrap;
       column-gap: var(--gap-xl);

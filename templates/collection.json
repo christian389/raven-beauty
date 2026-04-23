@@ -11,6 +11,13 @@
     "section": {
       "type": "section",
       "blocks": {
+        "custom_liquid_breadcrumbs": {
+          "type": "custom-liquid",
+          "name": "Breadcrumbs",
+          "settings": {
+            "custom_liquid": "{% render 'collection-breadcrumbs' %}"
+          }
+        },
         "text_tqQTNE": {
           "type": "text",
           "name": "Title",
@@ -37,25 +44,11 @@
           },
           "blocks": {}
         },
-        "text_JEyVkJ": {
-          "type": "text",
+        "collection_description_hero": {
+          "type": "collection-description",
           "name": "Description",
           "settings": {
-            "text": "{{ closest.collection.description }}",
-            "width": "fit-content",
             "max_width": "narrow",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -65,19 +58,20 @@
         }
       },
       "block_order": [
+        "custom_liquid_breadcrumbs",
         "text_tqQTNE",
-        "text_JEyVkJ"
+        "collection_description_hero"
       ],
       "name": "Collection heading",
       "settings": {
-        "content_direction": "row",
+        "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "space-between",
         "vertical_alignment": "flex-end",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
+        "gap": 16,
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,

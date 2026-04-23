@@ -1,0 +1,88 @@
+{%- liquid
+  assign col = closest.collection | default: collection
+  assign inner = col.description | strip
+  if inner == blank
+    assign inner = '<p>Oplev vores eksklusive udvalg af luksuriøs hudpleje, skabt til at give din hud den ultimative pleje og glød den fortjener. Fra ikoniske sera til revitaliserende cremer.</p>'
+  endif
+  assign type = 'body'
+-%}
+<rte-formatter
+  class="spacing-style text-block text-block--{{ block.id }} rte"
+  style="
+    {% render 'spacing-padding', settings: block.settings %}
+    --width: fit-content;
+    --max-width: var(--max-width--{{ type }}-{{ block.settings.max_width }});
+    font-family: var(--font-primary--family);
+  "
+  {{ block.shopify_attributes }}
+>
+  {{ inner }}
+</rte-formatter>
+
+{% schema %}
+{
+  "name": "Collection description",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "t:settings.max_width",
+      "options": [
+        { "value": "narrow", "label": "t:options.narrow" },
+        { "value": "normal", "label": "t:options.normal" },
+        { "value": "none", "label": "t:options.none" }
+      ],
+      "default": "narrow"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

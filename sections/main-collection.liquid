@@ -35,13 +35,6 @@
   <div
     class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
   >
-    {% content_for 'block',
-      type: 'filters',
-      id: 'filters',
-      results: collection,
-      results_size: collection.products_count
-    %}
-
     {% assign products_per_page = 24 %}
 
     {% if section.settings.enable_infinite_scroll == false %}
@@ -49,6 +42,18 @@
     {% endif %}
 
     {% paginate collection.products by products_per_page %}
+      {%- liquid
+        assign shown_count = collection.products | size
+      -%}
+
+      {% content_for 'block',
+        type: 'filters',
+        id: 'filters',
+        results: collection,
+        results_size: collection.products_count,
+        shown_count: shown_count
+      %}
+
       {% capture children %}
         {% for product in collection.products %}
           <li

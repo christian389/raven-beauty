@@ -1,0 +1,16 @@
+{%- liquid
+  assign crumb_collection = closest.collection | default: collection
+-%}
+{%- if crumb_collection != blank -%}
+  <nav class="collection-breadcrumbs" aria-label="Brødkrumme">
+    <ol class="collection-breadcrumbs__list" role="list">
+      <li class="collection-breadcrumbs__item">
+        <a class="collection-breadcrumbs__link" href="{{ routes.root_url }}">Hjem</a>
+      </li>
+      <li class="collection-breadcrumbs__sep" aria-hidden="true">›</li>
+      <li class="collection-breadcrumbs__item">
+        <span class="collection-breadcrumbs__current">{{ crumb_collection.title | escape }}</span>
+      </li>
+    </ol>
+  </nav>
+{%- endif -%}

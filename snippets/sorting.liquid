@@ -21,11 +21,21 @@
 >
   {% liquid
     assign default_sort_by = results.default_sort_by
+    assign effective_sort_by = sort_by | default: default_sort_by
     for option in results.sort_options
-      if option.value == sort_by
+      if option.value == effective_sort_by
         assign status = option.name
       endif
     endfor
+
+    if status == blank
+      assign status = results.sort_options.first.name
+    endif
+
+    # Ensure the sort pill always shows a value on initial load.
+    if status == blank
+      assign status = 'Best selling'
+    endif
   %}
 
   <div class="sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}">
@@ -47,7 +57,7 @@
         {% for option in results.sort_options %}
           <option
             value="{{ option.value }}"
-            {% if option.value == sort_by %}
+            {% if option.value == effective_sort_by %}
               selected
             {% endif %}
           >
@@ -83,21 +93,18 @@
       on:toggle="/handleToggle"
     >
       <summary
-        class="facets__summary"
+        class="facets__summary{% if filter_style == 'horizontal' %} rb-sorting__summary{% endif %}"
         role="button"
         aria-expanded="false"
         aria-controls="sorting-options-{{ section_id }}"
         ref="summary"
       >
-        <span
-          class="facets__label"
-          id="sort-label-{{ section_id }}"
-        >
-          {{- 'actions.sort' | t -}}
+        <span class="facets__label" id="sort-label-{{ section_id }}">
+          {%- if filter_style != 'horizontal' -%}
+            {{- 'actions.sort' | t -}}
+          {%- endif -%}
         </span>
-        <span
-          class="facets__status h6 desktop:hidden"
-        >
+        <span class="facets__status h6{% if filter_style == 'horizontal' %} rb-sorting__status{% else %} desktop:hidden{% endif %}">
           {{- status -}}
         </span>
         <span class="svg-wrapper icon-caret icon-animated">
@@ -132,7 +139,7 @@
                   value="{{ option.value }}"
                   class="sorting-filter__input"
                   data-option-name="{{ option.name }}"
-                  {% if option.value == sort_by %}
+                  {% if option.value == effective_sort_by %}
                     checked
                   {% endif %}
                   aria-hidden="true"
