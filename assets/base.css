@@ -475,6 +475,109 @@ p:empty {
   z-index: var(--layer-section-background);
 }
 
+/* ================================
+ * Section entrance reveal
+ * ================================ */
+.shopify-section.rb-reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 600ms var(--animation-easing, ease),
+    transform 600ms var(--animation-easing, ease);
+  will-change: opacity, transform;
+}
+
+.shopify-section.rb-reveal.rb-reveal--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shopify-section.rb-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
+
+/* ================================
+ * Raven branded hover interactions
+ * ================================ */
+:root {
+  --rb-brand: #4713ae;
+  --rb-hover-lift: 2px;
+  --rb-hover-shadow: 0 12px 24px rgb(71 19 174 / 0.12);
+  --rb-hover-shadow-soft: 0 8px 20px rgb(15 23 42 / 0.08);
+  --rb-focus-ring: 0 0 0 3px rgb(71 19 174 / 0.25);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Buttons */
+  :is(.button, .button-secondary, .raven-hero__button, .raven-newsletter__button) {
+    transition:
+      transform var(--animation-speed) var(--animation-easing),
+      box-shadow var(--animation-speed) var(--animation-easing),
+      filter var(--animation-speed) var(--animation-easing);
+    will-change: transform;
+  }
+
+  :is(.button, .button-secondary, .raven-hero__button, .raven-newsletter__button):hover {
+    transform: translate3d(0, calc(-1 * var(--rb-hover-lift)), 0);
+    box-shadow: var(--rb-hover-shadow-soft);
+    filter: saturate(1.02);
+  }
+
+  /* Icon-pill buttons (header) */
+  #header-component.header--raven .header-actions__raven-icon-button {
+    transition:
+      transform var(--animation-speed) var(--animation-easing),
+      box-shadow var(--animation-speed) var(--animation-easing),
+      background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  #header-component.header--raven .header-actions__raven-icon-button:hover {
+    transform: translate3d(0, calc(-1 * var(--rb-hover-lift)), 0);
+    box-shadow: var(--rb-hover-shadow);
+  }
+
+  /* Clickable cards */
+  :is(
+      a.raven-categories__card,
+      a.raven-social-proof__tile,
+      product-card.raven-best-sellers__card
+    ) {
+    transition:
+      transform var(--animation-speed) var(--animation-easing),
+      box-shadow var(--animation-speed) var(--animation-easing);
+    will-change: transform;
+  }
+
+  :is(
+      a.raven-categories__card,
+      a.raven-social-proof__tile,
+      product-card.raven-best-sellers__card
+    ):hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: var(--rb-hover-shadow-soft);
+  }
+
+  /* Branded link hover (non-button links) */
+  a:where(:not(.button, .button-secondary, .button-unstyled)):hover {
+    color: var(--rb-brand);
+  }
+}
+
+:is(.button, .button-secondary, .raven-hero__button, .raven-newsletter__button):focus-visible {
+  box-shadow: var(--rb-focus-ring);
+}
+
+:is(a.raven-categories__card, a.raven-social-proof__tile, product-card.raven-best-sellers__card):focus-visible,
+:is(a.raven-categories__card, a.raven-social-proof__tile, product-card.raven-best-sellers__card):focus-within {
+  box-shadow: var(--rb-focus-ring);
+  outline: none;
+}
+
 /* For page-width sections, all content goes in the center column */
 .section--page-width > * {
   grid-column: 2;

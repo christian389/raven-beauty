@@ -100,6 +100,11 @@
 >
 <link
   rel="modulepreload"
+  href="{{ 'section-reveal.js' | asset_url }}"
+  fetchpriority="low"
+>
+<link
+  rel="modulepreload"
   href="{{ 'events.js' | asset_url }}"
   fetchpriority="low"
 >
@@ -188,6 +193,11 @@
 ></script>
 <script
   src="{{ 'slideshow.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+<script
+  src="{{ 'section-reveal.js' | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
