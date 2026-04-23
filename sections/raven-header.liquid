@@ -63,7 +63,15 @@
           <input type="hidden" name="type" value="product">
           <button class="raven-header__search-icon" type="submit" aria-label="Search">
             <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-search.svg' | inline_asset_content -}}
+              {% if section.settings.search_icon != blank %}
+                {{
+                  section.settings.search_icon
+                  | image_url: width: 64
+                  | image_tag: alt: '', width: 15, height: 15, loading: 'lazy'
+                }}
+              {% else %}
+                {{- 'icon-search.svg' | inline_asset_content -}}
+              {% endif %}
             </span>
           </button>
           <input
@@ -81,26 +89,42 @@
 
         <div class="raven-header__actions">
           <a class="raven-header__icon-btn" href="{{ section.settings.wishlist_link | default: routes.search_url }}" aria-label="Wishlist">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M12 21s-7-4.8-10-9.6C-0.2 7.9 2.2 4 6.2 4c2 0 3.5 1.1 4.4 2.4C11.5 5.1 13 4 15 4c4 0 6.4 3.9 4.2 7.4C19 16.2 12 21 12 21Z"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-            </svg>
+            {% if section.settings.wishlist_icon != blank %}
+              {{
+                section.settings.wishlist_icon
+                | image_url: width: 64
+                | image_tag: alt: '', width: 20, height: 18, loading: 'lazy'
+              }}
+            {% else %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M12 21s-7-4.8-10-9.6C-0.2 7.9 2.2 4 6.2 4c2 0 3.5 1.1 4.4 2.4C11.5 5.1 13 4 15 4c4 0 6.4 3.9 4.2 7.4C19 16.2 12 21 12 21Z"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            {% endif %}
           </a>
           <a class="raven-header__icon-btn" href="{{ routes.cart_url }}" aria-label="Cart">
             <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-cart.svg' | inline_asset_content -}}
+              {% if section.settings.cart_icon != blank %}
+                {{
+                  section.settings.cart_icon
+                  | image_url: width: 64
+                  | image_tag: alt: '', width: 20, height: 20, loading: 'lazy'
+                }}
+              {% else %}
+                {{- 'icon-cart.svg' | inline_asset_content -}}
+              {% endif %}
             </span>
           </a>
         </div>
@@ -354,6 +378,11 @@
       "content": "Search"
     },
     {
+      "type": "image_picker",
+      "id": "search_icon",
+      "label": "Search icon"
+    },
+    {
       "type": "text",
       "id": "search_placeholder_text",
       "label": "Search placeholder",
@@ -362,6 +391,16 @@
     {
       "type": "header",
       "content": "Actions"
+    },
+    {
+      "type": "image_picker",
+      "id": "wishlist_icon",
+      "label": "Wishlist icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "cart_icon",
+      "label": "Cart icon"
     },
     {
       "type": "url",
@@ -398,7 +437,7 @@
       "id": "search_bg",
       "label": "Search background",
       "alpha": true,
-      "default": "rgba(71,19,174,0.05)"
+      "default": "#F1F5F9"
     },
     {
       "type": "color",
@@ -419,7 +458,7 @@
       "id": "icon_bg",
       "label": "Icon button background",
       "alpha": true,
-      "default": "rgba(71,19,174,0.05)"
+      "default": "#F1F5F9"
     }
   ],
   "presets": [

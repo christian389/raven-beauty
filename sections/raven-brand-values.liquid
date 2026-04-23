@@ -12,6 +12,7 @@
     --rbv-card-padding: {{ section.settings.card_padding }}px;
     --rbv-card-border: {{ section.settings.card_border_color }};
     --rbv-card-bg: {{ section.settings.card_background }};
+    --rbv-section-bg: {{ section.settings.section_background }};
     --rbv-heading-color: {{ section.settings.heading_color }};
     --rbv-text-color: {{ section.settings.text_color }};
   "
@@ -86,6 +87,7 @@
   .raven-brand-values {
     --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
     --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--rbv-section-bg, transparent);
   }
 
   .raven-brand-values__container {
@@ -109,8 +111,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background: var(--rbv-card-bg);
-    border: 1px solid var(--rbv-card-border);
+    background: var(--rbv-card-bg, #FFFFFF);
+    border: 1px solid var(--rbv-card-border, rgba(71, 19, 174, 0.05));
     border-radius: var(--rbv-card-radius);
     padding: var(--rbv-card-padding);
   }
@@ -207,6 +209,13 @@
     {
       "type": "header",
       "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "alpha": true,
+      "default": "rgba(71,19,174,0.5)"
     },
     {
       "type": "color",

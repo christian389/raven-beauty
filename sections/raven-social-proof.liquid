@@ -14,7 +14,6 @@
     --rsp-columns-mobile: {{ section.settings.columns_mobile }};
     --rsp-heading-color: {{ section.settings.heading_color }};
     --rsp-text-color: {{ section.settings.text_color }};
-    --rsp-max-width: {{ section.settings.max_width }}px;
   "
 >
   <div
@@ -103,10 +102,7 @@
   }
 
   .raven-social-proof__container {
-    max-width: var(--rsp-max-width);
     width: 100%;
-    margin-inline: auto;
-    justify-self: center;
   }
 
   .raven-social-proof__header {
@@ -216,16 +212,6 @@
     {
       "type": "header",
       "content": "Grid"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Max width",
-      "min": 320,
-      "max": 1600,
-      "step": 20,
-      "unit": "px",
-      "default": 1280
     },
     {
       "type": "range",

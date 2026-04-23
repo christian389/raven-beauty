@@ -1,11 +1,5 @@
 {% liquid
-  assign max_products = section.settings.max_products
-  assign collection = section.settings.collection
-
-  assign has_collection = false
-  if collection != blank and shop.products_count != 0
-    assign has_collection = true
-  endif
+  assign selected_products = section.settings.manual_products
 
   assign fetch_priority = 'auto'
   if section.index == 1
@@ -51,8 +45,8 @@
       style="--rbs-columns: {{ section.settings.columns }}; --rbs-columns-mobile: {{ section.settings.columns_mobile }};"
       role="list"
     >
-      {% if has_collection %}
-        {% for product in collection.products limit: max_products %}
+      {% if selected_products != blank %}
+        {% for product in selected_products %}
           <product-card
             class="raven-best-sellers__card"
             data-product-id="{{ product.id }}"
@@ -127,7 +121,7 @@
           </product-card>
         {% endfor %}
       {% else %}
-        {% for i in (1..max_products) %}
+        {% for i in (1..4) %}
           {% liquid
             assign fallback_index = i | modulo: 4
             if fallback_index == 0
@@ -175,10 +169,7 @@
   }
 
   .raven-best-sellers__container {
-    max-width: 1280px;
     width: 100%;
-    margin-inline: auto;
-    justify-self: center;
   }
 
   .raven-best-sellers__heading-wrap {
@@ -369,18 +360,11 @@
       "default": "Best Sellers"
     },
     {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "max_products",
-      "label": "Product count",
-      "min": 1,
-      "max": 12,
-      "step": 1,
-      "default": 4
+      "type": "product_list",
+      "id": "manual_products",
+      "label": "Products",
+      "info": "Choose products in display order. Up to 12 items.",
+      "limit": 12
     },
     {
       "type": "header",

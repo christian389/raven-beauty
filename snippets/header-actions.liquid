@@ -11,7 +11,15 @@
   >
     <span class="header-actions__cart-image" aria-hidden="true">
       <span class="svg-wrapper" aria-hidden="true">
-        {{- 'icon-cart.svg' | inline_asset_content -}}
+        {% if section and section.settings.cart_icon != blank %}
+          {{
+            section.settings.cart_icon
+            | image_url: width: 64
+            | image_tag: alt: '', width: 20, height: 20, loading: 'lazy'
+          }}
+        {% else %}
+          {{- 'icon-cart.svg' | inline_asset_content -}}
+        {% endif %}
       </span>
     </span>
 
@@ -21,22 +29,30 @@
 
 {% capture wishlist_icon %}
   <span class="header-actions__wishlist-image" aria-hidden="true">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M12 21s-7-4.8-10-9.6C-0.2 7.9 2.2 4 6.2 4c2 0 3.5 1.1 4.4 2.4C11.5 5.1 13 4 15 4c4 0 6.4 3.9 4.2 7.4C19 16.2 12 21 12 21Z"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linejoin="round"
-      />
-    </svg>
+    {% if section and section.settings.wishlist_icon != blank %}
+      {{
+        section.settings.wishlist_icon
+        | image_url: width: 64
+        | image_tag: alt: '', width: 20, height: 18, loading: 'lazy'
+      }}
+    {% else %}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M12 21s-7-4.8-10-9.6C-0.2 7.9 2.2 4 6.2 4c2 0 3.5 1.1 4.4 2.4C11.5 5.1 13 4 15 4c4 0 6.4 3.9 4.2 7.4C19 16.2 12 21 12 21Z"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linejoin="round"
+        />
+      </svg>
+    {% endif %}
   </span>
 {% endcapture %}
 
@@ -595,11 +611,18 @@
 
   header-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 
     @media screen and (max-width: 749px) {
       justify-self: flex-end;
     }
+  }
+
+  /* Wishlist + Cart sit directly under cart-drawer-component (not inside header-actions) */
+  #header-component.header--raven cart-drawer-component.cart-drawer {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
   }
 
   /* Raven Beauty icon buttons (Figma 1:222) */
@@ -607,7 +630,7 @@
     width: 40px;
     height: 40px;
     border-radius: 9999px;
-    background: rgb(71 19 174 / 0.05);
+    background: #F1F5F9;
     display: inline-flex;
     align-items: center;
     justify-content: center;

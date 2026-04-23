@@ -28,6 +28,7 @@
     --raven-hero-outer-padding-inline: {{ section.settings.outer_padding_inline }}px;
     --raven-hero-content-max-width: {{ section.settings.content_max_width | default: 1280 }}px;
     --raven-hero-eyebrow-gap: {{ section.settings.content_gap }}px;
+    --raven-hero-section-bg: {{ section.settings.section_background }};
     --raven-hero-overlay-top: {{ section.settings.overlay_top }};
     --raven-hero-overlay-bottom: {{ section.settings.overlay_bottom }};
     --raven-hero-button-bg: {{ section.settings.button_background }};
@@ -108,6 +109,7 @@
     --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
     --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
+    background: var(--raven-hero-section-bg, transparent);
     padding: var(--raven-hero-outer-padding-block) var(--raven-hero-outer-padding-inline);
   }
 
@@ -292,6 +294,13 @@
     {
       "type": "header",
       "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "alpha": true,
+      "default": "rgba(255,255,255,1)"
     },
     {
       "type": "image_picker",

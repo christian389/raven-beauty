@@ -155,8 +155,7 @@
       "settings": {
         "color_scheme": "",
         "heading": "Best Sellers",
-        "collection": "",
-        "max_products": 4,
+        "manual_products": [],
         "columns": 4,
         "columns_mobile": "2",
         "grid_gap": 32,
@@ -268,7 +267,7 @@
         "email_placeholder": "Din e-mail adresse",
         "button_label": "Tilmeld mig",
         "success_message": "Tak for din tilmelding!",
-        "container_max_width": 1280,
+        "container_max_width": 900,
         "form_max_width": 510,
         "content_gap": 24,
         "form_gap": 16,
@@ -284,8 +283,8 @@
         "button_text": "#FFFFFF",
         "padding-block-start": 80,
         "padding-block-end": 80,
-        "padding-inline-start": 192,
-        "padding-inline-end": 192
+        "padding-inline-start": 80,
+        "padding-inline-end": 80
       }
     }
   },

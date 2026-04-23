@@ -4,6 +4,7 @@
   @param {string} [style] - The style of the search action.
   @param {string} [class] - Additional classes for the search action.
   @param {string} [display_style] - The display style ('icon' or 'text').
+  @param {object} [section] - Optional section to read icon settings from.
 
   @example
   {% render 'search', style: 'default', class: 'custom-class', display_style: 'icon' %}
@@ -20,7 +21,15 @@
       aria-haspopup="dialog"
     >
       <span class="search-action__pill-icon svg-wrapper" aria-hidden="true">
-        {{ 'icon-search.svg' | inline_asset_content }}
+        {% if section and section.settings.search_icon != blank %}
+          {{
+            section.settings.search_icon
+            | image_url: width: 64
+            | image_tag: alt: '', width: 15, height: 15, loading: 'lazy'
+          }}
+        {% else %}
+          {{ 'icon-search.svg' | inline_asset_content }}
+        {% endif %}
       </span>
       <span class="search-action__pill-text" aria-hidden="true">
         Søg efter produkter...
@@ -40,16 +49,17 @@
   /* Raven Beauty (Figma 1:222): make the modal trigger look like an input pill */
   #header-component.header--raven .search-action__pill {
     height: 40px;
-    width: 220px;
+    width: 214px;
     min-width: 160px;
     max-width: 256px;
     border-radius: 9999px;
-    border: 1px solid rgb(71 19 174 / 0.1);
-    background: rgb(71 19 174 / 0.05);
-    padding: 0 14px 0 12px;
+    border: 0;
+    background: #F1F5F9;
+    /* Figma node 100:405 */
+    padding: 0 19px 0 20px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    position: relative;
   }
 
   #header-component.header--raven .search-action__pill-icon {
@@ -59,6 +69,16 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: absolute;
+    left: 14.5px;
+    top: 12.5px;
+  }
+
+  #header-component.header--raven .search-action__pill-icon img {
+    width: 15px;
+    height: 15px;
+    display: block;
+    object-fit: contain;
   }
 
   #header-component.header--raven .search-action__pill-icon svg {
@@ -70,7 +90,8 @@
     font-family: var(--raven-font-body, var(--font-body--family));
     font-size: 14px;
     line-height: 20px;
-    color: rgb(71 19 174 / 0.4);
+    font-weight: 400;
+    color: #6B7280;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

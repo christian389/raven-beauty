@@ -9,7 +9,7 @@
     --rn-bg: {{ section.settings.background_color }};
     --rn-heading: {{ section.settings.heading_color }};
     --rn-text: {{ section.settings.text_color }};
-    --rn-input-bg: {{ section.settings.input_background }};
+    --rn-input-bg: {{ section.settings.input_background | default: '#FFFFFF' }};
     --rn-input-text: {{ section.settings.input_text }};
     --rn-input-placeholder: {{ section.settings.input_placeholder_color }};
     --rn-button-bg: {{ section.settings.button_background }};
@@ -178,7 +178,8 @@
     padding: 13px 24px;
     border-radius: var(--rn-radius);
     border: 1px solid transparent;
-    background: var(--rn-input-bg);
+    background: var(--rn-input-bg, #FFFFFF) !important;
+    background-color: var(--rn-input-bg, #FFFFFF) !important;
     color: var(--rn-input-text);
     font-family: var(--raven-font-body);
     box-shadow: var(--rn-shadow);
@@ -312,7 +313,7 @@
       "max": 1600,
       "step": 20,
       "unit": "px",
-      "default": 1280
+      "default": 900
     },
     {
       "type": "range",
