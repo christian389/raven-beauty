@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "section": {
       "type": "section",
@@ -16,7 +17,8 @@
           "name": "Breadcrumbs",
           "settings": {
             "custom_liquid": "{% render 'collection-breadcrumbs' %}"
-          }
+          },
+          "blocks": {}
         },
         "text_tqQTNE": {
           "type": "text",
@@ -78,6 +80,8 @@
         "color_scheme": "scheme-3",
         "background_media": "image",
         "video_position": "cover",
+        "background_image": "shopify://shop_images/0db094c6fd239c73b700d8f5c52efc2ceebc5407.png",
+        "use_collection_image": true,
         "background_image_position": "cover",
         "border": "none",
         "border_width": 1,
@@ -88,8 +92,7 @@
         "overlay_style": "gradient",
         "gradient_direction": "to right",
         "padding-block-start": 48,
-        "padding-block-end": 48,
-        "use_collection_image": true
+        "padding-block-end": 48
       }
     },
     "main": {
@@ -153,7 +156,6 @@
             "group_dCDKMz": {
               "type": "_product-card-group",
               "settings": {
-                "open_in_new_tab": false,
                 "content_direction": "column",
                 "vertical_on_mobile": false,
                 "horizontal_alignment": "space-between",
@@ -181,6 +183,8 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -191,7 +195,6 @@
                   "type": "_product-card-group",
                   "name": "t:names.group",
                   "settings": {
-                    "open_in_new_tab": false,
                     "content_direction": "column",
                     "vertical_on_mobile": true,
                     "horizontal_alignment": "flex-start",
@@ -219,6 +222,8 @@
                     "overlay_color": "#00000026",
                     "overlay_style": "solid",
                     "gradient_direction": "to top",
+                    "link": "",
+                    "open_in_new_tab": false,
                     "padding-block-start": 8,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
