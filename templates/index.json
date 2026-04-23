@@ -21,7 +21,7 @@
         "open_in_new_tab": false,
         "show_button_icon": true,
         "section_background": "#4713ae0d",
-        "background_image": "shopify://shop_images/Background.png",
+        "background_image": "shopify://shop_images/hero_background.png",
         "enable_overlay": true,
         "overlay_top": "#00000033",
         "overlay_bottom": "#00000066",
