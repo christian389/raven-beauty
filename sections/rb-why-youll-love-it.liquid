@@ -1,0 +1,252 @@
+{%- liquid
+  assign max_width = 1400
+-%}
+
+<section class="rb-love spacing-style color-{{ section.settings.color_scheme }}" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="rb-love__inner" style="--rb-love-max-width: {{ max_width }}px;">
+    <div class="rb-love__card">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rb-love__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      <div class="rb-love__grid" role="list">
+        {%- for block in section.blocks -%}
+          <div class="rb-love__item" role="listitem" {{ block.shopify_attributes }}>
+            <div class="rb-love__icon-wrap" aria-hidden="true">
+              {%- if block.settings.icon != blank -%}
+                {{
+                  block.settings.icon
+                  | image_url: width: 80
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '40, 56, 80',
+                    sizes: '56px',
+                    alt: ''
+                }}
+              {%- else -%}
+                <span class="rb-love__icon-fallback"></span>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="rb-love__item-title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <p class="rb-love__item-text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-love__inner {
+    width: 100%;
+    max-width: var(--rb-love-max-width, 1400px);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .rb-love__card {
+    background: #fff;
+    border: 1px solid #f2f0f4;
+    border-radius: 24px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.05);
+    padding: 65px 33px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .rb-love__heading {
+    margin: 0;
+    text-align: center;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #131118;
+  }
+
+  .rb-love__grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .rb-love__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    .rb-love__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .rb-love__item {
+    background: #f6f6f8;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 192px;
+  }
+
+  .rb-love__icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    background: rgb(0 130 72 / 0.1);
+    display: grid;
+    place-items: center;
+    margin-bottom: 16px;
+  }
+
+  .rb-love__icon-wrap img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .rb-love__icon-fallback {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: rgb(0 130 72 / 0.35);
+  }
+
+  .rb-love__item-title {
+    margin: 0 0 8px 0;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #131118;
+  }
+
+  .rb-love__item-text {
+    margin: 0;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4b5563;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rb-love__card {
+      padding: 40px 20px;
+      gap: 28px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Why you'll love it",
+  "tag": "section",
+  "class": "section rb-love-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Hvorfor du vil elske den"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Intens fugtpleje"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Efterlader huden blød og smidig med øjeblikkelig effekt."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "RB - Why you'll love it",
+      "blocks": [
+        { "type": "feature" },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Styrker negle",
+            "text": "Plejer neglebånd og styrker selve neglens struktur."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Total beskyttelse",
+            "text": "Beskytter mod kulde, sol og hårdt vand hele dagen."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Let tekstur",
+            "text": "Absorberes hurtigt uden at efterlade en fedtet finish."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

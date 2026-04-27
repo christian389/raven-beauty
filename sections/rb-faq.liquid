@@ -1,0 +1,224 @@
+{%- liquid
+  assign max_width = 768
+-%}
+
+<section class="rb-faq spacing-style color-{{ section.settings.color_scheme }}" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="rb-faq__inner" style="--rb-faq-max-width: {{ max_width }}px;">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="rb-faq__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <div class="rb-faq__list">
+      {%- for block in section.blocks -%}
+        {%- if block.type != 'item' -%}{% continue %}{%- endif -%}
+
+        <accordion-custom class="rb-faq__item" {{ block.shopify_attributes }}>
+          <details {% if block.settings.open_by_default %}open{% endif %}>
+            <summary class="rb-faq__summary">
+              <span class="rb-faq__question">{{ block.settings.question | escape }}</span>
+              <span class="rb-faq__chevron" aria-hidden="true">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </summary>
+            <div class="rb-faq__answer details-content">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        </accordion-custom>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-faq__inner {
+    width: 100%;
+    max-width: var(--rb-faq-max-width, 1400px);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .rb-faq__heading {
+    margin: 0 0 40px 0;
+    text-align: center;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #131118;
+  }
+
+  .rb-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rb-faq__item details {
+    background: #fff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    overflow: clip;
+  }
+
+  .rb-faq__summary {
+    list-style: none;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+  }
+
+  .rb-faq__question {
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #131118;
+  }
+
+  .rb-faq__chevron {
+    width: 12px;
+    height: 12px;
+    flex: 0 0 auto;
+    color: #131118;
+    transition: transform 220ms var(--animation-easing, ease);
+  }
+
+  .rb-faq__chevron svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .rb-faq__item details[open] .rb-faq__chevron {
+    transform: rotate(180deg);
+  }
+
+  .rb-faq__answer {
+    border-top: 1px solid #f9fafb;
+    padding: 1px 20px 20px;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4b5563;
+  }
+
+  .rb-faq__answer > :first-child {
+    margin-top: 0;
+  }
+
+  .rb-faq__answer > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - FAQ",
+  "tag": "section",
+  "class": "section rb-faq-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ofte stillede spørgsmål"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 768,
+      "max": 768,
+      "step": 1,
+      "unit": "px",
+      "default": 768
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Føles cremen fedtet efter påføring?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Nej, overhovedet ikke. En af de største fordele ved denne creme er dens evne til at trænge hurtigt ind i huden og efterlade en silkeblød finish uden rester.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - FAQ",
+      "blocks": [
+        { "type": "item" },
+        {
+          "type": "item",
+          "settings": {
+            "question": "Hvor ofte skal jeg bruge den?",
+            "answer": "<p>Du kan bruge den så ofte du har brug for det. Vi anbefaler at påføre den morgen og aften, samt efter hver håndvask for at opretholde hudens fugtbalance.</p>",
+            "open_by_default": false
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "question": "Er den god til sensitiv hud?",
+            "answer": "<p>Ja, Clarins formler er dermatologisk testet og kendt for deres skånsomme men effektive planteekstrakter, hvilket gør den ideel til selv de mest sensitive hænder.</p>",
+            "open_by_default": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

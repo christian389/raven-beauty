@@ -21,6 +21,10 @@
           "label": "t:options.grid"
         },
         {
+          "value": "grid_thumbnails",
+          "label": "Grid with thumbnails"
+        },
+        {
           "value": "carousel",
           "label": "t:options.carousel"
         }
@@ -95,7 +99,7 @@
         }
       ],
       "default": "arrow",
-      "visible_if": "{{ block.settings.media_presentation == 'carousel' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' or block.settings.media_presentation == 'grid_thumbnails' }}"
     },
     {
       "type": "select",
@@ -115,7 +119,7 @@
           "label": "t:options.thumbnails"
         }
       ],
-      "visible_if": "{{ block.settings.media_presentation == 'carousel' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' or block.settings.media_presentation == 'grid_thumbnails' }}"
     },
     {
       "type": "select",
@@ -138,7 +142,8 @@
           "value": "thumbnails",
           "label": "t:options.thumbnails"
         }
-      ]
+      ],
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' or block.settings.media_presentation == 'grid_thumbnails' }}"
     },
     {
       "type": "header",
@@ -164,7 +169,7 @@
         }
       ],
       "default": "bottom",
-      "visible_if": "{{ block.settings.slideshow_controls_style == 'thumbnails' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' or block.settings.media_presentation == 'grid_thumbnails' and block.settings.slideshow_controls_style == 'thumbnails' }}"
     },
     {
       "type": "range",
@@ -175,7 +180,7 @@
       "step": 1,
       "unit": "px",
       "default": 64,
-      "visible_if": "{{ block.settings.slideshow_controls_style == 'thumbnails' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' or block.settings.media_presentation == 'grid_thumbnails' and block.settings.slideshow_controls_style == 'thumbnails' }}"
     },
     {
       "type": "range",

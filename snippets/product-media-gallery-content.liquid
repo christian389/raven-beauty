@@ -23,6 +23,11 @@
   ></script>
 {%- endif -%}
 {%- liquid
+  assign presentation_mode = media_presentation
+  if media_presentation == 'grid_thumbnails'
+    assign presentation_mode = 'carousel'
+  endif
+
   assign selected_product = closest.product
   assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
   assign first_3d_model = selected_product.media | where: 'media_type', 'model' | first
@@ -45,7 +50,7 @@
 
   assign render_slideshow_controls = false
 
-  if media_presentation == 'carousel' or block_settings.slideshow_controls_style == block_settings.slideshow_mobile_controls_style
+  if presentation_mode == 'carousel' or block_settings.slideshow_controls_style == block_settings.slideshow_mobile_controls_style
     assign render_slideshow_controls = true
   endif
 
@@ -120,7 +125,7 @@
 
   # Determine if we're in single column mode (carousel or grid with one column)
   assign is_single_column = false
-  if media_presentation == 'carousel' or sorted_media.size == 1 or media_presentation == 'grid' and block_settings.media_columns == 'one'
+  if presentation_mode == 'carousel' or sorted_media.size == 1 or media_presentation == 'grid' and block_settings.media_columns == 'one'
     assign is_single_column = true
   endif
 
@@ -340,7 +345,10 @@
         media-gallery--{{ block_settings.media_columns }}-column
         {% if block_settings.media_columns == "two" and block_settings.large_first_image%}media-gallery--large-first-image{% endif %}
       {% endif %}
-      media-gallery--{{ media_presentation }}
+      media-gallery--{{ presentation_mode }}
+      {% if media_presentation == 'grid_thumbnails' %}
+        media-gallery--grid-thumbnails
+      {% endif %}
       {% if block_settings.slideshow_mobile_controls_style == 'hint' %}
         media-gallery--hint
       {% endif %}
@@ -349,7 +357,7 @@
       {% endif %}
     "
     style="{% render 'spacing-style', settings: block_settings %} --thumbnail-width: {{ block_settings.thumbnail_width }}px; --media-radius: {{ block_settings.media_radius }}px;{% if block_settings.icons_style contains 'large' %} --slideshow-icon-padding: 0px;{% endif %}--image-gap: {{ block_settings.image_gap }}px;{% unless block_settings.aspect_ratio == 'adapt' %} --gallery-aspect-ratio: {{ block_settings.aspect_ratio }};{% endunless %}"
-    data-presentation="{{ media_presentation }}"
+    data-presentation="{{ presentation_mode }}"
     {{ block_shopify_attributes }}
   >
     {% capture slides %}
@@ -426,7 +434,7 @@
       {% endcapture %}
     {% endif %}
 
-    {% if render_slideshow_arrows %}
+    {% if render_slideshow_arrows and media_presentation != 'grid_thumbnails' %}
       {% capture slideshow_arrows %}
         {% render 'slideshow-arrows', class: 'mobile:hidden', icon_style: block_settings.icons_style %}
       {% endcapture %}

@@ -231,6 +231,27 @@
           %}
         </div>
       {%- endform -%}
+
+      <div class="rb-product-hero__trust" role="list" aria-label="Fordele">
+        <div class="rb-product-hero__trust-item" role="listitem">
+          <span class="svg-wrapper rb-product-hero__trust-icon">
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+          </span>
+          <span class="rb-product-hero__trust-text">Hurtig levering</span>
+        </div>
+        <div class="rb-product-hero__trust-item" role="listitem">
+          <span class="svg-wrapper rb-product-hero__trust-icon">
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+          </span>
+          <span class="rb-product-hero__trust-text">14 dages returret</span>
+        </div>
+        <div class="rb-product-hero__trust-item" role="listitem">
+          <span class="svg-wrapper rb-product-hero__trust-icon">
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+          </span>
+          <span class="rb-product-hero__trust-text">100% original vare</span>
+        </div>
+      </div>
     </product-form-component>
   {%- else -%}
     <div class="product-form-buttons">

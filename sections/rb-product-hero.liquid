@@ -1,0 +1,132 @@
+{%- liquid
+  assign product_resource = closest.product | default: product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+
+  assign max_width = 1400
+  assign gap = section.settings.gap | default: 48
+-%}
+
+<script src="{{ 'rb-drag-scroll.js' | asset_url }}" defer></script>
+
+<div class="rb-product-hero color-{{ section.settings.color_scheme }} spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="rb-product-hero__inner" style="--rb-product-hero-max-width: {{ max_width }}px; --rb-product-hero-gap: {{ gap }}px;">
+    {% if section.settings.show_breadcrumbs and request.page_type == 'product' and product_resource != blank %}
+      {% render 'product-breadcrumbs', product: product_resource %}
+    {% endif %}
+
+    <div class="rb-product-hero__grid">
+      <div class="rb-product-hero__media">
+        {%- content_for 'block',
+          type: '_product-media-gallery',
+          id: 'media-gallery',
+          closest.product: product_resource
+        -%}
+      </div>
+
+      <div class="rb-product-hero__details">
+        {%- content_for 'block',
+          type: '_product-details',
+          id: 'product-details',
+          closest.product: product_resource
+        -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .rb-product-hero {
+    margin-top: 120px;
+  }
+
+  .rb-product-hero__inner {
+    width: 100%;
+    max-width: var(--rb-product-hero-max-width, 1400px);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .rb-product-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--rb-product-hero-gap, 48px);
+    align-items: start;
+  }
+
+  @media screen and (min-width: 900px) {
+    .rb-product-hero__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .rb-product-hero__media,
+  .rb-product-hero__details {
+    min-width: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB Product hero",
+  "tag": "section",
+  "class": "section rb-product-hero-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "presets": [
+    { "name": "RB Product hero" }
+  ],
+  "templates": ["product"]
+}
+{% endschema %}

@@ -15,6 +15,17 @@
   {% endif %}
 >
   {% capture children %}
+    {%- liquid
+      assign rb_eyebrow = closest.product.type
+      if rb_eyebrow == blank and closest.collection != blank
+        assign rb_eyebrow = closest.collection.title
+      endif
+    -%}
+    {%- if rb_eyebrow != blank -%}
+      <div class="rb-product-hero__eyebrow">
+        {{- rb_eyebrow | escape -}}
+      </div>
+    {%- endif -%}
     <div class="view-product-title">
       <a
         href="{{ closest.product.selected_or_first_available_variant.url }}"
