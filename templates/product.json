@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "rb-product-hero",
@@ -24,6 +25,7 @@
             "slideshow_mobile_controls_style": "thumbnails",
             "thumbnail_position": "bottom",
             "thumbnail_width": 72,
+            "thumbnail_radius": 0,
             "aspect_ratio": "1/1.25",
             "constrain_to_viewport": false,
             "media_fit": "cover",
@@ -70,7 +72,6 @@
               "type": "group",
               "name": "Header",
               "settings": {
-                "open_in_new_tab": false,
                 "content_direction": "column",
                 "vertical_on_mobile": true,
                 "horizontal_alignment": "flex-start",
@@ -94,11 +95,13 @@
                 "border_width": 1,
                 "border_opacity": 100,
                 "border_radius": 0,
-                "placeholder": "",
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -135,7 +138,6 @@
                   "type": "group",
                   "name": "Price & Rating",
                   "settings": {
-                    "open_in_new_tab": false,
                     "content_direction": "row",
                     "vertical_on_mobile": true,
                     "horizontal_alignment": "flex-start",
@@ -159,11 +161,13 @@
                     "border_width": 1,
                     "border_opacity": 100,
                     "border_radius": 0,
-                    "placeholder": "",
                     "toggle_overlay": false,
                     "overlay_color": "#00000026",
                     "overlay_style": "solid",
                     "gradient_direction": "to top",
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -199,6 +203,7 @@
                         "show_number": true,
                         "rating_color": "primary",
                         "type_preset": "paragraph",
+                        "width": "100%",
                         "alignment": "left"
                       },
                       "blocks": {}
@@ -319,296 +324,116 @@
         "padding-block-end": 48
       }
     },
-    "product-recommendations": {
-      "type": "product-recommendations",
+    "rb_why_youll_love_it_UXNr9T": {
+      "type": "rb-why-youll-love-it",
       "blocks": {
-        "header": {
-          "type": "text",
-          "name": "t:names.header",
+        "feature_hQnA3U": {
+          "type": "feature",
           "settings": {
-            "text": "<h3>Goes well with...</h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "title": "Intens fugtpleje",
+            "text": "Efterlader huden blød og smidig med øjeblikkelig effekt."
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "feature_6gNxN6": {
+          "type": "feature",
           "settings": {
-            "product_card_gap": 2,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "card-gallery": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "portrait",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "group": {
-              "type": "_product-card-group",
-              "settings": {
-                "open_in_new_tab": false,
-                "content_direction": "column",
-                "vertical_on_mobile": false,
-                "horizontal_alignment": "space-between",
-                "vertical_alignment": "flex-start",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "flex-start",
-                "gap": 4,
-                "width": "fill",
-                "custom_width": 35,
-                "width_mobile": "fill",
-                "custom_width_mobile": 43,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "group_jUd9Ly": {
-                  "type": "_product-card-group",
-                  "name": "t:names.group",
-                  "settings": {
-                    "open_in_new_tab": false,
-                    "content_direction": "column",
-                    "vertical_on_mobile": true,
-                    "horizontal_alignment": "flex-start",
-                    "vertical_alignment": "center",
-                    "align_baseline": false,
-                    "horizontal_alignment_flex_direction_column": "flex-start",
-                    "vertical_alignment_flex_direction_column": "flex-start",
-                    "gap": 4,
-                    "width": "fill",
-                    "custom_width": 40,
-                    "width_mobile": "fit-content",
-                    "custom_width_mobile": 20,
-                    "height": "fit",
-                    "custom_height": 100,
-                    "inherit_color_scheme": true,
-                    "color_scheme": "",
-                    "background_media": "none",
-                    "video_position": "cover",
-                    "background_image_position": "cover",
-                    "border": "none",
-                    "border_width": 1,
-                    "border_opacity": 100,
-                    "border_radius": 0,
-                    "toggle_overlay": false,
-                    "overlay_color": "#00000026",
-                    "overlay_style": "solid",
-                    "gradient_direction": "to top",
-                    "padding-block-start": 8,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {
-                    "product_title_d368TL": {
-                      "type": "product-title",
-                      "name": "t:names.product_title",
-                      "settings": {
-                        "width": "fit-content",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "h5",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    },
-                    "price_jKmnBC": {
-                      "type": "price",
-                      "settings": {
-                        "show_sale_price_first": true,
-                        "show_installments": false,
-                        "show_tax_info": false,
-                        "type_preset": "h6",
-                        "width": "100%",
-                        "alignment": "left",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "color": "var(--color-foreground)",
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "product_title_d368TL",
-                    "price_jKmnBC"
-                  ]
-                },
-                "swatches": {
-                  "type": "swatches",
-                  "settings": {
-                    "product_swatches_alignment": "flex-start",
-                    "product_swatches_alignment_mobile": "flex-start",
-                    "hide_padding": false,
-                    "product_swatches_padding_top": 4,
-                    "product_swatches_padding_bottom": 10,
-                    "product_swatches_padding_left": 0,
-                    "product_swatches_padding_right": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "group_jUd9Ly",
-                "swatches"
-              ]
-            }
-          },
-          "block_order": [
-            "card-gallery",
-            "group"
-          ]
+            "title": "Styrker negle",
+            "text": "Plejer neglebånd og styrker selve neglens struktur."
+          }
+        },
+        "feature_PAGkEQ": {
+          "type": "feature",
+          "settings": {
+            "title": "Total beskyttelse",
+            "text": "Beskytter mod kulde, sol og hårdt vand hele dagen."
+          }
+        },
+        "feature_C4q4Vg": {
+          "type": "feature",
+          "settings": {
+            "title": "Let tekstur",
+            "text": "Absorberes hurtigt uden at efterlade en fedtet finish."
+          }
         }
       },
       "block_order": [
-        "header"
+        "feature_hQnA3U",
+        "feature_6gNxN6",
+        "feature_PAGkEQ",
+        "feature_C4q4Vg"
       ],
+      "name": "RB - Why you'll love it",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 12,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 24,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 24,
-        "padding-block-end": 24
+        "color_scheme": "",
+        "heading": "Hvorfor du vil elske den",
+        "padding-block-start": 0,
+        "padding-block-end": 60
       }
     },
-    "collection_links_9Pc4EL": {
-      "type": "collection-links",
+    "rb_faq_9phbz7": {
+      "type": "rb-faq",
       "blocks": {
-        "link": {
-          "type": "_collection-link",
-          "static": true,
+        "item_cjyeNj": {
+          "type": "item",
           "settings": {
-            "show_count": true
-          },
-          "blocks": {
-            "title": {
-              "type": "_inline-collection-title",
-              "static": true,
-              "settings": {
-                "font": "var(--font-body--family)",
-                "weight": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none"
-              },
-              "blocks": {}
-            },
-            "image": {
-              "type": "_image",
-              "static": true,
-              "settings": {
-                "height": "medium",
-                "ratio": "square",
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
+            "question": "Føles cremen fedtet efter påføring?",
+            "answer": "<p>Nej, overhovedet ikke. En af de største fordele ved denne creme er dens evne til at trænge hurtigt ind i huden og efterlade en silkeblød finish uden rester.</p>",
+            "open_by_default": true
+          }
+        },
+        "item_WVnANd": {
+          "type": "item",
+          "settings": {
+            "question": "Hvor ofte skal jeg bruge den?",
+            "answer": "<p>Du kan bruge den så ofte du har brug for det. Vi anbefaler at påføre den morgen og aften, samt efter hver håndvask for at opretholde hudens fugtbalance.</p>",
+            "open_by_default": false
+          }
+        },
+        "item_xXUy9G": {
+          "type": "item",
+          "settings": {
+            "question": "Er den god til sensitiv hud?",
+            "answer": "<p>Ja, Clarins formler er dermatologisk testet og kendt for deres skånsomme men effektive planteekstrakter, hvilket gør den ideel til selv de mest sensitive hænder.</p>",
+            "open_by_default": false
+          }
         }
       },
-      "name": "t:names.collection_links_text",
+      "block_order": [
+        "item_cjyeNj",
+        "item_WVnANd",
+        "item_xXUy9G"
+      ],
+      "name": "RB - FAQ",
       "settings": {
-        "layout": "text",
-        "section_width": "page-width",
-        "alignment": "left",
-        "image_position": "right",
-        "color_scheme": "scheme-5",
-        "padding-block-start": 60,
+        "color_scheme": "",
+        "heading": "Ofte stillede spørgsmål",
+        "max_width": 768,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "rb_final_cta_FVKP4G": {
+      "type": "rb-final-cta",
+      "name": "RB - Final CTA",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Giv dine hænder den pleje de fortjener",
+        "text": "<p>Tilmeld dig over 10.000+ glade kunder, der har gjort Clarins Hand & Nail til en fast del af deres daglige rutine.</p>",
+        "price_text": "214,95 kr.",
+        "button_label": "🖤 Forkæl dine hænder i dag",
+        "button_link": "",
+        "meta_1": "Sikker betaling",
+        "meta_2": "Fri fragt v/ 499,-",
+        "meta_3": "Kundesupport",
+        "padding-block-start": 0,
         "padding-block-end": 60
       }
     }
   },
   "order": [
     "main",
-    "product-recommendations",
-    "collection_links_9Pc4EL"
+    "rb_why_youll_love_it_UXNr9T",
+    "rb_faq_9phbz7",
+    "rb_final_cta_FVKP4G"
   ]
 }
