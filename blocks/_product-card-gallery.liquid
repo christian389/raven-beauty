@@ -15,7 +15,7 @@
         <div
           class="
             product-badges__badge product-badges__badge--rectangle
-            {% if product.available == false %} color-{{ settings.badge_sold_out_color_scheme }}{% elsif product.compare_at_price > product.price %} color-{{ settings.badge_sale_color_scheme }}{% endif %}
+            {% if product.available == false %} product-badges__badge--sold-out{% elsif product.compare_at_price > product.price %} product-badges__badge--sale{% endif %}
           "
         >
           {%- if product.available == false -%}
@@ -45,7 +45,8 @@
 
 {% stylesheet %}
   .product-badges {
-    --badge-inset: max(var(--padding-xs), calc((var(--border-radius) + var(--padding-xs)) * (1 - cos(45deg))));
+    /* Match Figma product card badge inset (node 100:26) */
+    --badge-inset: 12px;
 
     position: absolute;
     z-index: var(--layer-flat);
@@ -63,28 +64,37 @@
 
   .product-badges--top-right {
     top: calc(var(--badge-inset) + var(--padding-block-start));
-    right: calc(var(--badge-inset) + var(--padding-inline-start));
+    /* Match design: always place badges on the left */
+    right: auto;
+    left: calc(var(--badge-inset) + var(--padding-inline-start));
   }
 
   .product-badges__badge {
-    --badge-font-size: var(--font-size--xs);
+    /* Match Figma pill (node 100:26) */
+    --badge-font-size: 10px;
 
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--color-foreground);
-    background: var(--color-background);
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.9);
     font-size: var(--badge-font-size);
     font-family: var(--badge-font-family);
     font-weight: var(--badge-font-weight);
     text-transform: var(--badge-text-transform);
     border-radius: var(--badge-border-radius);
+    letter-spacing: 1px;
+    line-height: 15px;
   }
 
   .product-badges__badge--rectangle {
-    padding-block: var(--badge-rectangle-padding-block);
-    padding-inline: var(--badge-rectangle-padding-inline);
+    padding: 4px 8px;
+  }
+
+  .product-badges__badge--sold-out {
+    background: #e04a3a;
+    color: #fff;
   }
 {% endstylesheet %}
 

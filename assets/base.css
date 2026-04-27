@@ -3702,6 +3702,14 @@ fly-to-cart.fly-to-cart--sticky {
 
 .collection-wrapper:has(> .facets--horizontal) .facets__panel[open] {
   @media screen and (min-width: 750px) {
+    /* Ensure z-index applies (otherwise product cards can overlay the dropdown) */
+    position: relative;
+    z-index: var(--facets-open-z-index);
+  }
+}
+
+.collection-wrapper:has(> .facets--horizontal) .facets__panel[open] .facets__panel-content {
+  @media screen and (min-width: 750px) {
     z-index: var(--facets-open-z-index);
   }
 }
@@ -5101,7 +5109,6 @@ body.template-collection .content-for-layout > .shopify-section:first-child .sec
 /* Collection filters/sorting bar (Figma node 100:289) */
 .facets-block-wrapper--horizontal {
   background: #fff;
-  border-top: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -5125,8 +5132,17 @@ body.template-collection .content-for-layout > .shopify-section:first-child .sec
   display: flex;
   align-items: center;
   gap: 12px;
-  overflow: hidden;
   flex: 1 1 auto;
+}
+
+/* Allow facet dropdowns to escape the filter row */
+.rb-filterbar__filters:has(details[open]) {
+  overflow: visible;
+}
+
+/* `overflow-list` uses overflow-y:hidden; override so facet popovers can show */
+.rb-filterbar__filters overflow-list::part(list) {
+  overflow-y: visible;
 }
 
 .rb-filterbar__meta {

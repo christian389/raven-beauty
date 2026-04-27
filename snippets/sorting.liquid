@@ -22,6 +22,11 @@
   {% liquid
     assign default_sort_by = results.default_sort_by
     assign effective_sort_by = sort_by | default: default_sort_by
+    assign is_default_sort = false
+    if effective_sort_by == default_sort_by
+      assign is_default_sort = true
+    endif
+
     for option in results.sort_options
       if option.value == effective_sort_by
         assign status = option.name
@@ -104,7 +109,14 @@
             {{- 'actions.sort' | t -}}
           {%- endif -%}
         </span>
-        <span class="facets__status h6{% if filter_style == 'horizontal' %} rb-sorting__status{% else %} desktop:hidden{% endif %}">
+
+        {%- if filter_style == 'horizontal' -%}
+          <span class="rb-sorting__placeholder{% unless is_default_sort %} hidden{% endunless %}">
+            {{- 'actions.sort' | t -}}
+          </span>
+        {%- endif -%}
+
+        <span class="facets__status h6{% if filter_style == 'horizontal' %} rb-sorting__status{% else %} desktop:hidden{% endif %}{% if filter_style == 'horizontal' and is_default_sort %} hidden{% endif %}">
           {{- status -}}
         </span>
         <span class="svg-wrapper icon-caret icon-animated">
@@ -228,10 +240,11 @@
     right: 0;
     color: var(--color-foreground);
     z-index: var(--facets-upper-z-index);
-    box-shadow: var(--shadow-popover);
-    border: var(--style-border-popover);
-    background-color: var(--color-background);
-    border-radius: var(--style-border-radius-popover);
+    /* Match filter dropdown (Figma node 155:65) */
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    border-radius: 10px;
     width: max-content;
     min-width: var(--facets-panel-min-width);
     min-height: 0;
@@ -249,10 +262,10 @@
     display: flex;
     flex-direction: column;
     grid-row: 1 / span 2;
-    gap: var(--gap-sm);
-    padding: calc(var(--drawer-padding) / 2);
+    gap: 15px;
+    padding: 26px 16px;
     color: var(--color-foreground);
-    overflow: clip;
+    overflow: visible;
     scrollbar-width: none;
     -ms-overflow-style: none;
 
@@ -261,7 +274,7 @@
     }
 
     @media screen and (min-width: 750px) {
-      gap: 0;
+      gap: 15px;
     }
   }
 
@@ -273,15 +286,14 @@
     align-items: center;
     min-width: 180px;
     max-width: 16em;
-    padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
+    padding: 0;
 
     &:hover {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
+      background-color: transparent;
     }
 
     &:focus {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
+      border-radius: 6px;
     }
   }
 
@@ -304,6 +316,19 @@
   .sorting-filter__label {
     cursor: pointer;
     pointer-events: none;
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #0f172a;
+  }
+
+  .rb-sorting__placeholder {
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #0f172a;
   }
 
   .facets-toggle--no-filters .sorting-filter__select-wrapper {

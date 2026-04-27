@@ -3,7 +3,7 @@
 {% if closest.product == blank %}
   {% assign text = 'placeholders.product_title' | t %}
   {% assign product_title = '<p>' | append: text | append: '</p>' %}
-  {% render 'text', fallback_text: product_title, block: block %}
+  {% render 'text', class: 'rb-product-card__product-title', fallback_text: product_title, block: block %}
 {% else %}
   {% assign product_title = '<p>' | append: closest.product.title | append: '</p>' %}
   <a
@@ -11,9 +11,42 @@
     ref="productTitleLink"
     href="{{ closest.product.selected_or_first_available_variant.url }}"
   >
-    {% render 'text', fallback_text: product_title, block: block %}
+    {% if closest.collection != blank %}
+      <span class="rb-product-card__collection-title">
+        {{- closest.collection.title -}}
+      </span>
+    {% endif %}
+    {% render 'text', class: 'rb-product-card__product-title', fallback_text: product_title, block: block %}
   </a>
 {% endif %}
+
+{% stylesheet %}
+  /* Product card header line (Figma node 100:26) */
+  product-card .rb-product-card__collection-title {
+    display: block;
+    font-family: var(--font-body--family);
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  /* Product title line (Figma node 100:26) */
+  product-card .rb-product-card__product-title {
+    color: #0f172a;
+  }
+
+  /* Override theme preset typography (e.g. h5) */
+  product-card .rb-product-card__product-title,
+  product-card .rb-product-card__product-title * {
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
