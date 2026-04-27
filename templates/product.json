@@ -284,7 +284,7 @@
               "type": "product-description",
               "name": "Product description",
               "settings": {
-                "text": "{{ closest.product.description }}",
+                "text": "<p>{{ closest.product.description }}</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -330,6 +330,7 @@
         "feature_hQnA3U": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/droplet.svg",
             "title": "Intens fugtpleje",
             "text": "Efterlader huden blød og smidig med øjeblikkelig effekt."
           }
@@ -337,6 +338,7 @@
         "feature_6gNxN6": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/hand.svg",
             "title": "Styrker negle",
             "text": "Plejer neglebånd og styrker selve neglens struktur."
           }
@@ -344,6 +346,7 @@
         "feature_PAGkEQ": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/shield.svg",
             "title": "Total beskyttelse",
             "text": "Beskytter mod kulde, sol og hårdt vand hele dagen."
           }
@@ -351,6 +354,7 @@
         "feature_C4q4Vg": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/cloud.svg",
             "title": "Let tekstur",
             "text": "Absorberes hurtigt uden at efterlade en fedtet finish."
           }
