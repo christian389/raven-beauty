@@ -16,9 +16,16 @@
 >
   {% capture children %}
     {%- liquid
-      assign rb_eyebrow = closest.product.type
-      if rb_eyebrow == blank and closest.collection != blank
+      assign rb_eyebrow = blank
+
+      if closest.collection != blank
         assign rb_eyebrow = closest.collection.title
+      elsif closest.product != blank and closest.product.collections != blank
+        assign rb_eyebrow = closest.product.collections.first.title
+      endif
+
+      if rb_eyebrow == blank
+        assign rb_eyebrow = closest.product.type
       endif
     -%}
     {%- if rb_eyebrow != blank -%}

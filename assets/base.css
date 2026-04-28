@@ -5083,6 +5083,52 @@ body.template-product .rb-product-hero__eyebrow {
   color: rgb(0 130 72 / 0.7);
 }
 
+/* Product hero: main price styling (Figma node 101:469) */
+body.template-product .rb-product-hero__details product-price,
+body.template-product .rb-product-hero__details product-price :is(.price, .price-item, .money) {
+  font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+  line-height: 36px !important;
+}
+
+/* Product hero: stack Buy it now under Add to cart */
+body.template-product .buy-buttons-block .product-form-buttons .accelerated-checkout-block,
+body.template-product .buy-buttons-block .product-form-buttons .shopify-payment-button {
+  flex: 1 0 100%;
+  width: 100%;
+}
+
+/* Product hero: button rounding (Figma) */
+body.template-product .buy-buttons-block .add-to-cart-button,
+body.template-product .buy-buttons-block .shopify-payment-button__button {
+  border-radius: 12px !important;
+}
+
+/* Product hero: Buy it now button color */
+body.template-product .buy-buttons-block .shopify-payment-button__button {
+  background: #008248 !important;
+  border-color: #008248 !important;
+  color: #fff !important;
+}
+
+body.template-product .buy-buttons-block .shopify-payment-button__button:hover:not([disabled]) {
+  background: #006a3b !important;
+  border-color: #006a3b !important;
+}
+
+/* Product hero: Add to cart button color */
+body.template-product .buy-buttons-block .add-to-cart-button {
+  background: #4713ae !important;
+  border-color: #4713ae !important;
+  color: #fff !important;
+}
+
+body.template-product .buy-buttons-block .add-to-cart-button:hover:not([disabled]) {
+  background: #3b0f92 !important;
+  border-color: #3b0f92 !important;
+}
+
 /* Gallery card */
 body.template-product .rb-product-hero__media media-gallery .product-media-container:first-child {
   background: #f5f5f5;
