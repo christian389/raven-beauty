@@ -88,17 +88,32 @@
             <div class="raven-footer__social">
               {% if section.settings.instagram_url != blank %}
                 <a class="raven-footer__social-link" href="{{ section.settings.instagram_url }}" aria-label="Instagram">
-                  <img src="{{ 'raven/icons/social/instagram.png' | asset_url }}" loading="lazy" alt="">
+                  <img
+                    class="raven-footer__social-icon"
+                    src="{{ 'icon-instagram.svg' | asset_url }}"
+                    loading="lazy"
+                    alt=""
+                  >
                 </a>
               {% endif %}
               {% if section.settings.share_url != blank %}
                 <a class="raven-footer__social-link" href="{{ section.settings.share_url }}" aria-label="Share">
-                  <img src="{{ 'raven/icons/social/share.png' | asset_url }}" loading="lazy" alt="">
+                  <img
+                    class="raven-footer__social-icon"
+                    src="{{ 'icon-share.svg' | asset_url }}"
+                    loading="lazy"
+                    alt=""
+                  >
                 </a>
               {% endif %}
               {% if section.settings.mail_url != blank %}
                 <a class="raven-footer__social-link" href="{{ section.settings.mail_url }}" aria-label="Email">
-                  <img src="{{ 'raven/icons/social/mail.png' | asset_url }}" loading="lazy" alt="">
+                  <img
+                    class="raven-footer__social-icon"
+                    src="{{ 'icon-mail.svg' | asset_url }}"
+                    loading="lazy"
+                    alt=""
+                  >
                 </a>
               {% endif %}
             </div>
@@ -223,7 +238,7 @@
     text-decoration: none;
   }
 
-  .raven-footer__social-link img {
+  .raven-footer__social-icon {
     width: 18px;
     height: 18px;
     display: block;
