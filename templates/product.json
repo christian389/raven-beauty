@@ -376,78 +376,14 @@
     },
     "rb_product_description_details_en9VeL": {
       "type": "rb-product-description-details",
-      "blocks": {
-        "ingredient_TqJKtX": {
-          "type": "ingredient",
-          "settings": {
-            "title": "Sheasmør",
-            "text": "Giver dybdegående næring og naturlig beskyttelse."
-          }
-        },
-        "ingredient_Qw4rdz": {
-          "type": "ingredient",
-          "settings": {
-            "title": "Sesamolie",
-            "text": "Blødgør huden og øger elasticiteten."
-          }
-        },
-        "ingredient_XGUGU3": {
-          "type": "ingredient",
-          "settings": {
-            "title": "Myrrha-ekstrakt",
-            "text": "Styrker neglene og plejer neglebåndene."
-          }
-        },
-        "ingredient_L8Wz3x": {
-          "type": "ingredient",
-          "settings": {
-            "title": "Japansk morbærekstrakt",
-            "text": "Støtter hudbarrieren og lysner hudtonen."
-          }
-        },
-        "info_card_YhQ7tG": {
-          "type": "info_card",
-          "settings": {
-            "content_source": "manual",
-            "title": "Sådan bruges den",
-            "text": "<p>Påfør en lille mængde på rene, tørre hænder. Massér ind fra fingerspidserne og op mod håndleddet. Gentag efter behov i løbet af dagen.</p>"
-          }
-        },
-        "info_card_gGK6En": {
-          "type": "info_card",
-          "settings": {
-            "content_source": "manual",
-            "title": "Hvem er den til?",
-            "text": "<p>Alle hudtyper. Særligt velegnet til dig med tørre hænder eller sarte neglebånd, der har brug for ekstra pleje og beskyttelse.</p>"
-          }
-        },
-        "review_HxLMLg": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "quote": "Elsker hvor hurtigt den trænger ind – mine hænder føles silkebløde hele dagen.",
-            "author": "Sophie J., København"
-          }
-        }
-      },
-      "block_order": [
-        "ingredient_TqJKtX",
-        "ingredient_Qw4rdz",
-        "ingredient_XGUGU3",
-        "ingredient_L8Wz3x",
-        "info_card_YhQ7tG",
-        "info_card_gGK6En",
-        "review_HxLMLg"
-      ],
       "name": "RB - Product details",
       "settings": {
         "color_scheme": "",
-        "heading": "Om produktet",
-        "body_1": "<p>Clarins Hand & Nail Treatment Cream er udviklet til at give dine hænder samme opmærksomhed som dit ansigt. Den silkebløde formel smelter ind i huden og giver langvarig fugt, samtidig med at den hjælper med at bevare hudens elasticitet og komfort.</p>",
-        "body_2": "<p>Cremen arbejder aktivt på at pleje både hud, negle og neglebånd. Resultatet er velplejede hænder, stærkere negle og en mere ensartet hudtone. Perfekt til dig, der ønsker synligt smukkere hænder – hver dag.</p>",
-        "ingredients_heading": "Nøgleingredienser",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "ingredients_icon": "shopify://shop_images/ingredients.svg",
+        "how_to_use_icon": "shopify://shop_images/howtouse.svg",
+        "who_is_it_for_icon": "shopify://shop_images/person.svg",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "rb_faq_9phbz7": {
