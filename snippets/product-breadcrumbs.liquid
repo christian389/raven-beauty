@@ -12,13 +12,13 @@
     </li>
 
     {%- if crumb_collection != blank -%}
-      <li class="collection-breadcrumbs__sep" aria-hidden="true">›</li>
+      <li class="collection-breadcrumbs__sep" aria-hidden="true">/</li>
       <li class="collection-breadcrumbs__item">
         <a class="collection-breadcrumbs__link" href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a>
       </li>
     {%- endif -%}
 
-    <li class="collection-breadcrumbs__sep" aria-hidden="true">›</li>
+    <li class="collection-breadcrumbs__sep" aria-hidden="true">/</li>
     <li class="collection-breadcrumbs__item">
       <span class="collection-breadcrumbs__current">{{ product.title | escape }}</span>
     </li>

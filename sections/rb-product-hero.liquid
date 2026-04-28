@@ -41,6 +41,44 @@
     margin-top: 120px;
   }
 
+  .rb-product-hero__short-description {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .rb-product-hero rte-formatter,
+  .rb-product-hero .text-block.rte {
+    font-size: 18px;
+    line-height: 28px;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    color: #4B5563;
+  }
+
+  .rb-product-hero rte-formatter :is(p, span, strong, em, a, li) {
+    color: inherit;
+    font-family: inherit;
+  }
+
+  /* Reduce spacing specifically between eyebrow and title */
+  .rb-product-hero .rb-product-hero__eyebrow {
+    margin-bottom: calc(8px - var(--gap, 0px));
+  }
+
+  /* Product gallery thumbnails: force 72px boxed thumbs */
+  .rb-product-hero .slideshow-controls__thumbnail {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .rb-product-hero .slideshow-controls__thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   .rb-product-hero__inner {
     width: 100%;
     max-width: var(--rb-product-hero-max-width, 1400px);

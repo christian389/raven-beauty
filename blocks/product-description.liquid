@@ -1,14 +1,41 @@
 
 
 {% liquid
-  assign product = block.settings.product
-  if request.visual_preview_mode and product == blank
-    assign product = collections.all.products.first
-    assign text = product.description
+  assign product_resource = closest.product | default: product | default: block.settings.product
+
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+
+  assign text = blank
+  if product_resource != blank
+    assign short_mf = product_resource.metafields.custom.short_description
+
+    capture text
+      if section.type == 'rb-product-hero'
+        if short_mf != blank and short_mf.value != blank
+          echo short_mf | metafield_tag
+        elsif product_resource.description != blank
+          echo product_resource.description | strip_html | truncatewords: 32
+        endif
+      else
+        if request.visual_preview_mode
+          echo product_resource.description
+        endif
+      endif
+    endcapture
   endif
 %}
 
-{% render 'text', fallback_text: text, block: block %}
+{% if section.type == 'rb-product-hero' %}
+  {% if text != blank %}
+    <div class="rb-product-hero__short-description">
+      {{ text }}
+    </div>
+  {% endif %}
+{% else %}
+  {% render 'text', fallback_text: text, block: block %}
+{% endif %}
 
 {% schema %}
 {
