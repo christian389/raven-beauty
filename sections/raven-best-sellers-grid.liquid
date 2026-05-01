@@ -107,8 +107,28 @@
             </div>
 
             <div class="raven-best-sellers__meta">
-              {% if section.settings.show_vendor and product.vendor != blank %}
-                <div class="raven-best-sellers__vendor">{{ product.vendor | escape }}</div>
+              {% if section.settings.show_vendor %}
+                {% liquid
+                  assign brand_names = ''
+
+                  if product.metafields.custom.brand != blank and product.metafields.custom.brand.value != blank
+                    for brand_item in product.metafields.custom.brand.value
+                      assign brand_name = brand_item.brand.value | default: brand_item.brand
+                      if brand_name != blank
+                        if brand_names != blank
+                          assign brand_names = brand_names | append: ', '
+                        endif
+                        assign brand_names = brand_names | append: brand_name
+                      endif
+                    endfor
+                  endif
+                %}
+
+                {% if brand_names != blank %}
+                  <div class="raven-best-sellers__vendor">{{ brand_names | escape }}</div>
+                {% elsif product.vendor != blank %}
+                  <div class="raven-best-sellers__vendor">{{ product.vendor | escape }}</div>
+                {% endif %}
               {% endif %}
 
               <div class="raven-best-sellers__title">
