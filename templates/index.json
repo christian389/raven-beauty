@@ -103,7 +103,7 @@
           "settings": {
             "image": "shopify://shop_images/makeup.png",
             "title": "Makeup",
-            "link": ""
+            "link": "shopify://collections/makeup"
           }
         },
         "category_rwdwxh": {
