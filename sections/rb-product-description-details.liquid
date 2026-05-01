@@ -25,25 +25,42 @@
       assign ing_name = ingredient.name | default: ingredient.name.value
       assign ing_desc = ingredient.description | default: ingredient.description.value
 
-      echo '<div class="rb-pdd__ingredient">'
-      echo '<span class="rb-pdd__dot" aria-hidden="true"></span>'
-      echo '<div class="rb-pdd__ingredient-body">'
-      if ing_name != blank
-        echo '<h4 class="rb-pdd__ingredient-title">'
-        echo ing_name | escape
-        echo '</h4>'
+      if ing_name != blank or ing_desc != blank
+        echo '<div class="rb-pdd__ingredient">'
+        echo '<span class="rb-pdd__dot" aria-hidden="true"></span>'
+        echo '<div class="rb-pdd__ingredient-body">'
+        if ing_name != blank
+          echo '<h4 class="rb-pdd__ingredient-title">'
+          echo ing_name | escape
+          echo '</h4>'
+        endif
+        if ing_desc != blank
+          echo '<p class="rb-pdd__ingredient-text">'
+          echo ing_desc | strip_html | escape
+          echo '</p>'
+        endif
+        echo '</div></div>'
       endif
-      if ing_desc != blank
-        echo '<p class="rb-pdd__ingredient-text">'
-        echo ing_desc | strip_html | escape
-        echo '</p>'
-      endif
-      echo '</div></div>'
     endfor
   endcapture
+
+  assign meta_ingredients_items_trimmed = meta_ingredients_items | strip
+  assign has_key_ingredients = false
+  if meta_ingredients_items_trimmed != blank
+    assign has_key_ingredients = true
+  endif
 -%}
 
-<section class="rb-pdd spacing-style color-{{ section.settings.color_scheme }}" style="{% render 'spacing-style', settings: section.settings %}">
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+  }
+</style>
+
+<section
+  class="rb-pdd spacing-style color-{{ section.settings.color_scheme }}"
+  style="{% render 'spacing-style', settings: section.settings %} background: {{ section.settings.background_color }};"
+>
   <div class="rb-pdd__inner" style="--rb-pdd-max-width: {{ max_width }}px;">
     <div class="rb-pdd__grid">
       <div class="rb-pdd__main">
@@ -55,43 +72,50 @@
           {%- endif -%}
         </div>
 
-        <div class="rb-pdd__ingredients" {% if meta_ingredients_items == blank %}hidden{% endif %}>
-          <div class="rb-pdd__ingredients-head">
-            <span class="rb-pdd__ingredients-icon" aria-hidden="true">
-              {%- if section.settings.ingredients_icon != blank -%}
-                {{
-                  section.settings.ingredients_icon
-                  | image_url: width: 36
-                  | image_tag: loading: 'lazy', widths: '18, 24, 36', sizes: '18px', alt: ''
-                }}
-              {%- else -%}
-                <span class="rb-pdd__ingredients-icon-fallback"></span>
-              {%- endif -%}
-            </span>
-            <h3 class="rb-pdd__ingredients-title">Nøgleingredienser</h3>
-          </div>
+        {%- if has_key_ingredients -%}
+          <div class="rb-pdd__ingredients">
+            <div class="rb-pdd__ingredients-head">
+              <span class="rb-pdd__ingredients-icon" aria-hidden="true">
+                {%- if section.settings.ingredients_icon != blank -%}
+                  {{
+                    section.settings.ingredients_icon
+                    | image_url: width: 36
+                    | image_tag: loading: 'lazy', widths: '18, 24, 36', sizes: '18px', alt: ''
+                  }}
+                {%- else -%}
+                  <span class="rb-pdd__ingredients-icon-fallback"></span>
+                {%- endif -%}
+              </span>
+              <h3 class="rb-pdd__ingredients-title">Nøgleingredienser</h3>
+            </div>
 
-          <div class="rb-pdd__ingredients-grid" role="list">
-            {{ meta_ingredients_items }}
+            <div class="rb-pdd__ingredients-grid" role="list">
+              {{ meta_ingredients_items_trimmed }}
+            </div>
           </div>
-        </div>
+        {%- endif -%}
       </div>
 
       <div class="rb-pdd__side">
         {%- liquid
           assign how_to_use_html = blank
           assign who_is_it_for_html = blank
+          assign how_to_use_plain = blank
+          assign who_is_it_for_plain = blank
           if request.page_type == 'product' and product_resource != blank
             assign how_to_use_mf = product_resource.metafields.custom.how_to_use
             assign who_is_it_for_mf = product_resource.metafields.custom.who_is_it_for
 
-            if how_to_use_mf != blank and how_to_use_mf.value != blank
+            assign how_to_use_plain = how_to_use_mf.value | default: '' | strip_html | replace: '&nbsp;', '' | strip
+            assign who_is_it_for_plain = who_is_it_for_mf.value | default: '' | strip_html | replace: '&nbsp;', '' | strip
+
+            if how_to_use_mf != blank and how_to_use_plain != blank
               capture how_to_use_html
                 echo how_to_use_mf | metafield_tag
               endcapture
             endif
 
-            if who_is_it_for_mf != blank and who_is_it_for_mf.value != blank
+            if who_is_it_for_mf != blank and who_is_it_for_plain != blank
               capture who_is_it_for_html
                 echo who_is_it_for_mf | metafield_tag
               endcapture
@@ -99,37 +123,41 @@
           endif
         -%}
 
-        <div class="rb-pdd__card" {% if how_to_use_html == blank %}hidden{% endif %}>
-          <div class="rb-pdd__card-head">
-            {%- if section.settings.how_to_use_icon != blank -%}
-              {{
-                section.settings.how_to_use_icon
-                | image_url: width: 40
-                | image_tag: loading: 'lazy', widths: '20, 30, 40', sizes: '20px', alt: ''
-              }}
-            {%- else -%}
-              <span class="rb-pdd__card-icon-fallback" aria-hidden="true"></span>
-            {%- endif -%}
-            <h3 class="rb-pdd__card-title">Sådan bruges den</h3>
+        {%- if how_to_use_plain != blank -%}
+          <div class="rb-pdd__card">
+            <div class="rb-pdd__card-head">
+              {%- if section.settings.how_to_use_icon != blank -%}
+                {{
+                  section.settings.how_to_use_icon
+                  | image_url: width: 40
+                  | image_tag: loading: 'lazy', widths: '20, 30, 40', sizes: '20px', alt: ''
+                }}
+              {%- else -%}
+                <span class="rb-pdd__card-icon-fallback" aria-hidden="true"></span>
+              {%- endif -%}
+              <h3 class="rb-pdd__card-title">Sådan bruges den</h3>
+            </div>
+            <div class="rb-pdd__card-text">{{ how_to_use_html }}</div>
           </div>
-          <div class="rb-pdd__card-text">{{ how_to_use_html }}</div>
-        </div>
+        {%- endif -%}
 
-        <div class="rb-pdd__card" {% if who_is_it_for_html == blank %}hidden{% endif %}>
-          <div class="rb-pdd__card-head">
-            {%- if section.settings.who_is_it_for_icon != blank -%}
-              {{
-                section.settings.who_is_it_for_icon
-                | image_url: width: 40
-                | image_tag: loading: 'lazy', widths: '20, 30, 40', sizes: '20px', alt: ''
-              }}
-            {%- else -%}
-              <span class="rb-pdd__card-icon-fallback" aria-hidden="true"></span>
-            {%- endif -%}
-            <h3 class="rb-pdd__card-title">Hvem er den til?</h3>
+        {%- if who_is_it_for_plain != blank -%}
+          <div class="rb-pdd__card">
+            <div class="rb-pdd__card-head">
+              {%- if section.settings.who_is_it_for_icon != blank -%}
+                {{
+                  section.settings.who_is_it_for_icon
+                  | image_url: width: 40
+                  | image_tag: loading: 'lazy', widths: '20, 30, 40', sizes: '20px', alt: ''
+                }}
+              {%- else -%}
+                <span class="rb-pdd__card-icon-fallback" aria-hidden="true"></span>
+              {%- endif -%}
+              <h3 class="rb-pdd__card-title">Hvem er den til?</h3>
+            </div>
+            <div class="rb-pdd__card-text">{{ who_is_it_for_html }}</div>
           </div>
-          <div class="rb-pdd__card-text">{{ who_is_it_for_html }}</div>
-        </div>
+        {%- endif -%}
 
         {%- if meta_review != blank -%}
           {%- liquid
@@ -477,6 +505,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F6F6F8"
     },
     {
       "type": "header",

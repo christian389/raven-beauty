@@ -2,7 +2,16 @@
   assign max_width = 1400
 -%}
 
-<section class="rb-love spacing-style color-{{ section.settings.color_scheme }}" style="{% render 'spacing-style', settings: section.settings %}">
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+  }
+</style>
+
+<section
+  class="rb-love spacing-style color-{{ section.settings.color_scheme }}"
+  style="{% render 'spacing-style', settings: section.settings %} background: {{ section.settings.background_color }};"
+>
   <div class="rb-love__inner" style="--rb-love-max-width: {{ max_width }}px;">
     <div class="rb-love__card">
       {%- if section.settings.heading != blank -%}
@@ -160,6 +169,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F6F6F8"
     },
     {
       "type": "text",

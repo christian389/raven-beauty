@@ -10,7 +10,16 @@
 
 <script src="{{ 'rb-drag-scroll.js' | asset_url }}" defer></script>
 
-<div class="rb-product-hero color-{{ section.settings.color_scheme }} spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+  }
+</style>
+
+<div
+  class="rb-product-hero color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %} background: {{ section.settings.background_color }};"
+>
   <div class="rb-product-hero__inner" style="--rb-product-hero-max-width: {{ max_width }}px; --rb-product-hero-gap: {{ gap }}px;">
     {% if section.settings.show_breadcrumbs and request.page_type == 'product' and product_resource != blank %}
       {% render 'product-breadcrumbs', product: product_resource %}
@@ -116,6 +125,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F6F6F8"
     },
     {
       "type": "checkbox",
