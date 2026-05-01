@@ -111,7 +111,7 @@
           "settings": {
             "image": "shopify://shop_images/Harpleje.png",
             "title": "Hårpleje",
-            "link": ""
+            "link": "shopify://collections/harpleje"
           }
         },
         "category_tbknAk": {
@@ -119,7 +119,7 @@
           "settings": {
             "image": "shopify://shop_images/Parfume.png",
             "title": "Parfume",
-            "link": ""
+            "link": "shopify://collections/parfume"
           }
         }
       },
