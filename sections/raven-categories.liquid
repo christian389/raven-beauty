@@ -32,8 +32,7 @@
         <a
           class="raven-categories__view-all"
           {% if section.settings.view_all_link == blank %}
-            role="link"
-            aria-disabled="true"
+            href="{{ routes.collections_url }}"
           {% else %}
             href="{{ section.settings.view_all_link }}"
           {% endif %}

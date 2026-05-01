@@ -101,7 +101,7 @@
       endif
     %}
     <div
-      class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
+      class="account-button header-actions__action header-actions__raven-icon-button{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
     >
       <shopify-account
         menu="{{ customer_account_menu }}"
@@ -645,6 +645,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  #header-component.header--raven .account-button shopify-account {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
   }
 
   #header-component.header--raven .header-actions__cart-image img,

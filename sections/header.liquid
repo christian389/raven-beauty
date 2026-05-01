@@ -126,7 +126,7 @@
     assign bottom_row_blocks = bottom_row_blocks | append: 'menu,'
   endif
 
-  if section.settings.search_style != 'none'
+  if search_style != 'none'
     if section.settings.search_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
     endif
@@ -222,7 +222,12 @@
         {% if show_country %}
           {% if section.settings.country_selector_style == true %}
             {% liquid
-              assign background_brightness = section.settings.color_scheme.settings.background | color_brightness
+              assign localization_scheme = section.settings.color_scheme_top
+              if section.settings.localization_row == 'bottom'
+                assign localization_scheme = section.settings.color_scheme_bottom
+              endif
+
+              assign background_brightness = localization_scheme.settings.background | color_brightness
               if background_brightness < 64
                 assign shadow_size = 4
               else
@@ -468,7 +473,12 @@
 
   #header-component.header--raven .header__column--left,
   #header-component.header--raven .header__column--right {
-    gap: 16px;
+    gap: 28px;
+  }
+
+  /* Add extra breathing room specifically between search and actions */
+  #header-component.header--raven .header__column--right .search-action {
+    margin-inline-end: 8px;
   }
 
   /* Figma: brand + nav gap 40px */
