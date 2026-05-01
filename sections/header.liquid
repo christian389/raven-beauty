@@ -452,9 +452,21 @@
     max-width: 1280px;
     margin-inline: auto;
 
-    /* Figma: pt 16px, pb 17px (keep), but don't over-pad left/right */
-    padding-block: 16px 17px;
-    padding-inline: 16px;
+    /*
+      Mobile first: preserve the theme's mobile grid behavior.
+      The header uses a 5-area grid on small screens; extra padding here can
+      squeeze the center logo and cause overflow.
+    */
+    @media screen and (max-width: 749px) {
+      padding-block: 12px;
+      padding-inline: 0 var(--padding-3xs);
+    }
+
+    /* Desktop/tablet: match Figma spacing */
+    @media screen and (min-width: 750px) {
+      padding-block: 16px 17px;
+      padding-inline: 16px;
+    }
 
     @media screen and (min-width: 990px) {
       padding-inline: 24px;
@@ -471,9 +483,18 @@
     display: flex;
   }
 
+  /* Mobile: hide logo inside the grid; we render a dedicated mobile row above */
+  @media screen and (max-width: 749px) {
+    #header-component.header--raven .header-logo {
+      display: none !important;
+    }
+  }
+
   #header-component.header--raven .header__column--left,
   #header-component.header--raven .header__column--right {
-    gap: 28px;
+    @media screen and (min-width: 750px) {
+      gap: 28px;
+    }
   }
 
   /* Add extra breathing room specifically between search and actions */
@@ -483,7 +504,9 @@
 
   /* Figma: brand + nav gap 40px */
   #header-component.header--raven .header__column--left:has(.header-logo):has(.header-menu) {
-    gap: 40px;
+    @media screen and (min-width: 750px) {
+      gap: 40px;
+    }
   }
 
   /* Figma nav typography */
@@ -496,6 +519,17 @@
     color: #0f172a;
     text-transform: none;
     letter-spacing: normal;
+  }
+
+  /* Raven header menu hover state */
+  #header-component.header--raven .menu-list__link:hover,
+  #header-component.header--raven .menu-list__link:focus-visible {
+    color: #4713AE;
+  }
+
+  #header-component.header--raven .menu-list__link:hover .menu-list__link-title,
+  #header-component.header--raven .menu-list__link:focus-visible .menu-list__link-title {
+    color: #4713AE;
   }
 
   #header-component.header--raven .menu-list__list {

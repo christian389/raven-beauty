@@ -625,6 +625,17 @@
     gap: 10px;
   }
 
+  /* Mobile: reduce action spacing to prevent crowding */
+  @media screen and (max-width: 749px) {
+    header-actions {
+      gap: 6px;
+    }
+
+    #header-component.header--raven cart-drawer-component.cart-drawer {
+      gap: 6px;
+    }
+  }
+
   /* Raven Beauty icon buttons (Figma 1:222) */
   #header-component.header--raven .header-actions__raven-icon-button {
     width: 40px;

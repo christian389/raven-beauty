@@ -14,6 +14,7 @@
     --rsp-columns-mobile: {{ section.settings.columns_mobile }};
     --rsp-heading-color: {{ section.settings.heading_color }};
     --rsp-text-color: {{ section.settings.text_color }};
+    --rsp-section-bg: {{ section.settings.section_background }};
   "
 >
   <div
@@ -99,6 +100,7 @@
   .raven-social-proof {
     --raven-font-heading: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
     --raven-font-body: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--rsp-section-bg, #F6F6F8);
   }
 
   .raven-social-proof__container {
@@ -175,6 +177,11 @@
   }
 
   @media screen and (max-width: 749px) {
+    /* Match mobile gutters with header/hero */
+    .raven-social-proof__container {
+      padding-inline: 16px !important;
+    }
+
     .raven-social-proof__header {
       margin-bottom: 24px;
     }
@@ -270,6 +277,13 @@
     {
       "type": "header",
       "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "alpha": true,
+      "default": "#F6F6F8"
     },
     {
       "type": "color",

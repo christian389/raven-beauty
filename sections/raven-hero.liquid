@@ -26,6 +26,12 @@
     --raven-hero-padding-inline: {{ section.settings.inner_padding_inline }}px;
     --raven-hero-outer-padding-block: {{ section.settings.outer_padding_block }}px;
     --raven-hero-outer-padding-inline: {{ section.settings.outer_padding_inline }}px;
+    --raven-hero-padding-block-mobile: {{ section.settings.inner_padding_block_mobile }}px;
+    --raven-hero-padding-inline-mobile: {{ section.settings.inner_padding_inline_mobile }}px;
+    --raven-hero-outer-padding-block-mobile: {{ section.settings.outer_padding_block_mobile }}px;
+    --raven-hero-outer-padding-inline-mobile: {{ section.settings.outer_padding_inline_mobile }}px;
+    --raven-hero-offset-top: {{ section.settings.offset_top }}px;
+    --raven-hero-offset-top-mobile: {{ section.settings.offset_top_mobile }}px;
     --raven-hero-content-max-width: {{ section.settings.content_max_width | default: 1280 }}px;
     --raven-hero-eyebrow-gap: {{ section.settings.content_gap }}px;
     --raven-hero-section-bg: {{ section.settings.section_background }};
@@ -124,7 +130,7 @@
     width: 100%;
     max-width: 1280px;
     margin-inline: auto;
-    margin-top: 100px;
+    margin-top: var(--raven-hero-offset-top, 0px);
   }
 
   .raven-hero__background {
@@ -230,11 +236,21 @@
 
   @media screen and (max-width: 749px) {
     .raven-hero {
-      padding: var(--raven-hero-outer-padding-block) max(16px, var(--raven-hero-outer-padding-inline));
+      padding: var(--raven-hero-outer-padding-block-mobile, var(--raven-hero-outer-padding-block))
+        max(16px, var(--raven-hero-outer-padding-inline-mobile, var(--raven-hero-outer-padding-inline)));
     }
 
     .raven-hero__outer {
-      padding: max(24px, calc(var(--raven-hero-padding-block) * 0.6)) max(16px, calc(var(--raven-hero-padding-inline) * 0.5));
+      /*
+        Mobile: ensure hero never sits under the sticky header.
+        --header-height is set inline in `layout/theme.liquid`.
+      */
+      margin-top: max(
+        var(--header-height, 60px),
+        var(--raven-hero-offset-top-mobile, var(--raven-hero-offset-top, 0px))
+      );
+      padding: max(24px, var(--raven-hero-padding-block-mobile, calc(var(--raven-hero-padding-block) * 0.6)))
+        max(16px, var(--raven-hero-padding-inline-mobile, calc(var(--raven-hero-padding-inline) * 0.5)));
       min-height: max(420px, calc(var(--raven-hero-min-height) * 0.75));
     }
   }
@@ -394,6 +410,26 @@
     },
     {
       "type": "range",
+      "id": "offset_top",
+      "label": "Top offset (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "offset_top_mobile",
+      "label": "Top offset (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
       "id": "outer_padding_block",
       "label": "Outer padding (top/bottom)",
       "min": 0,
@@ -401,6 +437,16 @@
       "step": 4,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "outer_padding_block_mobile",
+      "label": "Outer padding (top/bottom) - mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "range",
@@ -414,6 +460,16 @@
     },
     {
       "type": "range",
+      "id": "outer_padding_inline_mobile",
+      "label": "Outer padding (left/right) - mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
       "id": "inner_padding_block",
       "label": "Inner padding (top/bottom)",
       "min": 0,
@@ -424,6 +480,16 @@
     },
     {
       "type": "range",
+      "id": "inner_padding_block_mobile",
+      "label": "Inner padding (top/bottom) - mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
       "id": "inner_padding_inline",
       "label": "Inner padding (left/right)",
       "min": 0,
@@ -431,6 +497,16 @@
       "step": 4,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_inline_mobile",
+      "label": "Inner padding (left/right) - mobile",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
     }
   ],
   "presets": [

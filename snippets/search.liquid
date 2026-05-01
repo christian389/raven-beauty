@@ -55,10 +55,11 @@
     border-radius: 9999px;
     border: 0;
     background: #F1F5F9;
-    /* Figma node 100:405 */
-    padding: 0 19px 0 20px;
+    /* Use normal flow so icon/text spacing is consistent */
+    padding: 0 16px;
     display: flex;
     align-items: center;
+    gap: 8px;
     position: relative;
   }
 
@@ -69,9 +70,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    position: absolute;
-    left: 14.5px;
-    top: 12.5px;
+    position: static;
   }
 
   #header-component.header--raven .search-action__pill-icon img {

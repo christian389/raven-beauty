@@ -40,11 +40,12 @@
       </div>
     {% endif %}
 
-    <div
-      class="raven-best-sellers__grid"
-      style="--rbs-columns: {{ section.settings.columns }}; --rbs-columns-mobile: {{ section.settings.columns_mobile }};"
-      role="list"
-    >
+    <div class="raven-best-sellers__slider" aria-label="Best sellers slider">
+      <div
+        class="raven-best-sellers__grid"
+        style="--rbs-columns: {{ section.settings.columns }}; --rbs-columns-mobile: {{ section.settings.columns_mobile }};"
+        role="list"
+      >
       {% if selected_products != blank %}
         {% for product in selected_products %}
           <product-card
@@ -158,6 +159,7 @@
           </div>
         {% endfor %}
       {% endif %}
+      </div>
     </div>
   </div>
 </section>
@@ -332,8 +334,73 @@
   }
 
   @media screen and (max-width: 749px) {
+    .raven-best-sellers__media {
+      height: 220px;
+    }
+
     .raven-best-sellers__heading-wrap {
       margin-bottom: 24px;
+    }
+
+    /* Match mobile gutters with header/hero */
+    .raven-best-sellers__container {
+      padding-inline: 16px !important;
+    }
+
+    /*
+      Mobile slider:
+      Show ~1.5 cards (second one "peeks") to hint horizontal scroll.
+    */
+    .raven-best-sellers__slider {
+      position: relative;
+      padding-inline: 16px;
+      margin-inline: -16px;
+      overflow: hidden;
+    }
+
+    .raven-best-sellers__grid {
+      --rbs-gap-mobile: min(var(--rbs-gap), 12px);
+
+      display: flex;
+      gap: var(--rbs-gap-mobile);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+
+      scroll-snap-type: x proximity;
+      scroll-padding-inline: 0px;
+    }
+
+    .raven-best-sellers__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .raven-best-sellers__grid {
+      scrollbar-width: none;
+    }
+
+    .raven-best-sellers__card {
+      flex: 0 0 calc((100% - var(--rbs-gap-mobile)) / 1.5);
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+
+    /* Smoke overlay pinned to the right edge */
+    .raven-best-sellers__slider::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 88px;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        rgb(var(--color-background-rgb) / 0) 0%,
+        rgb(var(--color-background-rgb) / 0.35) 25%,
+        rgb(var(--color-background-rgb) / 0.75) 55%,
+        rgb(var(--color-background-rgb) / 1) 100%
+      );
     }
   }
 {% endstylesheet %}

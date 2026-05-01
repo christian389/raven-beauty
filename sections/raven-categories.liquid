@@ -45,63 +45,65 @@
       {% endif %}
     </header>
 
-    <div class="raven-categories__grid" role="list">
-      {% for block in section.blocks %}
-        {% liquid
-          assign card_tag = 'div'
-          if block.settings.link != blank
-            assign card_tag = 'a'
-          endif
+    <div class="raven-categories__slider" aria-label="Categories slider">
+      <div class="raven-categories__grid" role="list">
+        {% for block in section.blocks %}
+          {% liquid
+            assign card_tag = 'div'
+            if block.settings.link != blank
+              assign card_tag = 'a'
+            endif
 
-          assign fallback_key = block.settings.title | default: '' | handleize
-          assign fallback_asset = 'raven/categories/' | append: fallback_key | append: '.png'
-        %}
+            assign fallback_key = block.settings.title | default: '' | handleize
+            assign fallback_asset = 'raven/categories/' | append: fallback_key | append: '.png'
+          %}
 
-        <{{ card_tag }}
-          class="raven-categories__card"
-          role="listitem"
-          {% if card_tag == 'a' %}
-            href="{{ block.settings.link }}"
-          {% endif %}
-          {{ block.shopify_attributes }}
-        >
-          <div class="raven-categories__media">
-            <div class="raven-categories__media-surface" aria-hidden="true"></div>
-
-            {% if block.settings.image != blank %}
-              {{
-                block.settings.image
-                | image_url: width: 2100
-                | image_tag:
-                  widths: widths,
-                  sizes: sizes,
-                  class: 'raven-categories__image',
-                  loading: 'lazy',
-                  alt: ''
-              }}
-            {% elsif fallback_key != blank %}
-              <img
-                class="raven-categories__image"
-                src="{{ fallback_asset | asset_url }}"
-                loading="lazy"
-                alt=""
-              >
-            {% else %}
-              {{ 'image' | placeholder_svg_tag: 'raven-categories__image' }}
+          <{{ card_tag }}
+            class="raven-categories__card"
+            role="listitem"
+            {% if card_tag == 'a' %}
+              href="{{ block.settings.link }}"
             {% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <div class="raven-categories__media">
+              <div class="raven-categories__media-surface" aria-hidden="true"></div>
 
-            {% if section.settings.enable_image_overlay %}
-              <div class="raven-categories__overlay" aria-hidden="true"></div>
-            {% endif %}
-          </div>
+              {% if block.settings.image != blank %}
+                {{
+                  block.settings.image
+                  | image_url: width: 2100
+                  | image_tag:
+                    widths: widths,
+                    sizes: sizes,
+                    class: 'raven-categories__image',
+                    loading: 'lazy',
+                    alt: ''
+                }}
+              {% elsif fallback_key != blank %}
+                <img
+                  class="raven-categories__image"
+                  src="{{ fallback_asset | asset_url }}"
+                  loading="lazy"
+                  alt=""
+                >
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'raven-categories__image' }}
+              {% endif %}
 
-          {% if block.settings.title != blank %}
-            <div class="raven-categories__title">
-              {{ block.settings.title | escape }}
+              {% if section.settings.enable_image_overlay %}
+                <div class="raven-categories__overlay" aria-hidden="true"></div>
+              {% endif %}
             </div>
-          {% endif %}
-        </{{ card_tag }}>
-      {% endfor %}
+
+            {% if block.settings.title != blank %}
+              <div class="raven-categories__title">
+                {{ block.settings.title | escape }}
+              </div>
+            {% endif %}
+          </{{ card_tag }}>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </section>
@@ -177,6 +179,21 @@
     gap: var(--rcat-card-gap);
     text-decoration: none;
     color: inherit;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Remove any theme hover lift/shadow for these cards */
+  @media (any-pointer: fine) {
+    a.raven-categories__card:hover,
+    a.raven-categories__card:focus-visible,
+    a.raven-categories__card:focus-within,
+    .raven-categories__card:hover,
+    .raven-categories__card:focus-visible,
+    .raven-categories__card:focus-within {
+      box-shadow: none !important;
+      transform: none !important;
+    }
   }
 
   .raven-categories__media {
@@ -221,10 +238,74 @@
   }
 
   @media screen and (max-width: 749px) {
+    /* Match mobile gutters with header/hero */
+    .raven-categories__container {
+      /* spacing-style sets padding via CSS vars; force the actual padding */
+      padding-inline: 16px !important;
+    }
+
     .raven-categories__header {
       flex-direction: column;
       align-items: flex-start;
       margin-bottom: 24px;
+    }
+
+    /*
+      Mobile slider:
+      Show ~1.5 cards (second one "peeks") to hint horizontal scroll.
+    */
+    .raven-categories__slider {
+      position: relative;
+      /* Match the slider's full-bleed scroll area so the smoke overlays the peek */
+      padding-inline: 16px;
+      margin-inline: -16px;
+      overflow: hidden;
+    }
+
+    .raven-categories__grid {
+      --rcat-gap-mobile: min(var(--rcat-gap), 12px);
+
+      display: flex;
+      gap: var(--rcat-gap-mobile);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+
+      /* Proximity feels smoother than mandatory while dragging */
+      scroll-snap-type: x proximity;
+      scroll-padding-inline: 0px;
+    }
+
+    /* Soften the "peek" cut-off edge (non-scrolling overlay) */
+    .raven-categories__slider::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 88px;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        rgb(var(--color-background-rgb) / 0) 0%,
+        rgb(var(--color-background-rgb) / 0.35) 25%,
+        rgb(var(--color-background-rgb) / 0.75) 55%,
+        rgb(var(--color-background-rgb) / 1) 100%
+      );
+    }
+
+    .raven-categories__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .raven-categories__grid {
+      scrollbar-width: none;
+    }
+
+    .raven-categories__card {
+      flex: 0 0 calc((100% - var(--rcat-gap-mobile)) / 1.5);
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
     }
   }
 {% endstylesheet %}
