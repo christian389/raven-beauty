@@ -86,36 +86,58 @@
             <div class="raven-footer__col-title">{{ section.settings.follow_heading | escape }}</div>
 
             <div class="raven-footer__social">
-              {% if section.settings.instagram_url != blank %}
-                <a class="raven-footer__social-link" href="{{ section.settings.instagram_url }}" aria-label="Instagram">
+              {% liquid
+                capture social_rows
+                  echo section.settings.instagram_url
+                  echo '|icon-instagram.svg|Instagram||'
+                  echo section.settings.tiktok_url
+                  echo '|icon-tiktok.svg|TikTok||'
+                  echo section.settings.facebook_url
+                  echo '|icon-facebook.svg|Facebook||'
+                  echo section.settings.youtube_url
+                  echo '|icon-youtube.svg|YouTube||'
+                  echo section.settings.pinterest_url
+                  echo '|icon-pinterest.svg|Pinterest||'
+                  echo section.settings.x_url
+                  echo '|icon-x.svg|X||'
+                  echo section.settings.threads_url
+                  echo '|icon-threads.svg|Threads||'
+                  echo section.settings.snapchat_url
+                  echo '|icon-snapchat.svg|Snapchat||'
+                  echo section.settings.whatsapp_url
+                  echo '|icon-whatsapp.svg|WhatsApp||'
+                  echo section.settings.mail_url
+                  echo '|icon-mail.svg|Email'
+                endcapture
+                assign social_entries = social_rows | split: '||'
+              %}
+              {% for social_entry in social_entries %}
+                {% assign se = social_entry | strip %}
+                {% if se == blank %}
+                  {% continue %}
+                {% endif %}
+                {% assign parts = se | split: '|' %}
+                {% assign social_url = parts[0] | strip %}
+                {% if social_url == blank %}
+                  {% continue %}
+                {% endif %}
+                {% assign social_icon = parts[1] | strip %}
+                {% assign social_label = parts[2] | strip %}
+                <a
+                  class="raven-footer__social-link"
+                  href="{{ social_url }}"
+                  aria-label="{{ social_label | escape }}"
+                >
                   <img
                     class="raven-footer__social-icon"
-                    src="{{ 'icon-instagram.svg' | asset_url }}"
+                    src="{{ social_icon | asset_url }}"
                     loading="lazy"
+                    width="18"
+                    height="18"
                     alt=""
                   >
                 </a>
-              {% endif %}
-              {% if section.settings.share_url != blank %}
-                <a class="raven-footer__social-link" href="{{ section.settings.share_url }}" aria-label="Share">
-                  <img
-                    class="raven-footer__social-icon"
-                    src="{{ 'icon-share.svg' | asset_url }}"
-                    loading="lazy"
-                    alt=""
-                  >
-                </a>
-              {% endif %}
-              {% if section.settings.mail_url != blank %}
-                <a class="raven-footer__social-link" href="{{ section.settings.mail_url }}" aria-label="Email">
-                  <img
-                    class="raven-footer__social-icon"
-                    src="{{ 'icon-mail.svg' | asset_url }}"
-                    loading="lazy"
-                    alt=""
-                  >
-                </a>
-              {% endif %}
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -393,8 +415,43 @@
     },
     {
       "type": "url",
-      "id": "share_url",
-      "label": "Share link"
+      "id": "tiktok_url",
+      "label": "TikTok link"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook link"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube link"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest link"
+    },
+    {
+      "type": "url",
+      "id": "x_url",
+      "label": "X (Twitter) link"
+    },
+    {
+      "type": "url",
+      "id": "threads_url",
+      "label": "Threads link"
+    },
+    {
+      "type": "url",
+      "id": "snapchat_url",
+      "label": "Snapchat link"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "WhatsApp link"
     },
     {
       "type": "url",

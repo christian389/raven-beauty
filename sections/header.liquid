@@ -60,7 +60,7 @@
   endcapture
 
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
+    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, show_customer_account: section.settings.show_customer_account, display_style: section.settings.actions_display_style, section: section
   endcapture
 
   if shop.customer_accounts_enabled
@@ -1306,6 +1306,12 @@
     {
       "type": "paragraph",
       "content": "t:content.manage_customer_accounts"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_customer_account",
+      "label": "Show customer account",
+      "default": true
     },
     {
       "type": "link_list",

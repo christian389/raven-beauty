@@ -81,7 +81,8 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
-  {% if shop.customer_accounts_enabled %}
+  {% assign show_customer_account = show_customer_account | default: true %}
+  {% if shop.customer_accounts_enabled and show_customer_account and customer_account_menu != blank %}
     {% liquid
       assign account_actions_style = ''
       if display_style == 'text' and section
