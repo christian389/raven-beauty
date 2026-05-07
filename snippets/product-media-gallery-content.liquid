@@ -159,7 +159,7 @@
   elsif block_settings.constrain_to_viewport
     assign product_media_container_class = product_media_container_class | append: ' media-fit-' | append: block_settings.media_fit
   else
-    assign product_media_container_class = product_media_container_class | append: ' media-fit-contain'
+    assign product_media_container_class = product_media_container_class | append: ' media-fit-cover'
   endif
 
   if block_settings.aspect_ratio == 'adapt'
