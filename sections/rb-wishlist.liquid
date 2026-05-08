@@ -1,5 +1,5 @@
 {%- liquid
-  assign max_width = section.settings.max_width | default: 1100
+  assign max_width = section.settings.max_width | default: 1200
 -%}
 
 <style>
@@ -13,66 +13,73 @@
   style="{% render 'spacing-style', settings: section.settings %} background: {{ section.settings.background_color }};"
 >
   <wishlist-page-component class="rb-wishlist__inner" style="--rb-wishlist-max-width: {{ max_width }}px;">
-    <header class="rb-wishlist__header">
-      <h2 class="rb-wishlist__heading">
-        {%- if section.settings.heading != blank -%}
-          {{ section.settings.heading | escape }}
-        {%- else -%}
-          {{ 'wishlist.heading' | t }}
-        {%- endif -%}
-      </h2>
+    <div class="rb-wishlist__toolbar">
+      <div class="rb-wishlist__title-block">
+        <h2 class="rb-wishlist__heading">
+          {%- if section.settings.heading != blank -%}
+            {{ section.settings.heading | escape }}
+          {%- else -%}
+            {{ 'wishlist.heading' | t }}
+          {%- endif -%}
+        </h2>
+        <p class="rb-wishlist__count" aria-live="polite">
+          <span data-wishlist-count>0</span>
+          <span class="rb-wishlist__count-label">{{ 'wishlist.items_label' | t }}</span>
+        </p>
+      </div>
 
-      <p class="rb-wishlist__count" aria-live="polite">
-        <span data-wishlist-count>0</span>
-        <span class="rb-wishlist__count-label">{{ 'wishlist.items_label' | t }}</span>
-      </p>
-    </header>
-
-    <div class="rb-wishlist__actions">
-      <button
-        type="button"
-        class="button"
-        data-wishlist-add-all
-        disabled
-      >
-        {{ 'wishlist.actions.add_all_to_cart' | t }}
-      </button>
-
-      <button
-        type="button"
-        class="button button-secondary"
-        data-wishlist-clear
-        disabled
-      >
-        {{ 'wishlist.actions.clear' | t }}
-      </button>
-
-      <copy-to-clipboard-component
-        class="rb-wishlist__share"
-        text-to-copy="{{ canonical_url }}"
-      >
+      <div class="rb-wishlist__actions">
         <button
           type="button"
-          class="button button-secondary"
-          on:click="copy-to-clipboard-component/copyToClipboard"
-          data-wishlist-share
+          class="rb-wishlist__btn rb-wishlist__btn--primary"
+          data-wishlist-add-all
+          disabled
         >
-          {{ 'wishlist.actions.copy_share_link' | t }}
+          <span class="rb-wishlist__btn-icon svg-wrapper" aria-hidden="true">
+            {{- 'icon-cart.svg' | inline_asset_content -}}
+          </span>
+          <span class="rb-wishlist__btn-label">{{ 'wishlist.actions.add_all_to_cart' | t }}</span>
         </button>
-        <span
-          ref="copySuccessMessage"
-          class="rb-wishlist__share-success visually-hidden"
-          role="status"
+
+        <button
+          type="button"
+          class="rb-wishlist__btn rb-wishlist__btn--secondary"
+          data-wishlist-clear
+          disabled
         >
-          {{ 'wishlist.share.copied' | t }}
-        </span>
-      </copy-to-clipboard-component>
+          <span class="rb-wishlist__btn-label">{{ 'wishlist.actions.clear' | t }}</span>
+        </button>
+
+        <copy-to-clipboard-component
+          class="rb-wishlist__share"
+          text-to-copy="{{ canonical_url }}"
+        >
+          <button
+            type="button"
+            class="rb-wishlist__btn rb-wishlist__btn--secondary"
+            on:click="copy-to-clipboard-component/copyToClipboard"
+            data-wishlist-share
+          >
+            <span class="rb-wishlist__btn-icon rb-wishlist__btn-icon--share svg-wrapper" aria-hidden="true">
+              {{- 'icon-share.svg' | inline_asset_content -}}
+            </span>
+            <span class="rb-wishlist__btn-label">{{ 'wishlist.actions.copy_share_link' | t }}</span>
+          </button>
+          <span
+            ref="copySuccessMessage"
+            class="rb-wishlist__share-success visually-hidden"
+            role="status"
+          >
+            {{ 'wishlist.share.copied' | t }}
+          </span>
+        </copy-to-clipboard-component>
+      </div>
     </div>
 
     <div class="rb-wishlist__empty" data-wishlist-empty>
       <h3 class="rb-wishlist__empty-heading">{{ 'wishlist.empty.heading' | t }}</h3>
       <p class="rb-wishlist__empty-text">{{ 'wishlist.empty.text' | t }}</p>
-      <a class="button" href="/collections/all">
+      <a class="rb-wishlist__btn rb-wishlist__btn--primary" href="/collections/all">
         {{ 'wishlist.empty.cta' | t }}
       </a>
     </div>
@@ -106,19 +113,35 @@
 </section>
 
 {% stylesheet %}
-  .rb-wishlist__inner {
-    width: 100%;
-    max-width: var(--rb-wishlist-max-width, 1400px);
-    margin-inline: auto;
+  /* Horizontal gutter on the section (theme page margin — not 80px on the inner). */
+  .rb-wishlist {
     padding-inline: var(--page-margin);
+    box-sizing: border-box;
   }
 
-  .rb-wishlist__header {
+  /* wishlist-page-component must be display:block or width/max-width are ignored. */
+  .rb-wishlist__inner {
+    display: block;
+    width: 100%;
+    max-width: var(--rb-wishlist-max-width, 1200px);
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  .rb-wishlist__toolbar {
     display: flex;
-    align-items: baseline;
+    flex-wrap: wrap;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .rb-wishlist__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
   }
 
   .rb-wishlist__heading {
@@ -140,15 +163,81 @@
     display: inline-flex;
     gap: 6px;
     align-items: center;
-    white-space: nowrap;
+    flex-wrap: wrap;
   }
 
   .rb-wishlist__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px;
     align-items: center;
-    margin-bottom: 24px;
+  }
+
+  .rb-wishlist__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .rb-wishlist__btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .rb-wishlist__btn--primary {
+    background: #4713ae;
+    color: #ffffff;
+    border-color: #4713ae;
+  }
+
+  .rb-wishlist__btn--primary:hover:not(:disabled) {
+    background: #3a0f92;
+    border-color: #3a0f92;
+  }
+
+  .rb-wishlist__btn--secondary {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #e2e8f0;
+  }
+
+  .rb-wishlist__btn--secondary:hover:not(:disabled) {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+  }
+
+  .rb-wishlist__btn-icon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  .rb-wishlist__btn-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .rb-wishlist__btn-icon--share svg path {
+    fill: currentColor;
   }
 
   .rb-wishlist__share {
@@ -194,20 +283,155 @@
 
   .rb-wishlist__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 40px;
+    align-items: stretch;
+  }
+
+  .rb-wishlist-card {
+    display: flex;
+    flex-direction: column;
     gap: 16px;
+    min-width: 0;
   }
 
-  @media screen and (min-width: 750px) {
-    .rb-wishlist__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
+  .rb-wishlist-card__media {
+    display: block;
+    border-radius: 12px;
+    background: #f1f5f9;
+    overflow: hidden;
+    aspect-ratio: 262 / 349;
+    position: relative;
   }
 
-  @media screen and (min-width: 990px) {
-    .rb-wishlist__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+  .rb-wishlist-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .rb-wishlist-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .rb-wishlist-card__vendor {
+    margin: 0;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .rb-wishlist-card__title {
+    margin: 0;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.35;
+    color: #131118;
+    text-decoration: none;
+  }
+
+  .rb-wishlist-card__title:hover {
+    color: #4713ae;
+  }
+
+  .rb-wishlist-card__price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .rb-wishlist-card__price {
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .rb-wishlist-card__compare {
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #94a3b8;
+    text-decoration: line-through;
+  }
+
+  .rb-wishlist-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  .rb-wishlist-card__add {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #4713ae;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .rb-wishlist-card__add:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .rb-wishlist-card__add-icon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  .rb-wishlist-card__add-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .rb-wishlist-card__remove {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #64748b;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .rb-wishlist-card__remove:hover {
+    color: #0f172a;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rb-wishlist__toolbar {
+      align-items: stretch;
+      flex-direction: column;
     }
   }
 {% endstylesheet %}
@@ -216,7 +440,7 @@
 {
   "name": "RB - Wishlist",
   "tag": "section",
-  "class": "section rb-wishlist-section",
+  "class": "section-wrapper rb-wishlist-section",
   "settings": [
     {
       "type": "color_scheme",
@@ -244,7 +468,7 @@
       "max": 1400,
       "step": 10,
       "unit": "px",
-      "default": 1100
+      "default": 1200
     },
     {
       "type": "header",

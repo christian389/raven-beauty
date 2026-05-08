@@ -138,7 +138,18 @@
     },
     "cta_heading": "Klar til at shoppe?",
     "cta_text": "Gå på opdagelse og gem dine favoritter på ønskelisten.",
-    "cta_button": "Shop nu"
+    "cta_button": "Shop nu",
+    "hero": {
+      "breadcrumbs_aria": "Brødkrummer",
+      "breadcrumb_home": "Forside",
+      "breadcrumb_current": "Wishlist",
+      "heading": "Din ønskeliste samlet ét sted",
+      "text": "Gem dine favoritprodukter og find dem nemt igen, når du er klar til at forkæle dig selv eller andre."
+    },
+    "header": {
+      "aria": "Ønskeliste",
+      "aria_with_count": "Ønskeliste, {count} varer"
+    }
   },
   "content": {
     "reviews": "anmeldelser",

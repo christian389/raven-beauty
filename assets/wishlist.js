@@ -52,24 +52,51 @@ function money(cents, currency = (window.Shopify && Shopify.currency && Shopify.
   }
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/'/g, '&#39;');
+}
+
+/** Matches `assets/icon-add-to-cart.svg` for card actions (no CSS var stroke width). */
+const WISHLIST_BAG_ADD_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.33" d="M16.608 9.421V6.906H3.392v8.016c0 .567.224 1.112.624 1.513.4.402.941.627 1.506.627H8.63M8.818 3h2.333c.618 0 1.212.247 1.649.686a2.35 2.35 0 0 1 .683 1.658v1.562H6.486V5.344c0-.622.246-1.218.683-1.658A2.33 2.33 0 0 1 8.82 3"/><path stroke="currentColor" stroke-linecap="round" stroke-width="1.33" d="M14.608 12.563v5m2.5-2.5h-5"/></svg>`;
+
 function productCardHtml(product) {
   const img = product?.featured_image;
   const title = product?.title || '';
+  const vendor = product?.vendor || '';
   const handle = product?.handle || '';
   const url = product?.url || `/products/${handle}`;
   const available = Boolean(product?.available);
   const variantId = product?.variants?.[0]?.id;
   const price = product?.price;
   const compareAt = product?.compare_at_price;
+  const addLabel = window.themeStrings?.wishlist?.actions?.add_to_cart || 'Add to cart';
+  const removeLabel = window.themeStrings?.wishlist?.actions?.remove || 'Remove';
+
+  const vendorBlock = vendor
+    ? `<p class="rb-wishlist-card__vendor">${escapeHtml(vendor)}</p>`
+    : '';
 
   return `
-    <article class="rb-wishlist-card" data-wishlist-handle="${handle}">
-      <a class="rb-wishlist-card__media" href="${url}">
-        ${img ? `<img src="${img}" alt="" loading="lazy" />` : ''}
+    <article class="rb-wishlist-card" data-wishlist-handle="${escapeAttr(handle)}">
+      <a class="rb-wishlist-card__media" href="${escapeAttr(url)}">
+        ${
+          img
+            ? `<img src="${escapeAttr(img)}" alt="${escapeAttr(title)}" loading="lazy" width="262" height="349" />`
+            : ''
+        }
       </a>
       <div class="rb-wishlist-card__body">
-        <a class="rb-wishlist-card__title" href="${url}">${title}</a>
-        <div class="rb-wishlist-card__meta">
+        ${vendorBlock}
+        <a class="rb-wishlist-card__title" href="${escapeAttr(url)}">${escapeHtml(title)}</a>
+        <div class="rb-wishlist-card__price-row">
           <span class="rb-wishlist-card__price">${money(price)}</span>
           ${
             compareAt && compareAt > price
@@ -77,18 +104,19 @@ function productCardHtml(product) {
               : ''
           }
         </div>
-        <div class="rb-wishlist-card__actions">
-          <button class="button button-secondary rb-wishlist-card__remove" type="button" data-wishlist-remove="${handle}">
-            ${window.themeStrings?.wishlist?.actions?.remove || 'Remove'}
-          </button>
+        <div class="rb-wishlist-card__footer">
           <button
-            class="button rb-wishlist-card__add"
+            class="rb-wishlist-card__add"
             type="button"
-            data-wishlist-add-to-cart="${handle}"
+            data-wishlist-add-to-cart="${escapeAttr(handle)}"
             ${!available || !variantId ? 'disabled' : ''}
             data-variant-id="${variantId || ''}"
           >
-            ${window.themeStrings?.wishlist?.actions?.add_to_cart || 'Add to cart'}
+            <span class="rb-wishlist-card__add-icon svg-wrapper" aria-hidden="true">${WISHLIST_BAG_ADD_ICON}</span>
+            <span>${escapeHtml(addLabel)}</span>
+          </button>
+          <button class="rb-wishlist-card__remove" type="button" data-wishlist-remove="${escapeAttr(handle)}">
+            ${escapeHtml(removeLabel)}
           </button>
         </div>
       </div>
@@ -118,9 +146,34 @@ function updateToggles(handles) {
   });
 }
 
+function wishlistCountDisplay(n) {
+  if (n > 99) return '99+';
+  return String(n);
+}
+
 function updateHeaderCount(handles) {
+  const n = handles.length;
+  const pageCountText = String(n);
   document.querySelectorAll('[data-wishlist-count]').forEach((el) => {
-    el.textContent = String(handles.length);
+    el.textContent = pageCountText;
+  });
+  const bubbleText = wishlistCountDisplay(n);
+  document.querySelectorAll('[data-wishlist-header-count]').forEach((el) => {
+    el.textContent = bubbleText;
+  });
+  document.querySelectorAll('[data-wishlist-header-bubble]').forEach((el) => {
+    if (el instanceof HTMLElement) el.hidden = n === 0;
+  });
+  document.querySelectorAll('[data-wishlist-link]').forEach((el) => {
+    if (!(el instanceof HTMLElement)) return;
+    const base = el.getAttribute('data-wishlist-aria-base') || el.getAttribute('aria-label') || 'Wishlist';
+    const withCountTpl = el.getAttribute('data-wishlist-aria-with-count') || '';
+    if (n === 0) {
+      el.setAttribute('aria-label', base);
+      return;
+    }
+    const label = withCountTpl ? withCountTpl.replace(/\{count\}/g, String(n)) : `${base}, ${n}`;
+    el.setAttribute('aria-label', label);
   });
 }
 
@@ -177,8 +230,6 @@ class WishlistPageComponent extends Component {
 
     this.onWishlistChange = (evt) => {
       const handles = evt?.detail?.handles || readList();
-      updateToggles(handles);
-      updateHeaderCount(handles);
       updateWishlistPageUi(this, handles);
       renderWishlistGrid(this, handles);
     };
@@ -264,6 +315,12 @@ function attachGlobalWishlistToggleHandlers() {
 function boot() {
   ensureThemeStrings();
   attachGlobalWishlistToggleHandlers();
+
+  document.addEventListener('wishlist:change', (evt) => {
+    const handles = evt?.detail?.handles || readList();
+    updateToggles(handles);
+    updateHeaderCount(handles);
+  });
 
   // Initialize UI based on current store.
   const handles = readList();

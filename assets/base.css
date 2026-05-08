@@ -585,6 +585,19 @@ p:empty {
   outline: none;
 }
 
+/* Raven sections: constrain page-width containers to 1120px */
+:is(
+    .raven-best-sellers__container.section,
+    .raven-social-proof__container.section,
+    .raven-categories__container.section,
+    .raven-brand-values__container.section,
+    .raven-newsletter__container.section,
+    .raven-footer__container.section
+  ) {
+  --page-content-width: 1120px;
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+}
+
 /* For page-width sections, all content goes in the center column */
 .section--page-width > * {
   grid-column: 2;

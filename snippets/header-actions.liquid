@@ -4,6 +4,15 @@
   fetchpriority="low"
 ></script>
 
+{%- liquid
+  assign header_wishlist_visible = false
+  if section and section.settings.wishlist_link != blank
+    unless section.settings.show_wishlist == false
+      assign header_wishlist_visible = true
+    endunless
+  endif
+-%}
+
 {% capture cart_icon %}
   <cart-icon
     class="header-actions__cart-icon{% if display_style == 'text' %} header-actions__cart-icon--text{% endif %}{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
@@ -53,6 +62,18 @@
         />
       </svg>
     {% endif %}
+  </span>
+{% endcapture %}
+
+{% capture wishlist_link_contents %}
+  <span class="header-actions__wishlist-wrap">
+    {{ wishlist_icon }}
+    <span class="cart-bubble header-actions__wishlist-bubble" data-wishlist-header-bubble hidden>
+      <span class="cart-bubble__background"></span>
+      <span class="cart-bubble__text">
+        <span data-wishlist-header-count aria-hidden="true">0</span>
+      </span>
+    </span>
   </span>
 {% endcapture %}
 
@@ -180,13 +201,16 @@
       <template id="empty-cart-template">
         {{ empty_cart_drawer_content }}
       </template>
-      {% if section and section.settings.wishlist_link != blank %}
+      {% if header_wishlist_visible %}
         <a
           href="{{ section.settings.wishlist_link }}"
           class="header-actions__action header-actions__raven-icon-button button-unstyled"
-          aria-label="Wishlist"
+          data-wishlist-link
+          aria-label="{{ 'wishlist.header.aria' | t }}"
+          data-wishlist-aria-base="{{ 'wishlist.header.aria' | t | escape }}"
+          data-wishlist-aria-with-count="{{ 'wishlist.header.aria_with_count' | t | escape }}"
         >
-          {{ wishlist_icon }}
+          {{ wishlist_link_contents }}
         </a>
       {% endif %}
 
@@ -268,13 +292,16 @@
       </dialog>
     </cart-drawer-component>
   {% else %}
-    {% if section and section.settings.wishlist_link != blank %}
+    {% if header_wishlist_visible %}
       <a
         href="{{ section.settings.wishlist_link }}"
         class="header-actions__action header-actions__raven-icon-button button-unstyled"
-        aria-label="Wishlist"
+        data-wishlist-link
+        aria-label="{{ 'wishlist.header.aria' | t }}"
+        data-wishlist-aria-base="{{ 'wishlist.header.aria' | t | escape }}"
+        data-wishlist-aria-with-count="{{ 'wishlist.header.aria_with_count' | t | escape }}"
       >
-        {{ wishlist_icon }}
+        {{ wishlist_link_contents }}
       </a>
     {% endif %}
     <a
@@ -677,6 +704,32 @@
   #header-component.header--raven .header-actions__wishlist-image img {
     width: 20px;
     height: 18.35px;
+  }
+
+  /* Fill the 40×40 icon button so the badge uses the same top-right anchor as the cart (not the heart’s small bbox). */
+  #header-component.header--raven .header-actions__wishlist-wrap {
+    --wishlist-bubble-top: 4.5px;
+    --wishlist-bubble-right: 2.5px;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  #header-component.header--raven .header-actions__wishlist-wrap .header-actions__wishlist-bubble {
+    position: absolute;
+    width: fit-content;
+    min-width: 20px;
+    height: 20px;
+    top: var(--wishlist-bubble-top);
+    right: var(--wishlist-bubble-right);
+    bottom: auto;
+    left: auto;
+    pointer-events: none;
   }
 
   #header-component.header--raven .header-actions__cart-image img {

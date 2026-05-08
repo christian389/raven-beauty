@@ -73,6 +73,7 @@
         "search_icon": "shopify://shop_images/search.svg",
         "wishlist_icon": "shopify://shop_images/wishlist.svg",
         "cart_icon": "shopify://shop_images/cart.svg",
+        "show_wishlist": true,
         "wishlist_link": "/pages/wishlist",
         "actions_display_style": "icon",
         "actions_font_size": "0.875rem",

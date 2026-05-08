@@ -131,7 +131,18 @@
     },
     "cta_heading": "Ready to shop?",
     "cta_text": "Explore our products and add your favorites to your wishlist.",
-    "cta_button": "Shop now"
+    "cta_button": "Shop now",
+    "hero": {
+      "breadcrumbs_aria": "Breadcrumb",
+      "breadcrumb_home": "Home",
+      "breadcrumb_current": "Wishlist",
+      "heading": "Your wishlist in one place",
+      "text": "Save your favourite products and find them easily when you are ready to treat yourself or someone else."
+    },
+    "header": {
+      "aria": "Wishlist",
+      "aria_with_count": "Wishlist, {count} items"
+    }
   },
   "blocks": {
     "contact_form": {

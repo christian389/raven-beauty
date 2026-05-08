@@ -1,0 +1,338 @@
+{%- liquid
+  assign bg_image = section.settings.background_image
+  assign use_translations = section.settings.use_theme_translations
+-%}
+
+<section
+  class="rb-wishlist-hero spacing-style color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --rb-wh-min-height: {{ section.settings.min_height }}px;
+    --rb-wh-inner-max: {{ section.settings.inner_max_width }}px;
+    --rb-wh-copy-max: {{ section.settings.copy_max_width }}px;
+    --rb-wh-gap: {{ section.settings.content_gap }}px;
+    --rb-wh-radius: {{ section.settings.border_radius }}px;
+  "
+>
+  <div class="rb-wishlist-hero__shell">
+    <div class="rb-wishlist-hero__media" aria-hidden="true">
+      <div class="rb-wishlist-hero__media-surface"></div>
+      {%- if bg_image != blank -%}
+        {{
+          bg_image
+          | image_url: width: 2400
+          | image_tag:
+            widths: '375, 750, 1100, 1500, 2400',
+            sizes: '100vw',
+            class: 'rb-wishlist-hero__media-img',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: ''
+        }}
+      {%- endif -%}
+      <div class="rb-wishlist-hero__media-gradient"></div>
+    </div>
+
+    <div class="rb-wishlist-hero__inner">
+      <div class="rb-wishlist-hero__copy">
+        <nav class="rb-wishlist-hero__crumbs" aria-label="{{ 'wishlist.hero.breadcrumbs_aria' | t }}">
+          <a class="rb-wishlist-hero__crumb-link" href="{{ routes.root_url }}">
+            {{ 'wishlist.hero.breadcrumb_home' | t }}
+          </a>
+          <span class="rb-wishlist-hero__crumb-sep" aria-hidden="true">/</span>
+          <span class="rb-wishlist-hero__crumb-current">
+            {{ 'wishlist.hero.breadcrumb_current' | t }}
+          </span>
+        </nav>
+
+        <h1 class="rb-wishlist-hero__title">
+          {%- if use_translations -%}
+            {{ 'wishlist.hero.heading' | t }}
+          {%- else -%}
+            {{ section.settings.heading | escape | newline_to_br }}
+          {%- endif -%}
+        </h1>
+
+        <div class="rb-wishlist-hero__subtext rte">
+          {%- if use_translations -%}
+            <p>{{ 'wishlist.hero.text' | t }}</p>
+          {%- else -%}
+            {{ section.settings.text }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-wishlist-hero {
+    --raven-font-heading: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    --raven-font-body: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+    background: #f1f5f9;
+  }
+
+  /* Same horizontal gutter as rb-wishlist (theme --page-margin); media is inset with copy. */
+  .rb-wishlist-hero__shell {
+    position: relative;
+    min-height: var(--rb-wh-min-height, 480px);
+    border-radius: var(--rb-wh-radius, 0px);
+    overflow: clip;
+    width: 100%;
+    padding-inline: var(--page-margin);
+    box-sizing: border-box;
+  }
+
+  .rb-wishlist-hero__media {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .rb-wishlist-hero__media-surface {
+    position: absolute;
+    inset: 0;
+    background: #f1f5f9;
+  }
+
+  .rb-wishlist-hero__media-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 65% center;
+  }
+
+  /* Figma: left-to-right wash so copy stays readable (F6F6F8 at ~90% → mid → transparent). */
+  .rb-wishlist-hero__media-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(246 246 248 / 0.92) 0%,
+      rgb(246 246 248 / 0.42) 52%,
+      rgb(246 246 248 / 0) 100%
+    );
+  }
+
+  .rb-wishlist-hero__inner {
+    position: relative;
+    z-index: 1;
+    min-height: var(--rb-wh-min-height, 480px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-block: clamp(32px, 6vw, 64px);
+    padding-inline: 0;
+    width: 100%;
+    max-width: var(--rb-wh-inner-max, 1200px);
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  .rb-wishlist-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--rb-wh-gap, 16px);
+    max-width: var(--rb-wh-copy-max, 576px);
+    width: 100%;
+    text-align: left;
+  }
+
+  .rb-wishlist-hero__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .rb-wishlist-hero__crumb-link {
+    color: #475569;
+    text-decoration: none;
+    font-weight: 400;
+  }
+
+  .rb-wishlist-hero__crumb-link:hover {
+    color: #4713ae;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .rb-wishlist-hero__crumb-sep {
+    color: #475569;
+    font-weight: 400;
+  }
+
+  .rb-wishlist-hero__crumb-current {
+    color: #4713ae;
+    font-weight: 500;
+  }
+
+  .rb-wishlist-hero__title {
+    margin: 0;
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: clamp(36px, 6vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    text-wrap: balance;
+  }
+
+  .rb-wishlist-hero__subtext {
+    margin: 0;
+    padding-top: 2px;
+    font-family: var(--raven-font-body);
+    font-weight: 400;
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.625;
+    color: #334155;
+    max-width: 100%;
+  }
+
+  .rb-wishlist-hero__subtext > :first-child {
+    margin-top: 0;
+  }
+
+  .rb-wishlist-hero__subtext > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Wishlist hero",
+  "tag": "section",
+  "class": "section-wrapper rb-wishlist-hero-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Banner image",
+      "info": "Same idea as the collection page banner — pick the photo shown behind the text."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_translations",
+      "label": "Use theme language translations",
+      "info": "When enabled, heading and text follow your store language (wishlist.hero.* in locales). Turn off to edit custom text below.",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your wishlist in one place",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Save your favourite products and find them easily when you are ready to treat yourself or someone else.</p>",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 320,
+      "max": 720,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "inner_max_width",
+      "label": "Content row max width",
+      "info": "Caps the heading/text row (centered). Banner and shell use the same side margins as the wishlist block below.",
+      "min": 960,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "copy_max_width",
+      "label": "Text column max width",
+      "min": 420,
+      "max": 720,
+      "step": 4,
+      "unit": "px",
+      "default": 576
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Space between blocks",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Wishlist hero",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
