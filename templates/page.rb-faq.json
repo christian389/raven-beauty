@@ -94,23 +94,6 @@
         "padding-block-end": 64
       }
     },
-    "final_cta": {
-      "type": "rb-final-cta",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "background_color": "#f6f6f8",
-        "heading": "Stadig spørgsmål?",
-        "text": "<p>Vores kundeservice står klar til at hjælpe dig. Skriv til os, så vender vi tilbage hurtigst muligt.</p>",
-        "price_text": "",
-        "button_label": "Kontakt kundeservice",
-        "button_link": "/pages/contact",
-        "meta_1": "Svar inden for 24 timer",
-        "meta_2": "Dansk kundesupport",
-        "meta_3": "Hjælpsom & venlig",
-        "padding-block-start": 0,
-        "padding-block-end": 60
-      }
-    },
     "newsletter": {
       "type": "raven-newsletter",
       "settings": {
@@ -122,7 +105,7 @@
         "email_placeholder": "Din e-mail adresse",
         "button_label": "Tilmeld mig",
         "success_message": "Tak for din tilmelding!",
-        "container_max_width": 900,
+        "container_max_width": 1200,
         "form_max_width": 510,
         "content_gap": 24,
         "form_gap": 16,
@@ -146,7 +129,6 @@
   "order": [
     "rb_page_hero_CJVanF",
     "faq_main",
-    "final_cta",
     "newsletter"
   ]
 }
