@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "brands_hero": {
+      "type": "rb-page-hero",
+      "name": "RB - Page hero",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/0db094c6fd239c73b700d8f5c52efc2ceebc5407.png",
+        "heading": "Brands ",
+        "text": "<p>Udforsk vores håndplukkede udvalg af brands.</p>",
+        "min_height": 480,
+        "border_radius": 0,
+        "inner_max_width": 1200,
+        "copy_max_width": 576,
+        "content_gap": 16,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "brands_grid": {
+      "type": "rb-brands-grid",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "background_color": "#f6f6f8",
+        "heading": "Brands",
+        "max_width": 1200,
+        "cards_gap": 24,
+        "cards_radius": 16,
+        "cards_padding": 20,
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      }
+    },
+    "newsletter": {
+      "type": "raven-newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Få 15% rabat på dit første køb",
+        "text": "<p>Tilmeld dig vores nyhedsbrev og vær den første til at høre om nye lanceringer, eksklusive tilbud og skønhedstips.</p>",
+        "show_form": true,
+        "email_label": "Email",
+        "email_placeholder": "Din e-mail adresse",
+        "button_label": "Tilmeld mig",
+        "success_message": "Tak for din tilmelding!",
+        "container_max_width": 1200,
+        "form_max_width": 510,
+        "content_gap": 24,
+        "form_gap": 16,
+        "pill_radius": 200,
+        "enable_shadow": true,
+        "background_color": "#4713ae0d",
+        "heading_color": "#0f172a",
+        "text_color": "#475569",
+        "input_background": "#ffffff",
+        "input_text": "#0f172a",
+        "input_placeholder_color": "#6b7280",
+        "button_background": "#4713ae",
+        "button_text": "#ffffff",
+        "padding-block-start": 80,
+        "padding-block-end": 80,
+        "padding-inline-start": 192,
+        "padding-inline-end": 192
+      }
+    }
+  },
+  "order": [
+    "brands_hero",
+    "brands_grid",
+    "newsletter"
+  ]
+}
+

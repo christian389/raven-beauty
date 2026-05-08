@@ -1,0 +1,304 @@
+{%- liquid
+  assign brands = shop.metaobjects.brands.values
+-%}
+
+<section
+  class="rb-brands-grid spacing-style color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --rbbg-bg: {{ section.settings.background_color }};
+    --rbbg-max: {{ section.settings.max_width }}px;
+    --rbbg-gap: {{ section.settings.cards_gap }}px;
+    --rbbg-radius: {{ section.settings.cards_radius }}px;
+    --rbbg-padding: {{ section.settings.cards_padding }}px;
+  "
+>
+  <div class="rb-brands-grid__container section section--page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="rb-brands-grid__heading">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    <div class="rb-brands-grid__grid" role="list">
+      {%- for brand in brands -%}
+        {%- liquid
+          assign brand_field = brand.brand
+          assign brand_name = brand_field.value | default: brand_field | default: brand.title | default: brand.system.handle
+          assign brand_url = brand.system.url | default: brand.url
+        -%}
+
+        <a
+          class="rb-brands-grid__card"
+          role="listitem"
+          href="{{ brand_url }}"
+          {% if brand_url == blank %}aria-disabled="true"{% endif %}
+        >
+          <span class="rb-brands-grid__card-title">
+            {{ brand_name | escape }}
+          </span>
+          <span class="rb-brands-grid__card-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.5 5L12.5 10L7.5 15"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </a>
+      {%- else -%}
+        <div class="rb-brands-grid__empty" role="listitem">
+          <p class="rb-brands-grid__empty-text">
+            No brands found yet.
+          </p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-brands-grid {
+    --raven-font-heading: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    --raven-font-body: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--rbbg-bg, transparent);
+  }
+
+  .rb-brands-grid__container {
+    width: 100%;
+    max-width: var(--rbbg-max, 1200px);
+    margin-inline: auto;
+  }
+
+  .rb-brands-grid__heading {
+    margin: 0 0 24px 0;
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.15;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .rb-brands-grid__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--rbbg-gap, 24px);
+  }
+
+  @media screen and (min-width: 600px) {
+    .rb-brands-grid__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rb-brands-grid__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .rb-brands-grid__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: var(--rbbg-padding, 20px);
+    border-radius: var(--rbbg-radius, 16px);
+    background: #ffffff;
+    border: 1px solid rgba(71, 19, 174, 0.08);
+    text-decoration: none;
+    color: #0f172a;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    min-height: 72px;
+  }
+
+  .rb-brands-grid__card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(71, 19, 174, 0.18);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  .rb-brands-grid__card:focus-visible {
+    outline: 2px solid #4713ae;
+    outline-offset: 2px;
+  }
+
+  .rb-brands-grid__card[aria-disabled='true'] {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .rb-brands-grid__card-title {
+    font-family: var(--raven-font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: inherit;
+  }
+
+  .rb-brands-grid__card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: rgba(71, 19, 174, 0.06);
+    color: #4713ae;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .rb-brands-grid__card-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .rb-brands-grid__empty {
+    padding: 24px;
+    border-radius: var(--rbbg-radius, 16px);
+    background: #ffffff;
+    border: 1px dashed rgba(15, 23, 42, 0.18);
+  }
+
+  .rb-brands-grid__empty-text {
+    margin: 0;
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+    color: #475569;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Brands grid",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "alpha": true,
+      "default": "#f6f6f8"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Brands"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 320,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "cards_gap",
+      "label": "Gap between cards",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "cards_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cards_padding",
+      "label": "Card padding",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Brands grid",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

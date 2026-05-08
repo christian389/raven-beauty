@@ -1,0 +1,162 @@
+{%- liquid
+  assign brand_field = metaobject.brand
+  assign brand_name = brand_field.value | default: brand_field | default: metaobject.title | default: metaobject.system.handle
+-%}
+
+<section
+  class="rb-brand spacing-style color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --rb-brand-max: {{ section.settings.max_width }}px;
+  "
+>
+  <div class="rb-brand__container section section--page-width">
+    <div class="rb-brand__inner">
+      <h1 class="rb-brand__title">{{ brand_name | escape }}</h1>
+
+      {%- if section.settings.intro != blank -%}
+        <div class="rb-brand__intro rte">
+          {{ section.settings.intro }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-brand {
+    --raven-font-heading: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    --raven-font-body: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+
+  .rb-brand__container {
+    width: 100%;
+    max-width: var(--rb-brand-max, 1200px);
+    margin-inline: auto;
+  }
+
+  .rb-brand__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .rb-brand__title {
+    margin: 0;
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    text-wrap: balance;
+  }
+
+  .rb-brand__intro {
+    font-family: var(--raven-font-body);
+    font-size: 16px;
+    line-height: 1.625;
+    color: #334155;
+    max-width: 70ch;
+  }
+
+  .rb-brand__intro > :first-child {
+    margin-top: 0;
+  }
+
+  .rb-brand__intro > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Brand (metaobject)",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro text",
+      "default": "<p></p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 320,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Brand (metaobject)",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+
