@@ -27,7 +27,7 @@
         "overlay_bottom": "#00000066",
         "min_height": 560,
         "border_radius": 12,
-        "content_max_width": 1280,
+        "content_max_width": 1120,
         "content_gap": 24,
         "button_background": "#008444",
         "button_text": "#ffffff",
