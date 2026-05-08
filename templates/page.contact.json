@@ -83,6 +83,7 @@
       "name": "RB - Page hero",
       "settings": {
         "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/0db094c6fd239c73b700d8f5c52efc2ceebc5407.png",
         "heading": "Vi er her for at hjælpe dig",
         "text": "<p>Har du spørgsmål om vores produkter, levering eller din ordre? Kontakt os – vi hjælper dig gerne med at finde den bedste løsning til dine behov.</p>",
         "min_height": 480,
