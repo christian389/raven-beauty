@@ -9,33 +9,13 @@
  */
 {
   "sections": {
-    "rb_page_hero_dtpa9e": {
-      "type": "rb-page-hero",
-      "name": "RB - Page hero",
+    "rb_brand_YqqJ74": {
+      "type": "rb-brand",
+      "name": "RB - Brand (metaobject)",
       "settings": {
         "color_scheme": "",
-        "heading": "Page title",
-        "text": "",
-        "min_height": 480,
-        "border_radius": 0,
-        "inner_max_width": 1200,
-        "copy_max_width": 576,
-        "content_gap": 16,
-        "padding-block-start": 24,
-        "padding-block-end": 24
-      }
-    },
-    "rb_brands_grid_ahYckX": {
-      "type": "rb-brands-grid",
-      "name": "RB - Brands grid",
-      "settings": {
-        "color_scheme": "",
-        "background_color": "#f6f6f8",
-        "heading": "Brands",
+        "intro": "",
         "max_width": 1200,
-        "cards_gap": 24,
-        "cards_radius": 16,
-        "cards_padding": 20,
         "padding-block-start": 64,
         "padding-block-end": 64,
         "padding-inline-start": 80,
@@ -44,7 +24,6 @@
     }
   },
   "order": [
-    "rb_page_hero_dtpa9e",
-    "rb_brands_grid_ahYckX"
+    "rb_brand_YqqJ74"
   ]
 }
