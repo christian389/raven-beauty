@@ -90,7 +90,20 @@
       aria-label="{{ 'wishlist.actions.toggle' | t }}"
       data-wishlist-toggle="{{ product.handle }}"
     >
-      {% render 'icon', icon: 'heart' %}
+      <svg
+        class="product-card__wishlist-icon"
+        aria-hidden="true"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        {% render 'icon', icon: 'heart' %}
+      </svg>
     </button>
   {%- endunless -%}
 

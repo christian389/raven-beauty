@@ -76,6 +76,8 @@
       </div>
     </div>
 
+    <p class="rb-wishlist__notice" data-wishlist-notice role="status" aria-live="polite" hidden></p>
+
     <div class="rb-wishlist__empty" data-wishlist-empty>
       <h3 class="rb-wishlist__empty-heading">{{ 'wishlist.empty.heading' | t }}</h3>
       <p class="rb-wishlist__empty-text">{{ 'wishlist.empty.text' | t }}</p>
@@ -171,6 +173,30 @@
     flex-wrap: wrap;
     gap: 15px;
     align-items: center;
+  }
+
+  .rb-wishlist__notice {
+    margin: -8px 0 24px 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  .rb-wishlist__notice[data-tone='error'] {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #7f1d1d;
+  }
+
+  .rb-wishlist__notice[data-tone='warning'] {
+    border-color: #fed7aa;
+    background: #fff7ed;
+    color: #7c2d12;
   }
 
   .rb-wishlist__btn {
