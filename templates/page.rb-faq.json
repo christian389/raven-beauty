@@ -14,8 +14,8 @@
       "name": "RB - Page hero",
       "settings": {
         "color_scheme": "",
-        "heading": "Ofte stillede spørgsmål",
-        "text": "<p>Find svar på de mest almindelige spørgsmål om vores produkter, levering, returnering og meget mere. Vi er her for at gøre din oplevelse så nem som muligt.</p>",
+        "heading": "Page heading",
+        "text": "<p>Add your page description here.</p>",
         "min_height": 480,
         "border_radius": 0,
         "inner_max_width": 1200,

@@ -1,0 +1,186 @@
+{%- liquid
+  assign has_heading = false
+  assign has_text = false
+
+  if section.settings.heading != blank
+    assign has_heading = true
+  endif
+
+  if section.settings.text != blank
+    assign has_text = true
+  endif
+
+  if has_heading == false and has_text == false
+    break
+  endif
+-%}
+
+<section
+  class="rb-rich-text spacing-style color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --rb-rt-max-width: {{ section.settings.max_width }}px;
+    --rb-rt-align: {{ section.settings.text_align }};
+  "
+>
+  <div class="rb-rich-text__inner">
+    {%- if has_heading -%}
+      <h2 class="rb-rich-text__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if has_text -%}
+      <div class="rb-rich-text__text rte">
+        {{ section.settings.text }}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-rich-text {
+    padding-inline: var(--page-margin);
+    box-sizing: border-box;
+  }
+
+  .rb-rich-text__inner {
+    width: 100%;
+    max-width: var(--rb-rt-max-width, 800px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: var(--rb-rt-align, left);
+  }
+
+  .rb-rich-text__heading {
+    margin: 0;
+    font-family: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #0f172a;
+    text-wrap: balance;
+  }
+
+  .rb-rich-text__text {
+    font-family: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #475569;
+  }
+
+  /* Branded RTE heading sizes */
+  .rb-rich-text__text :is(h2, .h2) {
+    font-family: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #0f172a;
+    margin: 0.9em 0 0.45em;
+  }
+
+  .rb-rich-text__text :is(h3, .h3) {
+    font-family: "Noto Serif", ui-serif, Georgia, "Times New Roman", Times, serif;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 32px;
+    color: #0f172a;
+    margin: 0.85em 0 0.4em;
+  }
+
+  .rb-rich-text__text > :first-child {
+    margin-top: 0;
+  }
+
+  .rb-rich-text__text > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Rich text",
+  "tag": "section",
+  "class": "section-wrapper rb-rich-text-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p></p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 560,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Rich text",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+
