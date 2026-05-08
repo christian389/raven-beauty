@@ -1,12 +1,12 @@
 {%- liquid
   assign bg_image = section.settings.background_image
-  assign use_translations = section.settings.use_theme_translations
+  assign inferred_page_title = page.title | default: closest.page.title
+  assign current_title = inferred_page_title | default: section.settings.heading
 
-  assign breadcrumbs_aria_key = section.settings.breadcrumbs_aria_key | default: 'wishlist.hero.breadcrumbs_aria'
-  assign breadcrumb_home_key = section.settings.breadcrumb_home_key | default: 'wishlist.hero.breadcrumb_home'
-  assign breadcrumb_current_key = section.settings.breadcrumb_current_key | default: 'wishlist.hero.breadcrumb_current'
-  assign heading_key = section.settings.heading_key | default: 'wishlist.hero.heading'
-  assign text_key = section.settings.text_key | default: 'wishlist.hero.text'
+  assign home_label = 'Home'
+  if request.locale.iso_code == 'da'
+    assign home_label = 'Forside'
+  endif
 -%}
 
 <section
@@ -41,34 +41,22 @@
 
     <div class="rb-page-hero__inner">
       <div class="rb-page-hero__copy">
-        <nav class="rb-page-hero__crumbs" aria-label="{{ breadcrumbs_aria_key | t }}">
+        <nav class="rb-page-hero__crumbs" aria-label="Breadcrumbs">
           <a class="rb-page-hero__crumb-link" href="{{ routes.root_url }}">
-            {{ breadcrumb_home_key | t }}
+            {{ home_label }}
           </a>
           <span class="rb-page-hero__crumb-sep" aria-hidden="true">/</span>
           <span class="rb-page-hero__crumb-current">
-            {%- if use_translations -%}
-              {{ breadcrumb_current_key | t }}
-            {%- else -%}
-              {{ section.settings.breadcrumb_current | escape }}
-            {%- endif -%}
+            {{ current_title | escape }}
           </span>
         </nav>
 
         <h1 class="rb-page-hero__title">
-          {%- if use_translations -%}
-            {{ heading_key | t }}
-          {%- else -%}
-            {{ section.settings.heading | escape | newline_to_br }}
-          {%- endif -%}
+          {{ section.settings.heading | default: inferred_page_title | escape | newline_to_br }}
         </h1>
 
         <div class="rb-page-hero__subtext rte">
-          {%- if use_translations -%}
-            <p>{{ text_key | t }}</p>
-          {%- else -%}
-            {{ section.settings.text }}
-          {%- endif -%}
+          {{ section.settings.text }}
         </div>
       </div>
     </div>
@@ -239,62 +227,17 @@
       "content": "Content"
     },
     {
-      "type": "checkbox",
-      "id": "use_theme_translations",
-      "label": "Use theme language translations",
-      "info": "When enabled, content pulls from locale keys below. Turn off to edit custom text fields.",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "breadcrumbs_aria_key",
-      "label": "Translation key: breadcrumbs aria-label",
-      "default": "wishlist.hero.breadcrumbs_aria"
-    },
-    {
-      "type": "text",
-      "id": "breadcrumb_home_key",
-      "label": "Translation key: breadcrumb home",
-      "default": "wishlist.hero.breadcrumb_home"
-    },
-    {
-      "type": "text",
-      "id": "breadcrumb_current_key",
-      "label": "Translation key: breadcrumb current",
-      "default": "wishlist.hero.breadcrumb_current"
-    },
-    {
-      "type": "text",
-      "id": "heading_key",
-      "label": "Translation key: heading",
-      "default": "wishlist.hero.heading"
-    },
-    {
-      "type": "text",
-      "id": "text_key",
-      "label": "Translation key: text",
-      "default": "wishlist.hero.text"
-    },
-    {
-      "type": "text",
-      "id": "breadcrumb_current",
-      "label": "Breadcrumb current (custom)",
-      "default": "Page",
-      "visible_if": "{{ section.settings.use_theme_translations == false }}"
-    },
-    {
       "type": "textarea",
       "id": "heading",
-      "label": "Heading (custom)",
-      "default": "Page heading",
-      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+      "label": "Title",
+      "info": "If blank, uses the page title automatically.",
+      "default": "Page title"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text (custom)",
-      "default": "<p>Add your page description here.</p>",
-      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+      "label": "Description",
+      "default": "<p></p>"
     },
     {
       "type": "range",

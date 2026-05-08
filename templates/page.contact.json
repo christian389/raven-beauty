@@ -82,16 +82,9 @@
       "type": "rb-page-hero",
       "name": "RB - Page hero",
       "settings": {
-        "color_scheme": "",
-        "use_theme_translations": true,
-        "breadcrumbs_aria_key": "wishlist.hero.breadcrumbs_aria",
-        "breadcrumb_home_key": "wishlist.hero.breadcrumb_home",
-        "breadcrumb_current_key": "wishlist.hero.breadcrumb_current",
-        "heading_key": "wishlist.hero.heading",
-        "text_key": "wishlist.hero.text",
-        "breadcrumb_current": "Page",
-        "heading": "Page heading",
-        "text": "<p>Add your page description here.</p>",
+        "color_scheme": "scheme-1",
+        "heading": "Vi er her for at hjælpe dig",
+        "text": "<p>Har du spørgsmål om vores produkter, levering eller din ordre? Kontakt os – vi hjælper dig gerne med at finde den bedste løsning til dine behov.</p>",
         "min_height": 480,
         "border_radius": 0,
         "inner_max_width": 1200,
@@ -99,6 +92,17 @@
         "content_gap": 16,
         "padding-block-start": 24,
         "padding-block-end": 24
+      }
+    },
+    "rb_contact_content_jrPnX6": {
+      "type": "rb-contact-content",
+      "name": "RB - Contact content",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Contact",
+        "max_width": 1200,
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "form": {
@@ -173,6 +177,7 @@
   "order": [
     "main",
     "rb_page_hero_FyadAw",
+    "rb_contact_content_jrPnX6",
     "form"
   ]
 }
