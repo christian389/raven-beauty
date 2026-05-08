@@ -76,9 +76,40 @@
         "padding-block-start": 60,
         "padding-block-end": 60
       }
+    },
+    "rb_page_hero_tjUfed": {
+      "type": "rb-page-hero",
+      "name": "RB - Page hero",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Privacy Policy",
+        "text": "",
+        "min_height": 480,
+        "border_radius": 0,
+        "inner_max_width": 1200,
+        "copy_max_width": 576,
+        "content_gap": 16,
+        "padding-block-start": 24,
+        "padding-block-end": 24
+      }
+    },
+    "rb_rich_text_Y9cCnA": {
+      "type": "rb-rich-text",
+      "name": "RB - Rich text",
+      "settings": {
+        "color_scheme": "",
+        "heading": "",
+        "text": "{{ page.content }}",
+        "text_align": "left",
+        "max_width": 1200,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "rb_page_hero_tjUfed",
+    "rb_rich_text_Y9cCnA"
   ]
 }
