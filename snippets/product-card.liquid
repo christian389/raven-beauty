@@ -81,6 +81,19 @@
       {{ product.title }}
     </span>
   </a>
+
+  {%- unless onboarding -%}
+    <button
+      type="button"
+      class="product-card__wishlist-toggle"
+      aria-pressed="false"
+      aria-label="{{ 'wishlist.actions.toggle' | t }}"
+      data-wishlist-toggle="{{ product.handle }}"
+    >
+      {% render 'icon', icon: 'heart' %}
+    </button>
+  {%- endunless -%}
+
   <div
     class="
       product-card__content
@@ -113,6 +126,41 @@
 {% stylesheet %}
   .product-card__placeholder-image svg {
     height: 100%;
+  }
+
+  .product-card__wishlist-toggle {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: calc(var(--layer-raised) + 1);
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: #f1f5f9;
+    color: #0f172a;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: none;
+  }
+
+  .product-card__wishlist-toggle svg {
+    width: 20px;
+    height: 18px;
+    display: block;
+  }
+
+  .product-card__wishlist-toggle[data-wishlist-active] {
+    background: rgb(71 19 174 / 0.1);
+    color: #4713ae;
+  }
+
+  .product-card__wishlist-toggle:focus-visible {
+    outline: 2px solid #4713ae;
+    outline-offset: 2px;
   }
 
   @media screen and (max-width: 749px) {

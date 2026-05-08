@@ -108,6 +108,29 @@
     "show_all_options": "Vis alle muligheder",
     "open": "Åbn"
   },
+  "wishlist": {
+    "title": "Ønskeliste",
+    "subtitle": "Gem dine favoritter og vend tilbage når som helst.",
+    "heading": "Din ønskeliste",
+    "items_label": "varer",
+    "actions": {
+      "toggle": "Tilføj eller fjern fra ønskeliste",
+      "add_all_to_cart": "Læg alle i kurven",
+      "clear": "Ryd ønskelisten",
+      "copy_share_link": "Kopiér delingslink"
+    },
+    "share": {
+      "copied": "Link kopieret"
+    },
+    "empty": {
+      "heading": "Din ønskeliste er tom",
+      "text": "Tryk på hjertet ved et produkt for at gemme det her.",
+      "cta": "Se alle produkter"
+    },
+    "cta_heading": "Klar til at shoppe?",
+    "cta_text": "Gå på opdagelse og gem dine favoritter på ønskelisten.",
+    "cta_button": "Shop nu"
+  },
   "content": {
     "reviews": "anmeldelser",
     "language": "Sprog",

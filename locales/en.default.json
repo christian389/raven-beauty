@@ -110,6 +110,29 @@
     "view_store_information": "View store information",
     "sort": "Sort"
   },
+  "wishlist": {
+    "title": "Wishlist",
+    "subtitle": "Save products you love and come back anytime.",
+    "heading": "Your wishlist",
+    "items_label": "items",
+    "actions": {
+      "toggle": "Toggle wishlist",
+      "add_all_to_cart": "Add all to cart",
+      "clear": "Clear wishlist",
+      "copy_share_link": "Copy share link"
+    },
+    "share": {
+      "copied": "Link copied"
+    },
+    "empty": {
+      "heading": "Your wishlist is empty",
+      "text": "Tap the heart on any product to save it here.",
+      "cta": "Shop all products"
+    },
+    "cta_heading": "Ready to shop?",
+    "cta_text": "Explore our products and add your favorites to your wishlist.",
+    "cta_button": "Shop now"
+  },
   "blocks": {
     "contact_form": {
       "name": "Name",

@@ -1,0 +1,285 @@
+{%- liquid
+  assign max_width = section.settings.max_width | default: 1100
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+  }
+</style>
+
+<section
+  class="rb-wishlist spacing-style color-{{ section.settings.color_scheme }}"
+  style="{% render 'spacing-style', settings: section.settings %} background: {{ section.settings.background_color }};"
+>
+  <wishlist-page-component class="rb-wishlist__inner" style="--rb-wishlist-max-width: {{ max_width }}px;">
+    <header class="rb-wishlist__header">
+      <h2 class="rb-wishlist__heading">
+        {%- if section.settings.heading != blank -%}
+          {{ section.settings.heading | escape }}
+        {%- else -%}
+          {{ 'wishlist.heading' | t }}
+        {%- endif -%}
+      </h2>
+
+      <p class="rb-wishlist__count" aria-live="polite">
+        <span data-wishlist-count>0</span>
+        <span class="rb-wishlist__count-label">{{ 'wishlist.items_label' | t }}</span>
+      </p>
+    </header>
+
+    <div class="rb-wishlist__actions">
+      <button
+        type="button"
+        class="button"
+        data-wishlist-add-all
+        disabled
+      >
+        {{ 'wishlist.actions.add_all_to_cart' | t }}
+      </button>
+
+      <button
+        type="button"
+        class="button button-secondary"
+        data-wishlist-clear
+        disabled
+      >
+        {{ 'wishlist.actions.clear' | t }}
+      </button>
+
+      <copy-to-clipboard-component
+        class="rb-wishlist__share"
+        text-to-copy="{{ canonical_url }}"
+      >
+        <button
+          type="button"
+          class="button button-secondary"
+          on:click="copy-to-clipboard-component/copyToClipboard"
+          data-wishlist-share
+        >
+          {{ 'wishlist.actions.copy_share_link' | t }}
+        </button>
+        <span
+          ref="copySuccessMessage"
+          class="rb-wishlist__share-success visually-hidden"
+          role="status"
+        >
+          {{ 'wishlist.share.copied' | t }}
+        </span>
+      </copy-to-clipboard-component>
+    </div>
+
+    <div class="rb-wishlist__empty" data-wishlist-empty>
+      <h3 class="rb-wishlist__empty-heading">{{ 'wishlist.empty.heading' | t }}</h3>
+      <p class="rb-wishlist__empty-text">{{ 'wishlist.empty.text' | t }}</p>
+      <a class="button" href="/collections/all">
+        {{ 'wishlist.empty.cta' | t }}
+      </a>
+    </div>
+
+    <div class="rb-wishlist__grid" data-wishlist-grid hidden></div>
+
+    {%- comment -%}
+      Optional insertion point for wishlist apps (future-proofing).
+    {%- endcomment -%}
+    {% content_for 'blocks' %}
+  </wishlist-page-component>
+
+  <script>
+    window.themeStrings = window.themeStrings || {};
+    window.themeStrings.wishlist = window.themeStrings.wishlist || {};
+    window.themeStrings.wishlist.actions = window.themeStrings.wishlist.actions || {};
+    window.themeStrings.wishlist.actions.remove = {{ 'actions.remove' | t | json }};
+    window.themeStrings.wishlist.actions.add_to_cart = {{ 'actions.add_to_cart' | t | json }};
+  </script>
+
+  <script
+    src="{{ 'wishlist.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+  <script
+    src="{{ 'copy-to-clipboard.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+</section>
+
+{% stylesheet %}
+  .rb-wishlist__inner {
+    width: 100%;
+    max-width: var(--rb-wishlist-max-width, 1400px);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .rb-wishlist__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .rb-wishlist__heading {
+    margin: 0;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #131118;
+  }
+
+  .rb-wishlist__count {
+    margin: 0;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4b5563;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .rb-wishlist__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .rb-wishlist__share {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .rb-wishlist__share-success {
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    color: #008444;
+  }
+
+  .rb-wishlist__empty {
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .rb-wishlist__empty-heading {
+    margin: 0 0 8px 0;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 28px;
+    color: #131118;
+  }
+
+  .rb-wishlist__empty-text {
+    margin: 0 0 16px 0;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4b5563;
+  }
+
+  .rb-wishlist__grid[hidden] {
+    display: none;
+  }
+
+  .rb-wishlist__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .rb-wishlist__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rb-wishlist__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Wishlist",
+  "tag": "section",
+  "class": "section rb-wishlist-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F6F6F8"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wishlist"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 700,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "default": 1100
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "RB - Wishlist",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
+

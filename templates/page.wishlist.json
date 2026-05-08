@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "raven_hero": {
+      "type": "raven-hero",
+      "settings": {
+        "heading": "Wishlist",
+        "text": "<p></p>",
+        "show_button": false,
+        "button_label": "",
+        "button_link": "",
+        "open_in_new_tab": false,
+        "show_button_icon": true,
+        "section_background": "rgba(255,255,255,1)",
+        "enable_overlay": false,
+        "overlay_top": "rgba(0,0,0,0.2)",
+        "overlay_bottom": "rgba(0,0,0,0.45)",
+        "min_height": 320,
+        "border_radius": 12,
+        "content_max_width": 770,
+        "content_gap": 20,
+        "button_background": "#008444",
+        "button_text": "#FFFFFF",
+        "offset_top": 0,
+        "offset_top_mobile": 0,
+        "outer_padding_block": 24,
+        "outer_padding_block_mobile": 16,
+        "outer_padding_inline": 80,
+        "outer_padding_inline_mobile": 16,
+        "inner_padding_block": 72,
+        "inner_padding_block_mobile": 56,
+        "inner_padding_inline": 32,
+        "inner_padding_inline_mobile": 20
+      }
+    },
+    "wishlist_main": {
+      "type": "rb-wishlist",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "background_color": "#F6F6F8",
+        "heading": "",
+        "max_width": 1100,
+        "padding-block-start": 48,
+        "padding-block-end": 72
+      }
+    }
+  },
+  "order": [
+    "raven_hero",
+    "wishlist_main"
+  ]
+}
