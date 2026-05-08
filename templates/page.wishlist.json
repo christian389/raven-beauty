@@ -10,7 +10,7 @@
 {
   "sections": {
     "wishlist_hero": {
-      "type": "rb-wishlist-hero",
+      "type": "rb-page-hero",
       "settings": {
         "color_scheme": "scheme-1",
         "use_theme_translations": true,

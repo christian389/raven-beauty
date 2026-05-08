@@ -1,0 +1,381 @@
+{%- liquid
+  assign bg_image = section.settings.background_image
+  assign use_translations = section.settings.use_theme_translations
+
+  assign breadcrumbs_aria_key = section.settings.breadcrumbs_aria_key | default: 'wishlist.hero.breadcrumbs_aria'
+  assign breadcrumb_home_key = section.settings.breadcrumb_home_key | default: 'wishlist.hero.breadcrumb_home'
+  assign breadcrumb_current_key = section.settings.breadcrumb_current_key | default: 'wishlist.hero.breadcrumb_current'
+  assign heading_key = section.settings.heading_key | default: 'wishlist.hero.heading'
+  assign text_key = section.settings.text_key | default: 'wishlist.hero.text'
+-%}
+
+<section
+  class="rb-page-hero spacing-style color-{{ section.settings.color_scheme }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --rb-ph-min-height: {{ section.settings.min_height }}px;
+    --rb-ph-inner-max: {{ section.settings.inner_max_width }}px;
+    --rb-ph-copy-max: {{ section.settings.copy_max_width }}px;
+    --rb-ph-gap: {{ section.settings.content_gap }}px;
+    --rb-ph-radius: {{ section.settings.border_radius }}px;
+  "
+>
+  <div class="rb-page-hero__shell">
+    <div class="rb-page-hero__media" aria-hidden="true">
+      <div class="rb-page-hero__media-surface"></div>
+      {%- if bg_image != blank -%}
+        {{
+          bg_image
+          | image_url: width: 2400
+          | image_tag:
+            widths: '375, 750, 1100, 1500, 2400',
+            sizes: '100vw',
+            class: 'rb-page-hero__media-img',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: ''
+        }}
+      {%- endif -%}
+      <div class="rb-page-hero__media-gradient"></div>
+    </div>
+
+    <div class="rb-page-hero__inner">
+      <div class="rb-page-hero__copy">
+        <nav class="rb-page-hero__crumbs" aria-label="{{ breadcrumbs_aria_key | t }}">
+          <a class="rb-page-hero__crumb-link" href="{{ routes.root_url }}">
+            {{ breadcrumb_home_key | t }}
+          </a>
+          <span class="rb-page-hero__crumb-sep" aria-hidden="true">/</span>
+          <span class="rb-page-hero__crumb-current">
+            {%- if use_translations -%}
+              {{ breadcrumb_current_key | t }}
+            {%- else -%}
+              {{ section.settings.breadcrumb_current | escape }}
+            {%- endif -%}
+          </span>
+        </nav>
+
+        <h1 class="rb-page-hero__title">
+          {%- if use_translations -%}
+            {{ heading_key | t }}
+          {%- else -%}
+            {{ section.settings.heading | escape | newline_to_br }}
+          {%- endif -%}
+        </h1>
+
+        <div class="rb-page-hero__subtext rte">
+          {%- if use_translations -%}
+            <p>{{ text_key | t }}</p>
+          {%- else -%}
+            {{ section.settings.text }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-page-hero {
+    --raven-font-heading: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    --raven-font-body: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+    background: #f1f5f9;
+  }
+
+  .rb-page-hero__shell {
+    position: relative;
+    min-height: var(--rb-ph-min-height, 480px);
+    border-radius: var(--rb-ph-radius, 0px);
+    overflow: clip;
+    width: 100%;
+    padding-inline: var(--page-margin);
+    box-sizing: border-box;
+  }
+
+  .rb-page-hero__media {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .rb-page-hero__media-surface {
+    position: absolute;
+    inset: 0;
+    background: #f1f5f9;
+  }
+
+  .rb-page-hero__media-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 65% center;
+  }
+
+  .rb-page-hero__media-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(246 246 248 / 0.92) 0%,
+      rgb(246 246 248 / 0.42) 52%,
+      rgb(246 246 248 / 0) 100%
+    );
+  }
+
+  .rb-page-hero__inner {
+    position: relative;
+    z-index: 1;
+    min-height: var(--rb-ph-min-height, 480px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-block: clamp(32px, 6vw, 64px);
+    padding-inline: 0;
+    width: 100%;
+    max-width: var(--rb-ph-inner-max, 1200px);
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  .rb-page-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--rb-ph-gap, 16px);
+    max-width: var(--rb-ph-copy-max, 576px);
+    width: 100%;
+    text-align: left;
+  }
+
+  .rb-page-hero__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--raven-font-body);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .rb-page-hero__crumb-link {
+    color: #475569;
+    text-decoration: none;
+    font-weight: 400;
+  }
+
+  .rb-page-hero__crumb-link:hover {
+    color: #4713ae;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .rb-page-hero__crumb-sep {
+    color: #475569;
+    font-weight: 400;
+  }
+
+  .rb-page-hero__crumb-current {
+    color: #4713ae;
+    font-weight: 500;
+  }
+
+  .rb-page-hero__title {
+    margin: 0;
+    font-family: var(--raven-font-heading);
+    font-weight: 700;
+    font-size: clamp(36px, 6vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    text-wrap: balance;
+  }
+
+  .rb-page-hero__subtext {
+    margin: 0;
+    padding-top: 2px;
+    font-family: var(--raven-font-body);
+    font-weight: 400;
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.625;
+    color: #334155;
+    max-width: 100%;
+  }
+
+  .rb-page-hero__subtext > :first-child {
+    margin-top: 0;
+  }
+
+  .rb-page-hero__subtext > :last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Page hero",
+  "tag": "section",
+  "class": "section-wrapper rb-page-hero-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Banner image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_translations",
+      "label": "Use theme language translations",
+      "info": "When enabled, content pulls from locale keys below. Turn off to edit custom text fields.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "breadcrumbs_aria_key",
+      "label": "Translation key: breadcrumbs aria-label",
+      "default": "wishlist.hero.breadcrumbs_aria"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_home_key",
+      "label": "Translation key: breadcrumb home",
+      "default": "wishlist.hero.breadcrumb_home"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_current_key",
+      "label": "Translation key: breadcrumb current",
+      "default": "wishlist.hero.breadcrumb_current"
+    },
+    {
+      "type": "text",
+      "id": "heading_key",
+      "label": "Translation key: heading",
+      "default": "wishlist.hero.heading"
+    },
+    {
+      "type": "text",
+      "id": "text_key",
+      "label": "Translation key: text",
+      "default": "wishlist.hero.text"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_current",
+      "label": "Breadcrumb current (custom)",
+      "default": "Page",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading (custom)",
+      "default": "Page heading",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text (custom)",
+      "default": "<p>Add your page description here.</p>",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 320,
+      "max": 720,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "inner_max_width",
+      "label": "Content row max width",
+      "min": 960,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "copy_max_width",
+      "label": "Text column max width",
+      "min": 420,
+      "max": 720,
+      "step": 4,
+      "unit": "px",
+      "default": 576
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Space between blocks",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Page hero",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,170 @@
+{%- liquid
+  assign image = section.settings.image
+  assign use_translations = section.settings.use_theme_translations
+  assign heading_key = section.settings.heading_key | default: 'contact.content.heading'
+-%}
+
+<section
+  class="rb-contact-content spacing-style color-{{ section.settings.color_scheme }}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="rb-contact-content__inner" style="--rb-cc-max-width: {{ section.settings.max_width }}px;">
+    <div class="rb-contact-content__header">
+      <h2 class="rb-contact-content__title">
+        {%- if use_translations -%}
+          {{ heading_key | t }}
+        {%- else -%}
+          {{ section.settings.heading | escape }}
+        {%- endif -%}
+      </h2>
+    </div>
+
+    {%- if image != blank -%}
+      <div class="rb-contact-content__image">
+        {{
+          image
+          | image_url: width: 2000
+          | image_tag:
+            widths: '375, 550, 750, 1100, 1500, 2000',
+            sizes: '(min-width: 990px) 960px, 100vw',
+            class: 'rb-contact-content__img',
+            loading: 'lazy',
+            alt: image.alt | escape
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rb-contact-content {
+    padding-inline: var(--page-margin);
+    box-sizing: border-box;
+  }
+
+  .rb-contact-content__inner {
+    width: 100%;
+    max-width: var(--rb-cc-max-width, 1200px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .rb-contact-content__title {
+    margin: 0;
+    font-family: 'Noto Serif', ui-serif, Georgia, 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    color: #0f172a;
+    text-align: center;
+  }
+
+  .rb-contact-content__image {
+    width: 100%;
+    position: relative;
+    border-radius: 0;
+    overflow: hidden;
+    aspect-ratio: 768 / 372;
+    background: #f1f5f9;
+  }
+
+  .rb-contact-content__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RB - Contact content",
+  "tag": "section",
+  "class": "section-wrapper rb-contact-content-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_translations",
+      "label": "Use theme language translations",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading_key",
+      "label": "Translation key: heading",
+      "default": "contact.content.heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading (custom)",
+      "default": "Contact",
+      "visible_if": "{{ section.settings.use_theme_translations == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 700,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "RB - Contact content",
+      "category": "Raven Beauty"
+    }
+  ]
+}
+{% endschema %}
