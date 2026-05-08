@@ -93,10 +93,24 @@
         "padding-block-start": 24,
         "padding-block-end": 24
       }
+    },
+    "rb_rich_text_RFmf8j": {
+      "type": "rb-rich-text",
+      "name": "RB - Rich text",
+      "settings": {
+        "color_scheme": "",
+        "heading": "",
+        "text": "{{ page.content }}",
+        "text_align": "left",
+        "max_width": 1200,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "main",
-    "rb_page_hero_y7UmYP"
+    "rb_page_hero_y7UmYP",
+    "rb_rich_text_RFmf8j"
   ]
 }
