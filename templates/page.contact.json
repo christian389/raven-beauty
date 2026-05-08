@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
@@ -68,12 +69,36 @@
         "title",
         "content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
         "color_scheme": "",
         "padding-block-start": 60,
         "padding-block-end": 0
+      }
+    },
+    "rb_page_hero_FyadAw": {
+      "type": "rb-page-hero",
+      "name": "RB - Page hero",
+      "settings": {
+        "color_scheme": "",
+        "use_theme_translations": true,
+        "breadcrumbs_aria_key": "wishlist.hero.breadcrumbs_aria",
+        "breadcrumb_home_key": "wishlist.hero.breadcrumb_home",
+        "breadcrumb_current_key": "wishlist.hero.breadcrumb_current",
+        "heading_key": "wishlist.hero.heading",
+        "text_key": "wishlist.hero.text",
+        "breadcrumb_current": "Page",
+        "heading": "Page heading",
+        "text": "<p>Add your page description here.</p>",
+        "min_height": 480,
+        "border_radius": 0,
+        "inner_max_width": 1200,
+        "copy_max_width": 576,
+        "content_gap": 16,
+        "padding-block-start": 24,
+        "padding-block-end": 24
       }
     },
     "form": {
@@ -100,9 +125,9 @@
               "settings": {
                 "label": "Submit",
                 "style_class": "button",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 100,
-                "width_mobile": "fit-content",
+                "width_mobile": "custom",
                 "custom_width_mobile": 100
               },
               "blocks": {}
@@ -130,6 +155,7 @@
         "color_scheme": "scheme-1",
         "background_media": "none",
         "video_position": "cover",
+        "use_collection_image": false,
         "background_image_position": "cover",
         "border": "none",
         "border_width": 1,
@@ -146,6 +172,7 @@
   },
   "order": [
     "main",
+    "rb_page_hero_FyadAw",
     "form"
   ]
 }
