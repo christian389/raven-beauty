@@ -91,8 +91,8 @@
         "inner_max_width": 1200,
         "copy_max_width": 576,
         "content_gap": 16,
-        "padding-block-start": 24,
-        "padding-block-end": 24
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "rb_contact_content_jrPnX6": {
