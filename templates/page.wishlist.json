@@ -13,6 +13,7 @@
       "type": "rb-page-hero",
       "settings": {
         "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/0db094c6fd239c73b700d8f5c52efc2ceebc5407.png",
         "heading": "Din ønskeliste samlet ét sted",
         "text": "<p>Gem dine favoritprodukter og find dem nemt igen, når du er klar til at forkæle dig selv eller andre.</p>",
         "min_height": 480,
@@ -20,8 +21,8 @@
         "inner_max_width": 1200,
         "copy_max_width": 576,
         "content_gap": 16,
-        "padding-block-start": 24,
-        "padding-block-end": 24
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "wishlist_main": {
