@@ -26,7 +26,12 @@
         {%- liquid
           assign brand_field = brand.brand
           assign brand_name = brand_field.value | default: brand_field | default: brand.title | default: brand.system.handle
-          assign brand_url = brand.system.url | default: brand.url
+          if brand_name != blank
+            assign brand_vendor_param = brand_name | url_encode
+            assign brand_url = collections.all.url | append: '?filter.p.vendor=' | append: brand_vendor_param
+          else
+            assign brand_url = brand.system.url | default: brand.url
+          endif
           assign brand_logo = brand.brand_logo
           assign brand_featured_image = brand.featured_image
         -%}
