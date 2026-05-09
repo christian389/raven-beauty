@@ -30,12 +30,13 @@
       "type": "rb-brands-grid",
       "settings": {
         "color_scheme": "scheme-1",
-        "background_color": "#f6f6f8",
+        "background_color": "#ffffff",
         "heading": "Brands",
         "max_width": 1200,
         "cards_gap": 24,
-        "cards_radius": 16,
-        "cards_padding": 20,
+        "image_background_color": "#f1f5f9",
+        "cards_radius": 8,
+        "image_aspect_ratio": "3 / 4",
         "padding-block-start": 64,
         "padding-block-end": 64
       }

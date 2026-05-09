@@ -10,7 +10,8 @@
     --rbbg-max: {{ section.settings.max_width }}px;
     --rbbg-gap: {{ section.settings.cards_gap }}px;
     --rbbg-radius: {{ section.settings.cards_radius }}px;
-    --rbbg-padding: {{ section.settings.cards_padding }}px;
+    --rbbg-image-bg: {{ section.settings.image_background_color }};
+    --rbbg-image-ratio: {{ section.settings.image_aspect_ratio }};
   "
 >
   <div class="rb-brands-grid__container section section--page-width">
@@ -26,6 +27,8 @@
           assign brand_field = brand.brand
           assign brand_name = brand_field.value | default: brand_field | default: brand.title | default: brand.system.handle
           assign brand_url = brand.system.url | default: brand.url
+          assign brand_logo = brand.brand_logo
+          assign brand_featured_image = brand.featured_image
         -%}
 
         <a
@@ -34,19 +37,38 @@
           href="{{ brand_url }}"
           {% if brand_url == blank %}aria-disabled="true"{% endif %}
         >
+          <div class="rb-brands-grid__card-media">
+            {%- if brand_featured_image != blank -%}
+              {{
+                brand_featured_image
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'rb-brands-grid__card-image',
+                  widths: '200, 320, 480, 640, 800',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 600px) 50vw, 100vw',
+                  alt: brand_name
+              }}
+            {%- endif -%}
+
+            {%- if brand_logo != blank -%}
+              <span class="rb-brands-grid__card-logo" aria-hidden="true">
+                {{
+                  brand_logo
+                  | image_url: width: 200
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'rb-brands-grid__card-logo-image',
+                    widths: '100, 150, 200',
+                    sizes: '50px',
+                    alt: ''
+                }}
+              </span>
+            {%- endif -%}
+          </div>
+
           <span class="rb-brands-grid__card-title">
             {{ brand_name | escape }}
-          </span>
-          <span class="rb-brands-grid__card-icon" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M7.5 5L12.5 10L7.5 15"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
           </span>
         </a>
       {%- else -%}
@@ -86,13 +108,13 @@
 
   .rb-brands-grid__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--rbbg-gap, 24px);
   }
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 750px) {
     .rb-brands-grid__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
@@ -104,33 +126,66 @@
 
   .rb-brands-grid__card {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 12px;
-    padding: var(--rbbg-padding, 20px);
-    border-radius: var(--rbbg-radius, 16px);
-    background: #ffffff;
-    border: 1px solid rgba(71, 19, 174, 0.08);
     text-decoration: none;
     color: #0f172a;
-    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-    min-height: 72px;
-  }
-
-  .rb-brands-grid__card:hover {
-    transform: translateY(-1px);
-    border-color: rgba(71, 19, 174, 0.18);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    transition: transform 200ms ease;
   }
 
   .rb-brands-grid__card:focus-visible {
     outline: 2px solid #4713ae;
-    outline-offset: 2px;
+    outline-offset: 4px;
+    border-radius: var(--rbbg-radius, 8px);
   }
 
   .rb-brands-grid__card[aria-disabled='true'] {
     pointer-events: none;
     opacity: 0.6;
+  }
+
+  .rb-brands-grid__card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--rbbg-image-ratio, 3 / 4);
+    background: var(--rbbg-image-bg, #f1f5f9);
+    border-radius: var(--rbbg-radius, 8px);
+    overflow: hidden;
+  }
+
+  .rb-brands-grid__card-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease;
+  }
+
+  .rb-brands-grid__card:hover .rb-brands-grid__card-image {
+    transform: scale(1.04);
+  }
+
+  .rb-brands-grid__card-logo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 50px;
+    height: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .rb-brands-grid__card-logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+    display: block;
   }
 
   .rb-brands-grid__card-title {
@@ -141,27 +196,10 @@
     color: inherit;
   }
 
-  .rb-brands-grid__card-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 9999px;
-    background: rgba(71, 19, 174, 0.06);
-    color: #4713ae;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-  }
-
-  .rb-brands-grid__card-icon svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-  }
-
   .rb-brands-grid__empty {
+    grid-column: 1 / -1;
     padding: 24px;
-    border-radius: var(--rbbg-radius, 16px);
+    border-radius: var(--rbbg-radius, 8px);
     background: #ffffff;
     border: 1px dashed rgba(15, 23, 42, 0.18);
   }
@@ -190,9 +228,9 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
+      "label": "Section background",
       "alpha": true,
-      "default": "#f6f6f8"
+      "default": "#ffffff"
     },
     {
       "type": "header",
@@ -229,24 +267,36 @@
       "default": 24
     },
     {
+      "type": "header",
+      "content": "Card image"
+    },
+    {
+      "type": "color",
+      "id": "image_background_color",
+      "label": "Image background",
+      "default": "#f1f5f9"
+    },
+    {
       "type": "range",
       "id": "cards_radius",
-      "label": "Card corner radius",
+      "label": "Image corner radius",
       "min": 0,
       "max": 40,
       "step": 1,
       "unit": "px",
-      "default": 16
+      "default": 8
     },
     {
-      "type": "range",
-      "id": "cards_padding",
-      "label": "Card padding",
-      "min": 0,
-      "max": 64,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 5", "label": "Portrait (4:5)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "2 / 3", "label": "Tall (2:3)" }
+      ],
+      "default": "3 / 4"
     },
     {
       "type": "header",
@@ -301,4 +351,3 @@
   ]
 }
 {% endschema %}
-
